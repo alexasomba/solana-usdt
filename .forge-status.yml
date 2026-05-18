@@ -1,0 +1,18 @@
+feature: 001-solana-usdt-sdk
+feature_mode: lite
+phases:
+  product_spec:
+    status: completed
+  plan:
+    status: completed
+  implement:
+    status: in_progress
+    digest_path: specs/001-solana-usdt-sdk/implement/digest.md
+scope:
+  paths:
+    - package.json
+    - README.md
+    - src/
+    - test/
+    - specs/001-solana-usdt-sdk/
+last_updated: "2026-05-18T00:00:00.000Z"

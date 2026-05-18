@@ -1,0 +1,162 @@
+# Product Forge Configuration
+# Copy this file to .product-forge/config.yml in your project root
+#
+# All settings are optional — Product Forge will ask for missing values at runtime.
+# See docs/config.md for full documentation.
+
+# ─── Project Identity ──────────────────────────────────────────────────────────
+
+# Human-readable project name (used in research prompts and report headers)
+project_name: "My Project"
+
+# Brief tech stack description (helps research agents find relevant libraries)
+# Examples:
+#   "Node.js + Express + Postgres"
+#   "Next.js + Supabase"
+#   "Django + React + Celery"
+#   "Go + gRPC + CockroachDB"
+#   "Ruby on Rails + Sidekiq"
+#   "Spring Boot + Kafka + MySQL"
+#   ".NET 8 + SQL Server + Azure"
+project_tech_stack: ""
+
+# Domain/industry (helps competitor and UX research focus)
+# Examples:
+#   "B2B SaaS productivity tool"
+#   "consumer mobile fitness app"
+#   "e-commerce marketplace"
+#   "developer tooling / CLI"
+#   "enterprise workflow automation"
+#   "content platform / social"
+project_domain: ""
+
+# ─── Paths ─────────────────────────────────────────────────────────────────────
+
+# Single-root project (backwards-compatible with pre-v1.5 configs).
+# Use this if your project has ONE codebase at one path. Leave `codebase`
+# block below unset; keep `codebase_path` only.
+codebase_path: "."
+
+# Monorepo mode (v1.5+). When `codebase` is set, it takes precedence over
+# `codebase_path` and every command becomes workspace-aware. Features
+# declare which workspace(s) they touch via `scope.paths` on .forge-status.yml.
+#
+# `paths` maps short workspace names (used in tasks.md `Paths:` lines and
+# in portfolio reports) to relative directories under `root`.
+#
+# `workspace_type` lets test-plan / test-run / implement pick the correct
+# runner. Supported: pnpm | yarn | npm | turbo | nx | rush | lerna | none.
+# Set to "none" for plain multi-path layouts without a workspace manager.
+#
+# codebase:
+#   root: "."
+#   workspace_type: "pnpm"
+#   paths:
+#     backend:  "apps/api"
+#     frontend: "apps/web"
+#     shared:   "packages/shared"
+#     mobile:   "apps/mobile"
+
+# Directory where Product Forge feature artifacts are stored
+# Avoid changing this after features have been created
+features_dir: "features"
+
+# ─── SpecKit Integration ───────────────────────────────────────────────────────
+
+# Default SpecKit mode for Phase 4 bridge
+# Options:
+#   "ask"      — always ask the user (default, recommended)
+#   "classic"  — always use plan → tasks → implement
+#   "v-model"  — always use full V-Model traceability
+default_speckit_mode: "ask"
+
+# Path to the project architecture constitution file (used in Phase 5 compliance check)
+# The constitution defines mandatory patterns: resilience, EDA rules, code quality, etc.
+# Leave empty to use the SpecKit default: .specify/memory/constitution.md
+# constitution_path: ".specify/memory/constitution.md"
+
+# ─── Research Defaults ─────────────────────────────────────────────────────────
+
+# Default competitors to always include in competitor analysis
+# Leave empty to let the agent find them automatically
+default_competitors: []
+  # - "Competitor One"
+  # - "Competitor Two"
+
+# Whether to run tech stack research by default (can always be overridden per feature)
+default_tech_research: false
+
+# Whether to run metrics/ROI analysis by default
+default_metrics_research: false
+
+# ─── Product Spec Defaults ─────────────────────────────────────────────────────
+
+# Default wireframe detail level
+# Options: "text" | "basic-html" | "detailed-html"
+default_wireframe_detail: "basic-html"
+
+# Default mockup style when creating mockups
+# Options: "none" | "generic" | "project-styled"
+default_mockup_style: "project-styled"
+
+# ─── Lifecycle Behavior ────────────────────────────────────────────────────────
+
+# How often to run progressive verification during implementation (Phase 6)
+# Value = number of completed tasks between checkpoints. Set to 0 to disable.
+progressive_verify_interval: 3
+
+# Whether to run automatic quick sync-verify between phase transitions
+# When true, the forge orchestrator checks relevant artifact layers at each transition
+auto_sync_between_phases: true
+
+# Whether Phase 9 (Release Readiness) is required or optional
+# Options: "required" | "optional" | "skip"
+release_readiness: "optional"
+
+# ─── Feature Mode (v1.5.0) ─────────────────────────────────────────────────────
+
+# Default phase map selected when a new feature is created.
+# Options:
+#   "lite"     — 5 phases: problem-discovery (opt) → product-spec → plan → implement → verify
+#   "standard" — full 14-phase lifecycle (recommended for most features)
+#   "v-model"  — standard bookends + V1–V13 delegated to the external
+#                V-Model Extension Pack (leocamello/spec-kit-v-model ≥0.5.0).
+#                REQUIRES that plugin to be installed separately:
+#                  specify extension add v-model \
+#                    --from https://github.com/leocamello/spec-kit-v-model/archive/refs/tags/v0.5.0.zip
+#                Without it, selecting v-model mode aborts with the install
+#                command — there is NO silent fallback to standard.
+# See docs/policy.md §4 for escalation and deselection rules, and
+# docs/v-model-integration.md for the full v-model orchestration contract.
+default_feature_mode: "standard"
+
+# ─── Skip-Reason Policy (v1.5.0) ───────────────────────────────────────────────
+
+# When true, skipping an optional phase requires a free-text reason that is
+# persisted in gates[].skip_reason and phases.<name>.skip_reason.
+# See docs/policy.md §3.
+require_skip_reason: true
+
+# ─── Sync-Verify Drift Budget (v1.5.0) ─────────────────────────────────────────
+
+# Drift budget controls how sync-verify categorizes and reports differences.
+# Values are upper bounds per feature: exceeding cosmetic→warning, structural→gate.
+sync_verify:
+  drift_budget:
+    cosmetic: 20          # whitespace, ordering, date churn — tolerable
+    structural: 0         # field meaning, contract shape — always gated
+  # Whitelist of drift categories that sync-verify may auto-resolve.
+  # Only "cosmetic" is supported; opt-in by setting to true.
+  auto_resolve:
+    cosmetic: false
+
+# ─── Advanced ──────────────────────────────────────────────────────────────────
+
+# Maximum token budget target per generated document (approximate)
+# Larger features will auto-decompose into multiple files
+# Recommended: 3000-5000 tokens per file
+max_tokens_per_doc: 4000
+
+# Language for all generated documents
+# Examples: "en", "ru", "de"
+output_language: "en"

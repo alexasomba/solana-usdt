@@ -1,0 +1,19 @@
+# Test environment credentials (never commit)
+features/**/testing/env.md
+features/**/testing/playwright-results/
+
+# Playwright output
+test-results/
+playwright-report/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp

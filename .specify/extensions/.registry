@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "extensions": {
+    "git": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:9731aa8143a72fbebfdb440f155038ab42642517c2b2bdbbf67c8fdbe076ed79",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.git.feature",
+          "speckit.git.validate",
+          "speckit.git.remote",
+          "speckit.git.initialize",
+          "speckit.git.commit"
+        ],
+        "codex": [
+          "speckit.git.feature",
+          "speckit.git.validate",
+          "speckit.git.remote",
+          "speckit.git.initialize",
+          "speckit.git.commit"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-05-18T08:59:12.456549+00:00"
+    },
+    "product-forge": {
+      "version": "1.5.1",
+      "source": "local",
+      "manifest_hash": "sha256:3556b7ea53b5d2bf6d282e09dea46563f136437a0b6e1039507218d9c8abdf80",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.product-forge.forge",
+          "speckit.product-forge.research",
+          "speckit.product-forge.product-spec",
+          "speckit.product-forge.revalidate",
+          "speckit.product-forge.bridge",
+          "speckit.product-forge.plan",
+          "speckit.product-forge.tasks",
+          "speckit.product-forge.implement",
+          "speckit.product-forge.verify-full",
+          "speckit.product-forge.test-plan",
+          "speckit.product-forge.test-run",
+          "speckit.product-forge.status",
+          "speckit.product-forge.problem-discovery",
+          "speckit.product-forge.api-docs",
+          "speckit.product-forge.security-check",
+          "speckit.product-forge.tracking-plan",
+          "speckit.product-forge.pre-impl-review",
+          "speckit.product-forge.code-review",
+          "speckit.product-forge.release-readiness",
+          "speckit.product-forge.sync-verify",
+          "speckit.product-forge.change-request",
+          "speckit.product-forge.portfolio",
+          "speckit.product-forge.backfill",
+          "speckit.product-forge.monitoring-setup",
+          "speckit.product-forge.migration-plan",
+          "speckit.product-forge.i18n-harvest",
+          "speckit.product-forge.experiment-design",
+          "speckit.product-forge.feature-flag-cleanup",
+          "speckit.product-forge.retrospective"
+        ],
+        "codex": [
+          "speckit.product-forge.forge",
+          "speckit.product-forge.research",
+          "speckit.product-forge.product-spec",
+          "speckit.product-forge.revalidate",
+          "speckit.product-forge.bridge",
+          "speckit.product-forge.plan",
+          "speckit.product-forge.tasks",
+          "speckit.product-forge.implement",
+          "speckit.product-forge.verify-full",
+          "speckit.product-forge.test-plan",
+          "speckit.product-forge.test-run",
+          "speckit.product-forge.status",
+          "speckit.product-forge.problem-discovery",
+          "speckit.product-forge.api-docs",
+          "speckit.product-forge.security-check",
+          "speckit.product-forge.tracking-plan",
+          "speckit.product-forge.pre-impl-review",
+          "speckit.product-forge.code-review",
+          "speckit.product-forge.release-readiness",
+          "speckit.product-forge.sync-verify",
+          "speckit.product-forge.change-request",
+          "speckit.product-forge.portfolio",
+          "speckit.product-forge.backfill",
+          "speckit.product-forge.monitoring-setup",
+          "speckit.product-forge.migration-plan",
+          "speckit.product-forge.i18n-harvest",
+          "speckit.product-forge.experiment-design",
+          "speckit.product-forge.feature-flag-cleanup",
+          "speckit.product-forge.retrospective"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-05-18T09:00:10.479736+00:00"
+    }
+  }
+}

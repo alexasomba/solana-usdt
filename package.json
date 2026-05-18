@@ -1,0 +1,64 @@
+{
+  "name": "@alexasomba/solana-usdt-node",
+  "version": "0.1.0",
+  "description": "Developer-friendly Node.js SDK for USDT balances, transfers, and payment verification on Solana.",
+  "keywords": [
+    "payments",
+    "sdk",
+    "solana",
+    "spl-token",
+    "typescript",
+    "usdt"
+  ],
+  "homepage": "https://github.com/alexasomba/solana-usdt-node#readme",
+  "bugs": {
+    "url": "https://github.com/alexasomba/solana-usdt-node/issues"
+  },
+  "license": "MIT",
+  "author": "alexasomba",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexasomba/solana-usdt-node.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "test": "vp test run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist coverage",
+    "prepack": "pnpm build",
+    "prepare": "vp config"
+  },
+  "dependencies": {
+    "@solana-program/memo": "0.11.0",
+    "@solana-program/token": "0.13.0",
+    "@solana/kit": "6.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.4",
+    "typescript": "^6.0.3",
+    "vite-plus": "catalog:",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@^0.1.21"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "packageManager": "pnpm@11.1.2"
+}

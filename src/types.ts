@@ -1,0 +1,189 @@
+import type { Address, TransactionSigner } from "@solana/kit";
+import type { IdempotencyStore } from "./idempotency.js";
+import type { RetryOptions } from "./retry.js";
+import type { TokenAmountInput } from "./amounts.js";
+
+export type Commitment = "processed" | "confirmed" | "finalized";
+export type AddressInput = string | Address;
+
+export interface RpcSendable<T> {
+  send(): Promise<T>;
+}
+
+export interface SolanaRpcLike {
+  getAccountInfo?(...args: unknown[]): RpcSendable<unknown>;
+  getFeeForMessage?(...args: unknown[]): RpcSendable<unknown>;
+  getLatestBlockhash?(...args: unknown[]): RpcSendable<unknown>;
+  getSignaturesForAddress?(...args: unknown[]): RpcSendable<unknown>;
+  getSignatureStatuses?(...args: unknown[]): RpcSendable<unknown>;
+  getTokenAccountsByOwner?(...args: unknown[]): RpcSendable<unknown>;
+  getTransaction?(...args: unknown[]): RpcSendable<unknown>;
+  sendTransaction?(...args: unknown[]): RpcSendable<unknown>;
+}
+
+export interface SolanaUsdtClientOptions {
+  rpcUrl: string;
+  rpcSubscriptionsUrl?: string | undefined;
+  signer: TransactionSigner;
+  commitment?: Commitment | undefined;
+  fetch?: typeof fetch | undefined;
+  timeoutMs?: number | undefined;
+  retry?: RetryOptions | undefined;
+  mint?: AddressInput | undefined;
+  decimals?: number | undefined;
+  idempotencyStore?: IdempotencyStore<TransferResult> | undefined;
+  rpc?: SolanaRpcLike | undefined;
+}
+
+export interface ClientContext {
+  rpcUrl: string;
+  rpc: SolanaRpcLike;
+  signer: TransactionSigner;
+  commitment: Commitment;
+  timeoutMs?: number | undefined;
+  retry?: RetryOptions | undefined;
+  mint: Address;
+  decimals: number;
+  idempotencyStore?: IdempotencyStore<TransferResult> | undefined;
+}
+
+export interface BalanceRetrieveInput {
+  owner: AddressInput;
+}
+
+export interface BalanceResult {
+  owner: string;
+  mint: string;
+  tokenAccount: string;
+  amount: bigint;
+  displayAmount: string;
+  decimals: number;
+  slot?: bigint | undefined;
+}
+
+export interface TransferQuoteInput {
+  to: AddressInput;
+  amount: TokenAmountInput;
+}
+
+export interface TransferQuote {
+  to: string;
+  mint: string;
+  amount: bigint;
+  displayAmount: string;
+  sourceTokenAccount: string;
+  destinationTokenAccount: string;
+  recipientAtaExists: boolean;
+  willCreateRecipientAta: boolean;
+  estimatedFeeLamports: bigint;
+  feeEstimateType: "approximate" | "rpc";
+}
+
+export interface TransferCreateInput {
+  to: AddressInput;
+  amount: TokenAmountInput;
+  reference?: string | undefined;
+  idempotencyKey?: string | undefined;
+  createRecipientAta?: boolean | undefined;
+}
+
+export interface TransferResult {
+  signature: string;
+  reference: string;
+  idempotencyKey?: string | undefined;
+  mint: string;
+  amount: bigint;
+  displayAmount: string;
+  sourceTokenAccount: string;
+  destinationTokenAccount: string;
+  feeLamports?: bigint | undefined;
+  slot?: bigint | undefined;
+  confirmationStatus?: string | undefined;
+}
+
+export interface PaymentCreateRequestInput {
+  amount: TokenAmountInput;
+  recipient?: AddressInput | undefined;
+  reference?: string | undefined;
+  metadata?: Record<string, unknown> | undefined;
+}
+
+export interface PaymentRequest {
+  reference: string;
+  recipient?: string | undefined;
+  mint: string;
+  amount: bigint;
+  displayAmount: string;
+  decimals: number;
+  memo: string;
+  metadata?: Record<string, unknown> | undefined;
+  createdAt: string;
+}
+
+export interface PaymentVerifyInput {
+  reference?: string | undefined;
+  signature?: string | undefined;
+  recipient?: AddressInput | undefined;
+  amount?: TokenAmountInput | undefined;
+}
+
+export interface VerifiedPayment {
+  found: boolean;
+  reference?: string | undefined;
+  signature?: string | undefined;
+  recipient?: string | undefined;
+  amount?: bigint | undefined;
+  displayAmount?: string | undefined;
+  slot?: bigint | undefined;
+  confirmationStatus?: string | undefined;
+  memo?: string | undefined;
+}
+
+export interface PaymentMonitorInput {
+  recipient: AddressInput;
+  cursor?: string | undefined;
+  limit?: number | undefined;
+}
+
+export interface PaymentMonitorResult {
+  cursor?: string | undefined;
+  payments: VerifiedPayment[];
+}
+
+export interface TransactionRetrieveInput {
+  signature: string;
+}
+
+export interface TransactionWaitInput {
+  signature: string;
+  commitment?: Commitment | undefined;
+  timeoutMs?: number | undefined;
+  pollIntervalMs?: number | undefined;
+}
+
+export interface TransactionStatus {
+  signature: string;
+  slot?: bigint | undefined;
+  confirmationStatus?: string | undefined;
+  err?: unknown;
+  transaction?: unknown;
+}
+
+export interface SolanaUsdtClient {
+  balances: {
+    retrieve(input: BalanceRetrieveInput): Promise<BalanceResult>;
+  };
+  transfers: {
+    quote(input: TransferQuoteInput): Promise<TransferQuote>;
+    create(input: TransferCreateInput): Promise<TransferResult>;
+  };
+  payments: {
+    createRequest(input: PaymentCreateRequestInput): PaymentRequest;
+    verify(input: PaymentVerifyInput): Promise<VerifiedPayment>;
+    monitor(input: PaymentMonitorInput): Promise<PaymentMonitorResult>;
+  };
+  transactions: {
+    retrieve(input: TransactionRetrieveInput): Promise<TransactionStatus>;
+    wait(input: TransactionWaitInput): Promise<TransactionStatus>;
+  };
+}

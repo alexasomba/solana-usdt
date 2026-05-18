@@ -8,7 +8,7 @@
 
 ## Phase 1: Setup
 
-- [x] T001 Create package scaffold in `package.json`, `tsconfig.json`, `tsconfig.build.json`, `vitest.config.ts`, `.gitignore`, `LICENSE`
+- [x] T001 Create package scaffold in `package.json`, `tsconfig.json`, `tsconfig.pack.json`, `vitest.config.ts`, `.gitignore`, `LICENSE`
 - [x] T002 Add README usage documentation in `README.md`
 
 ## Phase 2: Foundational
@@ -38,4 +38,4 @@
 
 - [x] T014 Export all public modules and Kit signer helpers in `src/index.ts`
 - [x] T015 Add amount helper tests in `test/amounts.test.ts`
-- [ ] T016 Run `pnpm install`, `pnpm typecheck`, `pnpm test`, and `pnpm build`
+- [x] T016 Run `pnpm install`, `tsc -p tsconfig.json --noEmit`, `vp test run`, and `vp pack`

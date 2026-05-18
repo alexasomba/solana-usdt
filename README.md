@@ -60,7 +60,7 @@ await client.transactions.wait({ signature });
 
 ```bash
 pnpm install
-pnpm test
-pnpm typecheck
-pnpm build
+vp test run
+tsc -p tsconfig.json --noEmit
+vp pack
 ```

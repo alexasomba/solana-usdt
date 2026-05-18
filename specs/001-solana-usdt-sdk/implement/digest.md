@@ -20,5 +20,5 @@
 
 ## Handoff Notes
 
-- Run `pnpm install` before typecheck/build/test.
+- Verification passed with `node_modules/.bin/tsc -p tsconfig.json --noEmit`, `vp test run`, and `vp pack`.
 - Focus code review on transaction construction and payment parser tolerance.

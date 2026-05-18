@@ -10,3 +10,14 @@
 | Plan alignment           |  PASS  | Implementation uses Solana Kit, SPL Token, and Memo packages directly.                                    |
 
 **Verdict:** CLEAN - continue to dependency installation and verification.
+
+## Checkpoint 2
+
+| Check             | Status | Notes                                                     |
+| ----------------- | :----: | --------------------------------------------------------- |
+| Typecheck         |  PASS  | `node_modules/.bin/tsc -p tsconfig.json --noEmit` passed. |
+| Tests             |  PASS  | `vp test run` passed 5 test files and 14 tests.           |
+| Build             |  PASS  | `vp pack` emitted ESM and declaration files.              |
+| Spec AC alignment |  PASS  | Required public modules and exported types are present.   |
+
+**Verdict:** CLEAN - implementation complete.

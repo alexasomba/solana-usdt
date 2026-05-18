@@ -25,26 +25,26 @@
   ],
   "type": "module",
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
     }
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc -p tsconfig.build.json --watch",
+    "build": "vp pack",
+    "dev": "vp pack --watch",
     "test": "vp test run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check": "vp check",
     "clean": "rm -rf dist coverage",
-    "prepack": "pnpm build",
-    "prepare": "vp config"
+    "prepack": "vp pack"
   },
   "dependencies": {
     "@solana-program/memo": "0.11.0",
@@ -54,11 +54,11 @@
   "devDependencies": {
     "@types/node": "^24.12.4",
     "typescript": "^6.0.3",
-    "vite-plus": "catalog:",
+    "vite-plus": "^0.1.21",
     "vitest": "npm:@voidzero-dev/vite-plus-test@^0.1.21"
   },
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=22.0.0"
   },
   "packageManager": "pnpm@11.1.2"
 }

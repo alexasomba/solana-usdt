@@ -42,6 +42,7 @@ $ARGUMENTS
 Collect context to pass to the plan agent:
 
 Read the following artifacts to build a rich brief:
+
 - `product-spec/product-spec.md` → Must Have stories, functional requirements, tech constraints
 - `research/codebase-analysis.md` → integration points, affected modules, naming patterns
 - `spec.md` → acceptance criteria, technical requirements
@@ -69,11 +70,11 @@ Key tech constraints:
 
 **Delegate to SpecKit `plan`** with the enriched context note:
 
-> *"Product Forge context: This spec is backed by thorough research in `research/`.
+> _"Product Forge context: This spec is backed by thorough research in `research/`.
 > Key integration points and affected modules are in `research/codebase-analysis.md`.
 > User journeys and wireframes are in `product-spec/`.
 > The plan must address all Must Have user stories from `product-spec/product-spec.md`.
-> After returning the plan, do NOT proceed to tasks or implementation — stop and return control."*
+> After returning the plan, do NOT proceed to tasks or implementation — stop and return control."_
 
 ---
 
@@ -82,6 +83,7 @@ Key tech constraints:
 After SpecKit plan returns, automatically verify `plan.md` against the project constitution.
 
 **Locate the constitution file** (in priority order):
+
 1. Read `.product-forge/config.yml` → look for `constitution_path` key
 2. Fall back to `.specify/memory/constitution.md`
 3. If neither file exists → skip this step silently and note "No constitution found — compliance check skipped" in the approval summary
@@ -91,26 +93,31 @@ Store resolved path as `CONSTITUTION_PATH`.
 For each section below, mark ✅ / ⚠️ / ❌ based on what's present in `plan.md`:
 
 **Resilience & External Services**
+
 - [ ] Every external service call has a resilience strategy (circuit breaker, retry policy, or documented degraded mode)
 - [ ] Rate limiting addressed for any public-facing endpoints
 - [ ] Timeout configuration mentioned for external calls
 
 **Data & Privacy**
+
 - [ ] If the feature stores user data: a data deletion handler is included (e.g., user deletion event listener)
 - [ ] Sensitive data fields identified and protection strategy described
 
 **Testing**
+
 - [ ] Coverage targets specified per service or module
 - [ ] Integration test strategy described (not just unit tests)
 - [ ] At least one test case listed per critical path in spec.md
 
 **EDA (skip if not applicable)**
+
 - [ ] Event handlers do not throw — errors are caught and logged, never propagated to the bus
 - [ ] Events are emitted after data is persisted, not before
 - [ ] Correlation / trace IDs are present in all event payloads
 - [ ] New events that don't exist yet are listed as tasks in the plan
 
 **Code Quality**
+
 - [ ] No circular dependencies between modules introduced by this feature
 - [ ] Functions and modules respect size conventions from the constitution
 
@@ -132,14 +139,14 @@ If ❌ violations found: add them as additional rows in the Cross-Validation tab
 
 Read `plan.md` and cross-check against `product-spec/product-spec.md`:
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| All Must Have user stories addressed in plan? | ✅/⚠️/❌ | List any missing |
-| Technical integration matches codebase-analysis findings? | ✅/⚠️/❌ | |
-| No unresolved open questions from product-spec? | ✅/⚠️/❌ | |
-| Data model / schema aligned with product-spec requirements? | ✅/⚠️/❌ | |
-| Non-functional requirements (perf, security) addressed? | ✅/⚠️/❌ | |
-| API contracts consistent with product-spec user journeys? | ✅/⚠️/❌ | |
+| Check                                                       | Status   | Notes            |
+| ----------------------------------------------------------- | -------- | ---------------- |
+| All Must Have user stories addressed in plan?               | ✅/⚠️/❌ | List any missing |
+| Technical integration matches codebase-analysis findings?   | ✅/⚠️/❌ |                  |
+| No unresolved open questions from product-spec?             | ✅/⚠️/❌ |                  |
+| Data model / schema aligned with product-spec requirements? | ✅/⚠️/❌ |                  |
+| Non-functional requirements (perf, security) addressed?     | ✅/⚠️/❌ |                  |
+| API contracts consistent with product-spec user journeys?   | ✅/⚠️/❌ |                  |
 
 If ❌ found: surface exact mismatches, ask user how to resolve before proceeding.
 If only ✅/⚠️: proceed to approval gate.
@@ -173,8 +180,8 @@ Constitution compliance:
 Story coverage: {N}/{N} Must Have stories addressed
 ```
 
-Ask: *"Technical plan ready. Cross-validation: {N}/{N} checks passed.
-Approve the plan?*
+Ask: _"Technical plan ready. Cross-validation: {N}/{N} checks passed.
+Approve the plan?_
 
 On approval → update `.forge-status.yml`:
 
@@ -193,6 +200,7 @@ Before handoff, write `{FEATURE_DIR}/plan/digest.md` using the template at
 its path on `.forge-status.yml` under `phases.plan.digest_path`.
 
 The digest must include:
+
 - **Key decisions** — tech choices, module boundaries, major data model shapes, top 3 NFRs.
 - **Artifacts produced** — `plan.md` and any ADRs created during planning.
 - **Open risks** — unresolved architectural trade-offs or dependencies.

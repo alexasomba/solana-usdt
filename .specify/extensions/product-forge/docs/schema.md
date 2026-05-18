@@ -93,34 +93,34 @@ Readers (including older sub-skills still on the v2 shape) MUST:
 
 ## 5. Field catalog (high level)
 
-| Field | Required for v3 writers | Notes |
-|-------|------------------------|-------|
-| `schema_version` | yes | integer `3`. |
-| `feature` | yes | feature slug. |
-| `created_at` | yes | ISO-8601 date. |
-| `last_updated` | yes | ISO-8601 timestamp; updated on every write. |
-| `feature_mode` | no | `"lite" | "standard" | "v-model"`. Defaults to `"standard"`. |
-| `backfilled` | no | `true` if feature was reverse-engineered by `/backfill`. Defaults to `false`. |
-| `v2_native` | no | `true` for features created by v1.5.0+ (field name is historical — retained for compat). Drives digest enforcement (runtime.md §8.3). Defaults to `false` (i.e. grandfathered). |
-| `speckit_mode` | no | preserved from v2. |
-| `phases.<name>.status` | yes | one of `pending | in_progress | completed | skipped | not_applicable`. The `revalidation` phase additionally accepts `approved` for v1/v2 backwards compatibility (same meaning as `completed`). See schema-yml preamble for semantics. |
-| `phases.<name>.started_at` / `completed_at` | no | ISO-8601 timestamps. |
-| `phases.<name>.tokens_in` / `tokens_out` / `tool_calls` | no | cost tracking. |
-| `phases.<name>.digest_path` | no | path to per-phase digest. |
-| `phases.<name>.skipped` / `skip_reason` | no | E2 skip policy. |
-| `testing.*` | preserved from v2 | yes (same meaning). |
-| `task_log[]` | no | per-task runtime log. Populated during Phase 6 implement. Renamed from initial-v3 `tasks[]` to avoid collision with `phases.tasks`. |
-| `gates[]` | yes | append-only. |
-| `gates[].approvals` | conditional | required when `solo_mode: false`. |
-| `gates[].skip_reason` | conditional | required when `decision == "skipped"` and `require_skip_reason: true`. |
-| `sync_runs` | preserved from v2 | yes. |
-| `change_requests` | preserved from v2 | yes. |
-| `dependencies.depends_on` / `depended_on_by` | no | default `[]`. |
-| `role_approvals.solo_mode` | no | default `true`. |
-| `role_approvals.required_roles_per_phase` | no | default `{}`. |
-| `scope.paths` | conditional | Required in monorepo mode. Workspace names from `codebase.paths`. |
-| `scope.cross_workspace` | conditional | Required in monorepo mode. `true` when `len(scope.paths) > 1`. |
-| `scope.primary` | conditional | Required in monorepo mode. Default workspace for ambiguous operations. |
+| Field                                                   | Required for v3 writers | Notes                                                                                                                                                                           |
+| ------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schema_version`                                        | yes                     | integer `3`.                                                                                                                                                                    |
+| `feature`                                               | yes                     | feature slug.                                                                                                                                                                   |
+| `created_at`                                            | yes                     | ISO-8601 date.                                                                                                                                                                  |
+| `last_updated`                                          | yes                     | ISO-8601 timestamp; updated on every write.                                                                                                                                     |
+| `feature_mode`                                          | no                      | `"lite"                                                                                                                                                                         | "standard"  | "v-model"`. Defaults to `"standard"`. |
+| `backfilled`                                            | no                      | `true` if feature was reverse-engineered by `/backfill`. Defaults to `false`.                                                                                                   |
+| `v2_native`                                             | no                      | `true` for features created by v1.5.0+ (field name is historical — retained for compat). Drives digest enforcement (runtime.md §8.3). Defaults to `false` (i.e. grandfathered). |
+| `speckit_mode`                                          | no                      | preserved from v2.                                                                                                                                                              |
+| `phases.<name>.status`                                  | yes                     | one of `pending                                                                                                                                                                 | in_progress | completed                             | skipped | not_applicable`. The `revalidation`phase additionally accepts`approved`for v1/v2 backwards compatibility (same meaning as`completed`). See schema-yml preamble for semantics. |
+| `phases.<name>.started_at` / `completed_at`             | no                      | ISO-8601 timestamps.                                                                                                                                                            |
+| `phases.<name>.tokens_in` / `tokens_out` / `tool_calls` | no                      | cost tracking.                                                                                                                                                                  |
+| `phases.<name>.digest_path`                             | no                      | path to per-phase digest.                                                                                                                                                       |
+| `phases.<name>.skipped` / `skip_reason`                 | no                      | E2 skip policy.                                                                                                                                                                 |
+| `testing.*`                                             | preserved from v2       | yes (same meaning).                                                                                                                                                             |
+| `task_log[]`                                            | no                      | per-task runtime log. Populated during Phase 6 implement. Renamed from initial-v3 `tasks[]` to avoid collision with `phases.tasks`.                                             |
+| `gates[]`                                               | yes                     | append-only.                                                                                                                                                                    |
+| `gates[].approvals`                                     | conditional             | required when `solo_mode: false`.                                                                                                                                               |
+| `gates[].skip_reason`                                   | conditional             | required when `decision == "skipped"` and `require_skip_reason: true`.                                                                                                          |
+| `sync_runs`                                             | preserved from v2       | yes.                                                                                                                                                                            |
+| `change_requests`                                       | preserved from v2       | yes.                                                                                                                                                                            |
+| `dependencies.depends_on` / `depended_on_by`            | no                      | default `[]`.                                                                                                                                                                   |
+| `role_approvals.solo_mode`                              | no                      | default `true`.                                                                                                                                                                 |
+| `role_approvals.required_roles_per_phase`               | no                      | default `{}`.                                                                                                                                                                   |
+| `scope.paths`                                           | conditional             | Required in monorepo mode. Workspace names from `codebase.paths`.                                                                                                               |
+| `scope.cross_workspace`                                 | conditional             | Required in monorepo mode. `true` when `len(scope.paths) > 1`.                                                                                                                  |
+| `scope.primary`                                         | conditional             | Required in monorepo mode. Default workspace for ambiguous operations.                                                                                                          |
 
 ---
 

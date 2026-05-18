@@ -29,6 +29,7 @@ $ARGUMENTS
 ```
 
 Parse for:
+
 - Feature slug (required) — which `{features_dir}/<slug>` to operate on.
 - `--provider=<name>` — `newrelic` (default), `grafana`, `datadog`. Only
   `newrelic` is wired to an installed skill in this extension; others
@@ -61,11 +62,11 @@ Build the SLI list from three sources, in priority order:
 
 Produce a table:
 
-| SLI | Source | Target (SLO) | Measurement window |
-|-----|--------|--------------|--------------------|
-| p95 API latency | plan.md NFR | ≤ 300 ms | 5-minute rolling |
-| error rate | plan.md NFR | ≤ 0.5 % | 5-minute rolling |
-| session start → first event | tracking-plan | ≤ 2 s | 1-hour rolling |
+| SLI                         | Source        | Target (SLO) | Measurement window |
+| --------------------------- | ------------- | ------------ | ------------------ |
+| p95 API latency             | plan.md NFR   | ≤ 300 ms     | 5-minute rolling   |
+| error rate                  | plan.md NFR   | ≤ 0.5 %      | 5-minute rolling   |
+| session start → first event | tracking-plan | ≤ 2 s        | 1-hour rolling     |
 
 If a candidate lacks a numeric target, mark it `UNDEFINED` and include
 it as an action item instead of inventing a number.
@@ -85,7 +86,7 @@ skill is installed). Pass:
 Produce `{FEATURE_DIR}/monitoring/dashboard.json` — NerdGraph-compatible.
 
 If the provider skill is not installed, fall back to a templated JSON
-with TODOs and note: *"Provider skill missing — dashboard is a stub."*
+with TODOs and note: _"Provider skill missing — dashboard is a stub."_
 
 ---
 
@@ -121,9 +122,11 @@ Write `{FEATURE_DIR}/monitoring/slo.md`:
 # SLO for {Feature Name}
 
 ## SLIs
+
 {table from Step 1}
 
 ## Error budget
+
 - Target availability: {99.9 | 99.95 | custom} over {window}
 - Error budget: {1 - target} of total minutes in window
 - Budget burn policy:
@@ -131,6 +134,7 @@ Write `{FEATURE_DIR}/monitoring/slo.md`:
   - 1x burn rate for 6h → ticket
 
 ## Out of scope
+
 {SLIs intentionally excluded and why}
 ```
 

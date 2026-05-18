@@ -56,6 +56,7 @@ Write a unit test when:
   at the exact faulty unit, not a cascade).
 
 Good unit targets:
+
 - Pure functions, reducers, validators, formatters, parsers, state
   machines.
 - Service methods where side effects are injected (DI / adapter pattern
@@ -66,6 +67,7 @@ Good unit targets:
 
 Bad unit targets (push down to the unit that contains the logic, or up
 to integration):
+
 - "This controller wires 6 services together" — no logic, just
   orchestration. Don't unit-test wiring.
 - "This class calls an HTTP client" — the client is the integration
@@ -85,6 +87,7 @@ Write an integration test when:
   right in isolation but wrong against the real collaborator.
 
 Good integration targets:
+
 - Service → database (real queries, real migrations).
 - Service → cache (TTL semantics, invalidation).
 - Event emitter → listener (saga flows, idempotency on retries).
@@ -123,11 +126,13 @@ Write an E2E test when:
   **composition and wiring**, not correctness of individual steps.
 
 Good E2E targets:
+
 - Happy-path sign-up + first key action (primary conversion flow).
 - Payment / checkout round trip.
 - Critical rollback-risk surface (e.g. password reset, data export).
 
 Bad E2E targets:
+
 - Every permutation of form validation — push down to unit.
 - Every edge case of business logic — push down to unit/integration.
 - Third-party integration edge cases the third-party guarantees — stub
@@ -149,29 +154,29 @@ Global line coverage as a KPI is **misleading**. Use per-layer rules.
 
 ### Unit
 
-| Element | Minimum | Target | Notes |
-|---------|:-------:|:------:|-------|
-| Pure functions, validators, formatters | 90% | 95% | Cheap to reach; if tests are skipped here, the logic isn't really unit-isolated. |
-| Service methods with DI | 80% | 90% | Must cover every non-trivial branch, not just happy paths. |
-| Domain primitives | 95% | 100% | Finite state; no excuse. |
-| UI components with pure logic (computed, emits) | 70% | 85% | Don't snapshot-test trivial render output. |
+| Element                                         | Minimum | Target | Notes                                                                            |
+| ----------------------------------------------- | :-----: | :----: | -------------------------------------------------------------------------------- |
+| Pure functions, validators, formatters          |   90%   |  95%   | Cheap to reach; if tests are skipped here, the logic isn't really unit-isolated. |
+| Service methods with DI                         |   80%   |  90%   | Must cover every non-trivial branch, not just happy paths.                       |
+| Domain primitives                               |   95%   |  100%  | Finite state; no excuse.                                                         |
+| UI components with pure logic (computed, emits) |   70%   |  85%   | Don't snapshot-test trivial render output.                                       |
 
 ### Integration
 
-| Element | Minimum | Target | Notes |
-|---------|:-------:|:------:|-------|
-| DB repositories / data access | 80% | 90% | One test per query kind, real DB, real migrations. |
-| Message / event flow | 90% | 100% | Every emitter × listener combo. Idempotency case included. |
-| API endpoints (happy + 4xx + auth) | 100% of public surface | — | Every public route has at least one contract + one failure case. |
-| External-service adapters | 75% | 90% | Include timeout, retry, circuit-breaker paths. |
+| Element                            |        Minimum         | Target | Notes                                                            |
+| ---------------------------------- | :--------------------: | :----: | ---------------------------------------------------------------- |
+| DB repositories / data access      |          80%           |  90%   | One test per query kind, real DB, real migrations.               |
+| Message / event flow               |          90%           |  100%  | Every emitter × listener combo. Idempotency case included.       |
+| API endpoints (happy + 4xx + auth) | 100% of public surface |   —    | Every public route has at least one contract + one failure case. |
+| External-service adapters          |          75%           |  90%   | Include timeout, retry, circuit-breaker paths.                   |
 
 ### E2E
 
-| Element | Minimum | Target | Notes |
-|---------|:-------:|:------:|-------|
-| Primary user journeys | 100% | — | Every Must Have user story has an E2E smoke. |
-| Alternative flows | 60% | 80% | Skip the long tail; rely on integration for edge permutations. |
-| Error states | 50% | 70% | The ones a user can actually trigger. |
+| Element               | Minimum | Target | Notes                                                          |
+| --------------------- | :-----: | :----: | -------------------------------------------------------------- |
+| Primary user journeys |  100%   |   —    | Every Must Have user story has an E2E smoke.                   |
+| Alternative flows     |   60%   |  80%   | Skip the long tail; rely on integration for edge permutations. |
+| Error states          |   50%   |  70%   | The ones a user can actually trigger.                          |
 
 **Do not chase 100% global line coverage.** Eliminate the last 5% by
 deleting untested dead code, not by adding tests for boilerplate.
@@ -271,16 +276,16 @@ real system clock are flaky by design.
 
 Test phases auto-detect the runner. Common signatures:
 
-| Ecosystem | Signals | Default command |
-|-----------|---------|-----------------|
-| Node / TS | `vitest.config.*`, `jest.config.*`, `package.json > scripts.test` | `pnpm test` / `npm test` |
-| Python | `pytest.ini`, `pyproject.toml > [tool.pytest]`, `setup.cfg` | `pytest` |
-| Go | `*_test.go` files | `go test ./...` |
-| Ruby | `spec/`, `Gemfile` includes `rspec` | `bundle exec rspec` |
-| Rust | `Cargo.toml`, `tests/` | `cargo test` |
-| Java | `pom.xml`, `build.gradle`, `src/test/` | `mvn test` / `gradle test` |
-| .NET | `*.Tests.csproj` | `dotnet test` |
-| PHP | `phpunit.xml*`, `composer.json > autoload-dev` | `vendor/bin/phpunit` |
+| Ecosystem | Signals                                                           | Default command            |
+| --------- | ----------------------------------------------------------------- | -------------------------- |
+| Node / TS | `vitest.config.*`, `jest.config.*`, `package.json > scripts.test` | `pnpm test` / `npm test`   |
+| Python    | `pytest.ini`, `pyproject.toml > [tool.pytest]`, `setup.cfg`       | `pytest`                   |
+| Go        | `*_test.go` files                                                 | `go test ./...`            |
+| Ruby      | `spec/`, `Gemfile` includes `rspec`                               | `bundle exec rspec`        |
+| Rust      | `Cargo.toml`, `tests/`                                            | `cargo test`               |
+| Java      | `pom.xml`, `build.gradle`, `src/test/`                            | `mvn test` / `gradle test` |
+| .NET      | `*.Tests.csproj`                                                  | `dotnet test`              |
+| PHP       | `phpunit.xml*`, `composer.json > autoload-dev`                    | `vendor/bin/phpunit`       |
 
 Monorepo mode composes these with the workspace template from
 [runtime.md §9.3](./runtime.md#93-test-runner-resolution).
@@ -309,14 +314,14 @@ without a code change. Treatment:
 
 Integration and E2E tests need data. Options by trade-off:
 
-| Strategy | Isolation | Setup cost | Realism |
-|----------|:---------:|:----------:|:-------:|
-| Per-test fresh DB (testcontainers) | perfect | high | perfect |
-| Transaction rollback per test | good | low | perfect |
-| Truncate tables per test | good | medium | perfect |
-| Seeded shared DB | poor | once | perfect |
-| Fixtures loaded per test | good | medium | fair |
-| In-memory stand-in (SQLite, miniredis) | perfect | low | approximate |
+| Strategy                               | Isolation | Setup cost |   Realism   |
+| -------------------------------------- | :-------: | :--------: | :---------: |
+| Per-test fresh DB (testcontainers)     |  perfect  |    high    |   perfect   |
+| Transaction rollback per test          |   good    |    low     |   perfect   |
+| Truncate tables per test               |   good    |   medium   |   perfect   |
+| Seeded shared DB                       |   poor    |    once    |   perfect   |
+| Fixtures loaded per test               |   good    |   medium   |    fair     |
+| In-memory stand-in (SQLite, miniredis) |  perfect  |    low     | approximate |
 
 Default: transaction rollback for DB, testcontainers for cache /
 queues. Shared seeded DB is acceptable only when parallelism is low
@@ -345,6 +350,7 @@ turbo run test --filter=backend --filter=frontend
 ```
 
 Benefits:
+
 - Parallelism (each workspace runs independently).
 - Affected-only runs (in nx / turbo — run tests only for workspaces
   touched by the feature, using `task_log[].paths` as the filter).
@@ -379,15 +385,15 @@ complementary, not duplicative.
 
 ## 11. Integration with Product Forge phases
 
-| Phase | Testing activity |
-|-------|-----------------|
-| 5B Tasks | Tasks declare `Paths:` and implicitly define test targets per workspace. |
-| 6 Implement | Per-task progressive verify runs unit tests for touched paths. |
-| 8A Test Plan | Extracts `TC-UNIT-NNN` (§5E), `TC-INT-NNN` (§5F), `TC-SMK/E2E/API/REG` from spec artifacts. |
-| 8B Test Run | Executes all test kinds through the same auto-fix loop — see [test-run.md §4E/4F](../commands/test-run.md). |
-| 7 Verify Full | Cross-checks: every Must Have story has at least one test, every test maps to a story. |
-| 9 Release Readiness | Confirms per-layer coverage thresholds met. |
-| V13 Audit Report (v-model only) | Ingests JUnit results into the traceability matrix. |
+| Phase                           | Testing activity                                                                                            |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| 5B Tasks                        | Tasks declare `Paths:` and implicitly define test targets per workspace.                                    |
+| 6 Implement                     | Per-task progressive verify runs unit tests for touched paths.                                              |
+| 8A Test Plan                    | Extracts `TC-UNIT-NNN` (§5E), `TC-INT-NNN` (§5F), `TC-SMK/E2E/API/REG` from spec artifacts.                 |
+| 8B Test Run                     | Executes all test kinds through the same auto-fix loop — see [test-run.md §4E/4F](../commands/test-run.md). |
+| 7 Verify Full                   | Cross-checks: every Must Have story has at least one test, every test maps to a story.                      |
+| 9 Release Readiness             | Confirms per-layer coverage thresholds met.                                                                 |
+| V13 Audit Report (v-model only) | Ingests JUnit results into the traceability matrix.                                                         |
 
 ---
 

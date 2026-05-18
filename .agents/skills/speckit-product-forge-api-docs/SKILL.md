@@ -31,6 +31,7 @@ $ARGUMENTS
 3. Verify `spec.md` exists
 
 If no API endpoints found in plan.md:
+
 > ℹ️ No API endpoints detected in plan.md. This command generates docs for backend APIs.
 > If this is a frontend-only feature, api-docs is not needed.
 
@@ -45,6 +46,7 @@ Scan the codebase to understand the API framework:
 ```
 
 Detect:
+
 1. **Framework:** NestJS / Express / FastAPI / Django REST / Rails / other
    - Look for: `nest-cli.json`, `@nestjs/swagger`, `express`, `fastapi`, `rest_framework`
 2. **Existing OpenAPI setup:**
@@ -57,6 +59,7 @@ Detect:
    - Look for: `*.dto.ts`, `*.schema.ts`, Zod schemas, Pydantic models
 
 Report:
+
 ```
 🔍 Auto-detected:
   Framework:       NestJS (@nestjs/swagger found)
@@ -71,12 +74,14 @@ Report:
 ## Step 3: Extract API Contracts from Artifacts
 
 Read in order of priority:
+
 1. `plan.md` → API endpoints section (method, path, request, response schemas)
 2. `spec.md` → acceptance criteria referencing API behavior
 3. `product-spec/product-spec.md` → API requirements from Must Have stories
 4. Implementation files (DTOs, controllers, route handlers) — source of truth for actual implementation
 
 For each endpoint found, extract:
+
 - HTTP method + path
 - Request: headers, path params, query params, body schema
 - Response: success schema (200/201), error schemas (400/401/403/404/422/500)
@@ -298,13 +303,9 @@ Create `{FEATURE_DIR}/api-docs/postman-collection.json`:
               "raw": "{{baseUrl}}{path}",
               "host": ["{{baseUrl}}"],
               "path": ["{path segments}"],
-              "query": [
-                { "key": "{param}", "value": "{example}", "description": "{description}" }
-              ]
+              "query": [{ "key": "{param}", "value": "{example}", "description": "{description}" }]
             },
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{request body JSON example}"
@@ -339,6 +340,7 @@ Create `{FEATURE_DIR}/api-docs/postman-collection.json`:
 Compare extracted contracts against the actual implementation files:
 
 For each endpoint in plan.md, verify:
+
 - [ ] Route path matches controller decorator
 - [ ] HTTP method matches
 - [ ] Request DTO fields match plan.md schema
@@ -379,11 +381,11 @@ Generated: {date} | Feature: `{feature-slug}`
 
 ## Endpoints
 
-| Method | Path | Auth | Description | Story |
-|--------|------|------|-------------|-------|
-| GET | {path} | Bearer | {description} | {US-NNN} |
-| POST | {path} | Bearer | {description} | {US-NNN} |
-| PATCH | {path} | Bearer | {description} | {US-NNN} |
+| Method | Path   | Auth   | Description   | Story    |
+| ------ | ------ | ------ | ------------- | -------- |
+| GET    | {path} | Bearer | {description} | {US-NNN} |
+| POST   | {path} | Bearer | {description} | {US-NNN} |
+| PATCH  | {path} | Bearer | {description} | {US-NNN} |
 | DELETE | {path} | Bearer | {description} | {US-NNN} |
 
 ## Files
@@ -394,18 +396,23 @@ Generated: {date} | Feature: `{feature-slug}`
 ## How to use
 
 ### Swagger UI (local)
+
 \`\`\`bash
 npx @stoplight/prism-cli mock api-docs/openapi.yml
+
 # Open: http://localhost:4010
+
 \`\`\`
 
 ### Import into Postman
+
 1. Postman → Import → File → select `postman-collection.json`
 2. Set collection variable `baseUrl` to your dev server
 3. Run "Login" request first → token saved automatically
 4. All other requests use the token from login
 
 ### Publish to project docs
+
 If project has Swagger/Redoc integration, copy `openapi.yml` to the expected location:
 \`\`\`bash
 cp api-docs/openapi.yml {project swagger path}
@@ -426,10 +433,10 @@ Update `.forge-status.yml`:
 phases:
   api_docs: completed
 api_docs:
-  endpoints: {N}
+  endpoints: { N }
   openapi_file: "api-docs/openapi.yml"
   postman_file: "api-docs/postman-collection.json"
-  drift_issues: {N}
+  drift_issues: { N }
 last_updated: "{ISO timestamp}"
 ```
 

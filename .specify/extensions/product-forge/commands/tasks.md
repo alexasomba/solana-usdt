@@ -57,13 +57,13 @@ Functional requirements: {N}
 
 **Delegate to SpecKit `tasks`** with the enriched context note:
 
-> *"Product Forge context: Decompose `plan.md` into granular, implementation-ready tasks.
+> _"Product Forge context: Decompose `plan.md` into granular, implementation-ready tasks.
 > Reference `product-spec/product-spec.md` for acceptance criteria — each task group
 > should satisfy one or more acceptance criteria explicitly.
 > Group tasks by the feature breakdown sections in `product-spec.md` where possible.
 > Tasks should be sized for safe, incremental implementation — avoid tasks that touch
 > too many layers at once.
-> After returning tasks.md, do NOT begin implementation — stop and return control."*
+> After returning tasks.md, do NOT begin implementation — stop and return control."_
 
 ---
 
@@ -71,14 +71,14 @@ Functional requirements: {N}
 
 After SpecKit tasks returns, read `tasks.md` and check:
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| Every Must Have US-NNN has ≥1 implementation task? | ✅/⚠️/❌ | List missing stories |
-| Every FR-NNN has ≥1 corresponding task? | ✅/⚠️/❌ | |
-| Test / validation tasks included per task group? | ✅/⚠️/❌ | |
-| No orphan tasks (tasks without traceable requirement)? | ✅/⚠️/❌ | |
-| Task granularity appropriate? (not too large, not trivial) | ✅/⚠️/❌ | |
-| Dependency order is sensible? (data model before service before controller) | ✅/⚠️/❌ | |
+| Check                                                                       | Status   | Notes                |
+| --------------------------------------------------------------------------- | -------- | -------------------- |
+| Every Must Have US-NNN has ≥1 implementation task?                          | ✅/⚠️/❌ | List missing stories |
+| Every FR-NNN has ≥1 corresponding task?                                     | ✅/⚠️/❌ |                      |
+| Test / validation tasks included per task group?                            | ✅/⚠️/❌ |                      |
+| No orphan tasks (tasks without traceable requirement)?                      | ✅/⚠️/❌ |                      |
+| Task granularity appropriate? (not too large, not trivial)                  | ✅/⚠️/❌ |                      |
+| Dependency order is sensible? (data model before service before controller) | ✅/⚠️/❌ |                      |
 
 If ❌ found: surface specific gaps (e.g., "US-003 has no task"), ask user how to resolve.
 If only ✅/⚠️: proceed to Step 4.1.
@@ -90,20 +90,20 @@ checks. Failures are hard errors — fix and regenerate, do not gate.
 
 1. **Task ID uniqueness.** Collect every `T-NNN` / `TNNN` identifier in
    `tasks.md`. If any ID appears twice or more, abort with:
-   *"Duplicate task ID {id} on lines {n1}, {n2}. Task IDs must be
-   unique — rename and re-run tasks."* This prevents ambiguous
+   _"Duplicate task ID {id} on lines {n1}, {n2}. Task IDs must be
+   unique — rename and re-run tasks."_ This prevents ambiguous
    `task_log[]` entries downstream.
 
 2. **Workspace-prefix validation (monorepo only).** If the project
    config has a `codebase.paths` block, every `Paths:` line with a
    prefix (`<workspace>:<relative-path>`) MUST use a workspace name
    that appears as a key in `codebase.paths`. On mismatch abort with:
-   *"Unknown workspace '{prefix}' on task {id}. Known workspaces:
+   _"Unknown workspace '{prefix}' on task {id}. Known workspaces:
    {list from config}. Fix the Paths: line or add the workspace to
-   .product-forge/config.yml."* Lines without a prefix are accepted
+   .product-forge/config.yml."_ Lines without a prefix are accepted
    in single-root mode and rejected in monorepo mode with
-   *"Missing workspace prefix on task {id} — monorepo mode requires
-   '<workspace>:<path>' format."* Lines written as `Paths: unknown`
+   _"Missing workspace prefix on task {id} — monorepo mode requires
+   '<workspace>:<path>' format."_ Lines written as `Paths: unknown`
    are always accepted (exploratory tasks).
 
 Both checks are deterministic and cheap. Neither requires an LLM pass.
@@ -134,8 +134,8 @@ Estimated implementation surface:
   Files to modify:  {N}
 ```
 
-Ask: *"Task breakdown ready — {N} tasks across {N} groups.
-All {N} Must Have stories covered. Approve and begin implementation?"*
+Ask: _"Task breakdown ready — {N} tasks across {N} groups.
+All {N} Must Have stories covered. Approve and begin implementation?"_
 
 On approval → update `.forge-status.yml`:
 
@@ -143,8 +143,8 @@ On approval → update `.forge-status.yml`:
 phases:
   tasks: completed
 tasks:
-  total: {N}
-  groups: {N}
+  total: { N }
+  groups: { N }
   story_coverage: "{N}/{N}"
 last_updated: "{ISO timestamp}"
 ```
@@ -158,6 +158,7 @@ Before handoff, write `{FEATURE_DIR}/tasks/digest.md` using the template at
 its path on `.forge-status.yml` under `phases.tasks.digest_path`.
 
 The digest must include:
+
 - **Key decisions** — task count, parallelizable groups, dependency shape, any XL-sized tasks flagged.
 - **Artifacts produced** — `tasks.md`.
 - **Open risks** — tasks that need extra review (mega-tasks, high-risk areas, unfamiliar territory).

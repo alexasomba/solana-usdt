@@ -6,7 +6,7 @@
 
 ---
 
-```markdown
+````markdown
 # {Project Name} — Portfolio
 
 > Generated: {ISO-8601 timestamp}
@@ -14,9 +14,9 @@
 
 ## 1. Feature table
 
-| Feature | Mode | Current phase | Status | Days in phase | Backfilled | Blocked by |
-|---------|------|---------------|--------|---------------|:----------:|------------|
-| {slug}  | {lite|standard|v-model} | {phase} | {pending|in_progress|completed|skipped} | {N} | {✓/✗} | {slug, slug, ...} |
+| Feature | Mode  | Current phase | Status   | Days in phase | Backfilled | Blocked by  |
+| ------- | ----- | ------------- | -------- | ------------- | :--------: | ----------- | --------- | -------- | --- | ----- | ----------------- |
+| {slug}  | {lite | standard      | v-model} | {phase}       |  {pending  | in_progress | completed | skipped} | {N} | {✓/✗} | {slug, slug, ...} |
 
 ## 2. Conflicts
 
@@ -24,10 +24,10 @@ Conflict detection scope: in-flight features only. Severity legend:
 HIGH = ≥3 path overlaps or any overlap in config/schema/migrations;
 MEDIUM = 1–2 path overlaps; LOW = shared parent module only (not listed).
 
-| Severity | Feature A | Feature B | Overlapping paths |
-|:--------:|-----------|-----------|-------------------|
-| HIGH     | {slug}    | {slug}    | `{path}`, `{path}`, ... |
-| MEDIUM   | {slug}    | {slug}    | `{path}` |
+| Severity | Feature A | Feature B | Overlapping paths       |
+| :------: | --------- | --------- | ----------------------- |
+|   HIGH   | {slug}    | {slug}    | `{path}`, `{path}`, ... |
+|  MEDIUM  | {slug}    | {slug}    | `{path}`                |
 
 If no conflicts: **"No conflicts detected."**
 
@@ -46,6 +46,7 @@ graph LR
   {slug_C}-->{slug_A}
   {slug_C}-->{slug_D}
 ```
+````
 
 Legend: `A-->B` means `B depends_on A` (A must ship or stabilize before B).
 
@@ -61,33 +62,33 @@ If no ready features: **"No features ready to merge."**
 
 ### By phase
 
-| Phase | Count |
-|-------|------:|
-| research | {N} |
-| product_spec | {N} |
-| plan | {N} |
-| tasks | {N} |
-| implement | {N} |
-| verify | {N} |
-| test_run | {N} |
-| release_readiness | {N} |
+| Phase             | Count |
+| ----------------- | ----: |
+| research          |   {N} |
+| product_spec      |   {N} |
+| plan              |   {N} |
+| tasks             |   {N} |
+| implement         |   {N} |
+| verify            |   {N} |
+| test_run          |   {N} |
+| release_readiness |   {N} |
 
 ### By mode
 
-| Mode | Count |
-|------|------:|
-| lite | {N} |
-| standard | {N} |
-| v-model | {N} |
+| Mode     | Count |
+| -------- | ----: |
+| lite     |   {N} |
+| standard |   {N} |
+| v-model  |   {N} |
 
 ## 6. Action items
 
-| # | Severity | Item |
-|--:|:--------:|------|
-| 1 | CRITICAL | {dependency cycle: slug → slug → slug} |
-| 2 | CRITICAL | {feature <slug>: unreadable status file} |
-| 3 | WARNING  | {feature <slug>: no update in {N} days} |
-| 4 | INFO     | {feature <slug>: all tasks complete but verify not run} |
+|   # | Severity | Item                                                    |
+| --: | :------: | ------------------------------------------------------- |
+|   1 | CRITICAL | {dependency cycle: slug → slug → slug}                  |
+|   2 | CRITICAL | {feature <slug>: unreadable status file}                |
+|   3 | WARNING  | {feature <slug>: no update in {N} days}                 |
+|   4 |   INFO   | {feature <slug>: all tasks complete but verify not run} |
 
 If no action items: **"Portfolio is healthy."**
 
@@ -100,4 +101,7 @@ If no action items: **"Portfolio is healthy."**
   up to the `Generated` timestamp.
 - Archived features are excluded by default. Re-run with
   `--include-archived` to see them.
+
+```
+
 ```

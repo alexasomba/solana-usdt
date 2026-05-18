@@ -28,6 +28,7 @@ $ARGUMENTS
 ```
 
 Parse for:
+
 - Feature slug (required).
 - `--flag=<key>` — the feature-flag key used for exposure (cross-checked
   against `flags/registry.yml` from release-readiness).
@@ -59,6 +60,7 @@ Produce a one-sentence hypothesis in this shape:
 > within {measurement window}.
 
 Example:
+
 > Because new users abandon before activation when the onboarding asks for
 > too much up front, if we defer the avatar selection to after first
 > chat, then Day-1 activation rate will move up by at least 3 percentage
@@ -85,6 +87,7 @@ Supporting signals. Movement here is informative but not decision-making.
 ### 2C — Guardrail metrics (2–4)
 
 Metrics that must NOT degrade. Examples:
+
 - Error rate
 - P95 latency
 - Crash rate
@@ -143,20 +146,20 @@ the choice in the experiment plan.
 
 ### Report
 
-| Parameter | Value | Source |
-|-----------|-------|--------|
-| Metric type | {proportion | continuous} | hypothesis |
-| Formula | {two-proportion z-test | Welch t-test} | §3.{a,b} |
-| Baseline | 12% | analytics 30-day |
-| MDE | +3pp (absolute) | hypothesis |
-| Power | 0.8 | default |
-| Alpha | 0.05 | default |
-| Sample size per variant | ~4,200 | computed |
-| Expected daily traffic | 400 | analytics 7-day |
-| Expected runtime | ~22 days | sample / traffic |
+| Parameter               | Value                  | Source           |
+| ----------------------- | ---------------------- | ---------------- | ---------- |
+| Metric type             | {proportion            | continuous}      | hypothesis |
+| Formula                 | {two-proportion z-test | Welch t-test}    | §3.{a,b}   |
+| Baseline                | 12%                    | analytics 30-day |
+| MDE                     | +3pp (absolute)        | hypothesis       |
+| Power                   | 0.8                    | default          |
+| Alpha                   | 0.05                   | default          |
+| Sample size per variant | ~4,200                 | computed         |
+| Expected daily traffic  | 400                    | analytics 7-day  |
+| Expected runtime        | ~22 days               | sample / traffic |
 
-If computed runtime exceeds 30 days, flag as *"underpowered at current
-traffic — consider raising MDE or narrowing audience"*. Do not silently
+If computed runtime exceeds 30 days, flag as _"underpowered at current
+traffic — consider raising MDE or narrowing audience"_. Do not silently
 proceed.
 
 ---
@@ -249,11 +252,11 @@ phases:
 experiment:
   flag: "{flag-key}"
   primary_metric: "{metric}"
-  sample_size_per_variant: {N}
-  expected_runtime_days: {N}
+  sample_size_per_variant: { N }
+  expected_runtime_days: { N }
   files:
     design: "experiment/experiment-design.md"
-    spec:   "experiment/experiment.yml"
+    spec: "experiment/experiment.yml"
 ```
 
 Write `experiment/digest.md` per the digest template.

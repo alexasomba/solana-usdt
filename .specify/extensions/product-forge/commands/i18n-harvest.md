@@ -26,6 +26,7 @@ $ARGUMENTS
 ```
 
 Parse for:
+
 - Feature slug (required).
 - `--locales=<list>` — comma-separated override. Default: read
   `supported_locales` from project config or from the existing i18n folder
@@ -61,13 +62,14 @@ Sources (in priority order):
 
 Build a candidate table:
 
-| Proposed key | English draft | Source | Context |
-|--------------|---------------|--------|---------|
-| `{feature-slug}.cta.send` | "Send" | wireframes/main.png | Primary CTA on main screen |
-| `{feature-slug}.error.quota_exceeded` | "You've hit today's limit." | spec.md AC-5 | Shown when quota reached |
-| `{feature-slug}.empty.no_items` | "Nothing here yet — start a chat." | wireframes/empty.png | Empty state on main list |
+| Proposed key                          | English draft                      | Source               | Context                    |
+| ------------------------------------- | ---------------------------------- | -------------------- | -------------------------- |
+| `{feature-slug}.cta.send`             | "Send"                             | wireframes/main.png  | Primary CTA on main screen |
+| `{feature-slug}.error.quota_exceeded` | "You've hit today's limit."        | spec.md AC-5         | Shown when quota reached   |
+| `{feature-slug}.empty.no_items`       | "Nothing here yet — start a chat." | wireframes/empty.png | Empty state on main list   |
 
 Rules:
+
 - Keys are dot-separated, lowercase, feature-namespaced.
 - No Markdown or HTML inside drafts; format via the i18n framework.
 - Duplicate strings across screens collapse to one key unless context
@@ -81,7 +83,7 @@ Read the project's i18n folder. For each proposed key:
 
 1. Check for exact match — if present, do not create a duplicate; reuse.
 2. Check for near matches (same English value, different key) — flag as
-   *possible consolidation candidate* in the report; do not auto-merge.
+   _possible consolidation candidate_ in the report; do not auto-merge.
 
 ---
 
@@ -101,12 +103,12 @@ Example (Nuxt i18n, YAML locales):
 
 ```yaml
 # locales/en.yml  — append
-{feature-slug}:
+{ feature-slug }:
   cta:
     send: "Send"
 
 # locales/es.yml  — append
-{feature-slug}:
+{ feature-slug }:
   cta:
     send: "{{TODO:{feature-slug}.cta.send}}"
 ```
@@ -168,11 +170,11 @@ phases:
     digest_path: "i18n/digest.md"
 i18n:
   primary_locale: "en"
-  keys_created: {N}
-  keys_reused: {N}
+  keys_created: { N }
+  keys_reused: { N }
   todos_per_locale:
-    es: {N}
-    fr: {N}
+    es: { N }
+    fr: { N }
 ```
 
 Write `i18n/digest.md` per the digest template.

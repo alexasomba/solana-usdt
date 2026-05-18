@@ -27,6 +27,7 @@ nano .product-forge/config.yml
 ```yaml
 project_name: "Acme Workflow"
 ```
+
 Human-readable project name. Used in all research prompts, report headers, and competitor search queries. The more specific, the better the research quality.
 
 ---
@@ -34,12 +35,15 @@ Human-readable project name. Used in all research prompts, report headers, and c
 ```yaml
 project_tech_stack: "Node.js + Express + Postgres"
 ```
+
 Brief tech stack description. Helps research agents:
+
 - Find stack-specific libraries and packages
 - Understand mobile vs web constraints
 - Identify relevant codebase integration patterns
 
 Examples:
+
 - `"Next.js + TypeScript + Postgres + Vercel"`
 - `"Django REST + React + Redux + AWS"`
 - `"Flutter + Firebase"`
@@ -49,12 +53,15 @@ Examples:
 ```yaml
 project_domain: "consumer productivity app"
 ```
+
 Domain and industry context. Used for:
+
 - Targeting competitor search to relevant apps
 - UX pattern research in the right vertical
 - Metrics/ROI benchmarks from the same industry
 
 Examples:
+
 - `"B2B SaaS fintech platform"`
 - `"consumer fitness mobile app"`
 - `"e-commerce marketplace"`
@@ -73,6 +80,7 @@ codebase_path: "."
 ```
 
 Relative path from the config file to the project codebase. Used by:
+
 - Codebase analysis agent (Phase 1)
 - Project-styled mockup generator (Phase 2)
 - Every other phase that scans code
@@ -92,14 +100,15 @@ becomes workspace-aware.
 ```yaml
 codebase:
   root: "."
-  workspace_type: "pnpm"        # pnpm | yarn | npm | turbo | nx | rush | lerna | none
+  workspace_type: "pnpm" # pnpm | yarn | npm | turbo | nx | rush | lerna | none
   paths:
-    backend:  "apps/api"
+    backend: "apps/api"
     frontend: "apps/web"
-    shared:   "packages/shared"
+    shared: "packages/shared"
 ```
 
 Workspace names (`backend`, `frontend`, `shared`) are used in:
+
 - `tasks.md` `Paths:` line prefix (e.g. `Paths: backend:src/users.ts`)
 - `.forge-status.yml` `scope.paths` list
 - `task_log[].paths` (workspace-prefixed)
@@ -107,20 +116,21 @@ Workspace names (`backend`, `frontend`, `shared`) are used in:
 
 `workspace_type` lets the orchestrator pick the right test runner:
 
-| workspace_type | Test command template |
-|----------------|----------------------|
-| `pnpm` | `pnpm --filter=<workspace> test` |
-| `yarn` | `yarn workspace <workspace> test` |
-| `npm` | `npm test -w <workspace>` |
-| `turbo` | `turbo run test --filter=<workspace>` |
-| `nx` | `nx test <workspace>` |
-| `rush` | `rush test --to <workspace>` |
-| `lerna` | `lerna run test --scope=<workspace>` |
-| `none` | Plain `cd <path> && <detected command>` |
+| workspace_type | Test command template                   |
+| -------------- | --------------------------------------- |
+| `pnpm`         | `pnpm --filter=<workspace> test`        |
+| `yarn`         | `yarn workspace <workspace> test`       |
+| `npm`          | `npm test -w <workspace>`               |
+| `turbo`        | `turbo run test --filter=<workspace>`   |
+| `nx`           | `nx test <workspace>`                   |
+| `rush`         | `rush test --to <workspace>`            |
+| `lerna`        | `lerna run test --scope=<workspace>`    |
+| `none`         | Plain `cd <path> && <detected command>` |
 
 #### Migration from single-root to monorepo
 
 Existing features continue to work. When you add a `codebase` block:
+
 - Existing `.forge-status.yml` files without `scope` are treated as
   feature-scope-unknown — portfolio downgrades their accuracy to
   `module-level`. No data loss.
@@ -134,6 +144,7 @@ Existing features continue to work. When you add a `codebase` block:
 ```yaml
 features_dir: "features"
 ```
+
 Directory where Product Forge creates feature artifact folders.
 **Avoid changing this after features have been created** — it will break `.forge-status.yml` lookups.
 
@@ -147,10 +158,10 @@ default_speckit_mode: "ask"
 
 Controls Phase 4 behavior:
 
-| Value | Behavior |
-|-------|----------|
-| `"ask"` | Always ask the user which mode to use (recommended) |
-| `"classic"` | Always use `plan → tasks → implement` (fastest path) |
+| Value       | Behavior                                                |
+| ----------- | ------------------------------------------------------- |
+| `"ask"`     | Always ask the user which mode to use (recommended)     |
+| `"classic"` | Always use `plan → tasks → implement` (fastest path)    |
 | `"v-model"` | Always use full V-Model with test specs (most thorough) |
 
 ---
@@ -160,6 +171,7 @@ Controls Phase 4 behavior:
 ```yaml
 default_competitors: []
 ```
+
 List of competitors to always include in Phase 1 competitor analysis.
 The agent will add more from web search even if this is set.
 
@@ -176,6 +188,7 @@ default_competitors:
 default_tech_research: false
 default_metrics_research: false
 ```
+
 Whether to run optional research dimensions by default (without asking).
 Setting to `true` means these run automatically on every feature.
 The user can still override per-feature during Phase 1.
@@ -188,11 +201,11 @@ The user can still override per-feature during Phase 1.
 default_wireframe_detail: "basic-html"
 ```
 
-| Value | What it creates |
-|-------|----------------|
-| `"text"` | Markdown with ASCII box diagrams — fast, version-friendly |
-| `"basic-html"` | Clean HTML wireframe per screen, gray-box style |
-| `"detailed-html"` | Full HTML/CSS wireframe matching project design tokens |
+| Value             | What it creates                                           |
+| ----------------- | --------------------------------------------------------- |
+| `"text"`          | Markdown with ASCII box diagrams — fast, version-friendly |
+| `"basic-html"`    | Clean HTML wireframe per screen, gray-box style           |
+| `"detailed-html"` | Full HTML/CSS wireframe matching project design tokens    |
 
 ---
 
@@ -200,10 +213,10 @@ default_wireframe_detail: "basic-html"
 default_mockup_style: "project-styled"
 ```
 
-| Value | What it creates |
-|-------|----------------|
-| `"none"` | No mockups — wireframes only |
-| `"generic"` | Clean HTML mockup with generic design system |
+| Value              | What it creates                                      |
+| ------------------ | ---------------------------------------------------- |
+| `"none"`           | No mockups — wireframes only                         |
+| `"generic"`        | Clean HTML mockup with generic design system         |
 | `"project-styled"` | Agent scans codebase for CSS tokens and applies them |
 
 The user can always override this per-feature during Phase 2.
@@ -215,6 +228,7 @@ The user can always override this per-feature during Phase 2.
 ```yaml
 progressive_verify_interval: 3
 ```
+
 Number of completed tasks between progressive verification checkpoints during Phase 6 (Implementation).
 After every N completed tasks, a mini-verify runs checking task-code correspondence, spec AC alignment,
 unplanned changes, and plan alignment. Results are logged in `implementation-log.md`.
@@ -225,6 +239,7 @@ Set to `0` to disable progressive verification.
 ```yaml
 auto_sync_between_phases: true
 ```
+
 When `true` (default), the forge orchestrator automatically runs `sync-verify --quick` between
 every phase transition, checking only the artifact layers relevant to that transition.
 If CRITICAL drift is found, the transition is paused for user review.
@@ -238,11 +253,11 @@ release_readiness: "optional"
 
 Controls Phase 9 (Release Readiness) behavior:
 
-| Value | Behavior |
-|-------|----------|
+| Value        | Behavior                                                              |
+| ------------ | --------------------------------------------------------------------- |
 | `"optional"` | Ask the user after Phase 7/8 whether to run readiness check (default) |
-| `"required"` | Always run readiness check before marking feature complete |
-| `"skip"` | Never offer readiness check |
+| `"required"` | Always run readiness check before marking feature complete            |
+| `"skip"`     | Never offer readiness check                                           |
 
 ---
 
@@ -251,8 +266,10 @@ Controls Phase 9 (Release Readiness) behavior:
 ```yaml
 max_tokens_per_doc: 4000
 ```
+
 Maximum approximate token budget per generated document.
 When a document would exceed this, Product Forge will:
+
 1. Suggest decomposing into multiple files
 2. Ask the user how many files/sections to create
 3. Create individual files with cross-links
@@ -265,6 +282,7 @@ Do not set above `8000` — this risks hitting context limits in downstream agen
 ```yaml
 output_language: "en"
 ```
+
 Language for all generated documents.
 Supported values: any BCP-47 language code (`"en"`, `"ru"`, `"de"`, `"fr"`, etc.)
 Note: Research agents use web search, so results may mix languages regardless of this setting.
@@ -308,6 +326,7 @@ default_feature_mode: "standard"
 ```
 
 Selects the phase map for new features. Valid values:
+
 - `"lite"` — 5-phase lifecycle for small features, bug fixes, refactors.
   Phases: problem-discovery (opt) → product-spec → plan → implement → verify.
 - `"standard"` — full 14-phase lifecycle. Default.
@@ -372,8 +391,8 @@ category catalog.
 
 These are not config keys but paths the config indirectly controls:
 
-| Path | Purpose | Created by |
-|------|---------|-----------|
-| `.product-forge/lessons.md` | append-only learning log | `retrospective` |
-| `scripts/migrate-status-v2-to-v3.js` | lazy schema migration helper | ships with plugin |
-| `scripts/acquire-lock.sh` / `release-lock.sh` | state-lock helpers | ships with plugin |
+| Path                                          | Purpose                      | Created by        |
+| --------------------------------------------- | ---------------------------- | ----------------- |
+| `.product-forge/lessons.md`                   | append-only learning log     | `retrospective`   |
+| `scripts/migrate-status-v2-to-v3.js`          | lazy schema migration helper | ships with plugin |
+| `scripts/acquire-lock.sh` / `release-lock.sh` | state-lock helpers           | ships with plugin |

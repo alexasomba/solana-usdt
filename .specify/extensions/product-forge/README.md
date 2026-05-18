@@ -10,6 +10,7 @@ let SpecKit implement it with progressive verification — run multi-agent code 
 automatically generate and run Playwright tests with a bug-fix loop until the feature is ready to ship.
 
 **New in v1.5.0:**
+
 - **Portfolio view** across all features — conflict matrix, dependency graph, suggested merge order (`/speckit.product-forge.portfolio`).
 - **Brown-field `backfill`** — reverse-engineer a feature folder from existing code with a gaps report.
 - **Lite mode** — 5-phase lifecycle for small features and bug fixes (`feature_mode: lite`).
@@ -50,37 +51,37 @@ The result: a **complete traceability chain** — problem → research → produ
 
 ## Commands
 
-| Command | Phase | Description |
-|---------|-------|-------------|
-| `/speckit.product-forge.forge` | All | **Main command.** Full lifecycle orchestrator with human gates |
-| `/speckit.product-forge.problem-discovery` | 0 | Validate the problem: JTBD analysis, interview script, Go/No-go |
-| `/speckit.product-forge.research` | 1 | Parallel research: competitors, UX, codebase (+ constraints & event patterns) **[v1.4]** |
-| `/speckit.product-forge.product-spec` | 2 | Interactive product spec creation with configurable detail |
-| `/speckit.product-forge.revalidate` | 3 | Iterative review loop — Decision Log, Change History, OQR tracking **[v1.4]** |
-| `/speckit.product-forge.bridge` | 4 | Dependency Discovery → spec.md with EDA verification, NFR contracts, test spec **[v1.4]** |
-| `/speckit.product-forge.plan` | 5 | Technical plan + Constitution Compliance auto-check + cross-validation **[v1.4]** |
-| `/speckit.product-forge.tasks` | 5B | Generate task breakdown from plan.md — standalone, exits after approval |
-| `/speckit.product-forge.pre-impl-review` | 5C | **[NEW]** Design review + architecture review + risk assessment before coding |
-| `/speckit.product-forge.implement` | 6 | Execute implementation with progressive verification checkpoints |
-| `/speckit.product-forge.code-review` | 6B | **[NEW]** Multi-agent code review: quality, security, patterns, test coverage |
-| `/speckit.product-forge.verify-full` | 7 | Full traceability verification: code ↔ research |
-| `/speckit.product-forge.test-plan` | 8A | Auto-generate test cases and Playwright specs from user stories |
-| `/speckit.product-forge.test-run` | 8B | Execute tests with playwright-cli, auto-fix bugs, loop until done |
-| `/speckit.product-forge.release-readiness` | 9 | **[NEW]** Pre-ship checklist: feature flags, rollout, docs, monitoring |
-| `/speckit.product-forge.sync-verify` | cross-cutting | **[NEW]** 7-layer artifact consistency check, runnable between any phases |
-| `/speckit.product-forge.change-request` | cross-cutting | **[NEW]** Formal scope change with impact analysis and artifact propagation |
-| `/speckit.product-forge.api-docs` | post-impl | Generate OpenAPI 3.1 spec + Postman collection from plan.md |
-| `/speckit.product-forge.security-check` | post-impl | OWASP audit scoped to detected surfaces (auth, input, payments) |
-| `/speckit.product-forge.tracking-plan` | post-spec | Analytics events, funnels, property schemas + SDK code snippets |
-| `/speckit.product-forge.retrospective` | post-launch | Predicted vs actual metrics, research accuracy, lessons learned (appends to `.product-forge/lessons.md`) **[UPD v1.5]** |
-| `/speckit.product-forge.status` | — | Show lifecycle status, gate audit trail, sync history |
-| `/speckit.product-forge.portfolio` | cross-cutting | **[NEW v1.5]** Multi-feature view: table, file-conflict matrix, dependency graph, merge order |
-| `/speckit.product-forge.backfill` | alt entry | **[NEW v1.5]** Reverse-engineer an existing module into a feature folder with gaps report |
-| `/speckit.product-forge.monitoring-setup` | 9.5 | **[NEW v1.5]** Build real dashboard JSON, alerts, SLO doc. Wraps `newrelic-dashboard-builder` |
-| `/speckit.product-forge.migration-plan` | 5.5 | **[NEW v1.5]** Zero-downtime migration plan with forward/rollback/validation/backfill when plan.md has schema changes |
-| `/speckit.product-forge.i18n-harvest` | post-bridge | **[NEW v1.5]** Extract strings from wireframes/spec, stub every locale |
-| `/speckit.product-forge.experiment-design` | 9B | **[NEW v1.5]** Pre-registered A/B plan — hypothesis, MDE, sample size, decision rule |
-| `/speckit.product-forge.feature-flag-cleanup` | cross-cutting | **[NEW v1.5]** Scan `flags/registry.yml` for stale flags, produce removal recipes |
+| Command                                       | Phase         | Description                                                                                                             |
+| --------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `/speckit.product-forge.forge`                | All           | **Main command.** Full lifecycle orchestrator with human gates                                                          |
+| `/speckit.product-forge.problem-discovery`    | 0             | Validate the problem: JTBD analysis, interview script, Go/No-go                                                         |
+| `/speckit.product-forge.research`             | 1             | Parallel research: competitors, UX, codebase (+ constraints & event patterns) **[v1.4]**                                |
+| `/speckit.product-forge.product-spec`         | 2             | Interactive product spec creation with configurable detail                                                              |
+| `/speckit.product-forge.revalidate`           | 3             | Iterative review loop — Decision Log, Change History, OQR tracking **[v1.4]**                                           |
+| `/speckit.product-forge.bridge`               | 4             | Dependency Discovery → spec.md with EDA verification, NFR contracts, test spec **[v1.4]**                               |
+| `/speckit.product-forge.plan`                 | 5             | Technical plan + Constitution Compliance auto-check + cross-validation **[v1.4]**                                       |
+| `/speckit.product-forge.tasks`                | 5B            | Generate task breakdown from plan.md — standalone, exits after approval                                                 |
+| `/speckit.product-forge.pre-impl-review`      | 5C            | **[NEW]** Design review + architecture review + risk assessment before coding                                           |
+| `/speckit.product-forge.implement`            | 6             | Execute implementation with progressive verification checkpoints                                                        |
+| `/speckit.product-forge.code-review`          | 6B            | **[NEW]** Multi-agent code review: quality, security, patterns, test coverage                                           |
+| `/speckit.product-forge.verify-full`          | 7             | Full traceability verification: code ↔ research                                                                         |
+| `/speckit.product-forge.test-plan`            | 8A            | Auto-generate test cases and Playwright specs from user stories                                                         |
+| `/speckit.product-forge.test-run`             | 8B            | Execute tests with playwright-cli, auto-fix bugs, loop until done                                                       |
+| `/speckit.product-forge.release-readiness`    | 9             | **[NEW]** Pre-ship checklist: feature flags, rollout, docs, monitoring                                                  |
+| `/speckit.product-forge.sync-verify`          | cross-cutting | **[NEW]** 7-layer artifact consistency check, runnable between any phases                                               |
+| `/speckit.product-forge.change-request`       | cross-cutting | **[NEW]** Formal scope change with impact analysis and artifact propagation                                             |
+| `/speckit.product-forge.api-docs`             | post-impl     | Generate OpenAPI 3.1 spec + Postman collection from plan.md                                                             |
+| `/speckit.product-forge.security-check`       | post-impl     | OWASP audit scoped to detected surfaces (auth, input, payments)                                                         |
+| `/speckit.product-forge.tracking-plan`        | post-spec     | Analytics events, funnels, property schemas + SDK code snippets                                                         |
+| `/speckit.product-forge.retrospective`        | post-launch   | Predicted vs actual metrics, research accuracy, lessons learned (appends to `.product-forge/lessons.md`) **[UPD v1.5]** |
+| `/speckit.product-forge.status`               | —             | Show lifecycle status, gate audit trail, sync history                                                                   |
+| `/speckit.product-forge.portfolio`            | cross-cutting | **[NEW v1.5]** Multi-feature view: table, file-conflict matrix, dependency graph, merge order                           |
+| `/speckit.product-forge.backfill`             | alt entry     | **[NEW v1.5]** Reverse-engineer an existing module into a feature folder with gaps report                               |
+| `/speckit.product-forge.monitoring-setup`     | 9.5           | **[NEW v1.5]** Build real dashboard JSON, alerts, SLO doc. Wraps `newrelic-dashboard-builder`                           |
+| `/speckit.product-forge.migration-plan`       | 5.5           | **[NEW v1.5]** Zero-downtime migration plan with forward/rollback/validation/backfill when plan.md has schema changes   |
+| `/speckit.product-forge.i18n-harvest`         | post-bridge   | **[NEW v1.5]** Extract strings from wireframes/spec, stub every locale                                                  |
+| `/speckit.product-forge.experiment-design`    | 9B            | **[NEW v1.5]** Pre-registered A/B plan — hypothesis, MDE, sample size, decision rule                                    |
+| `/speckit.product-forge.feature-flag-cleanup` | cross-cutting | **[NEW v1.5]** Scan `flags/registry.yml` for stale flags, produce removal recipes                                       |
 
 ---
 
@@ -430,7 +431,7 @@ project_tech_stack: "Node.js + Express + Postgres"
 project_domain: "mobile fitness app"
 codebase_path: "./src"
 features_dir: "features"
-default_speckit_mode: "ask"   # classic | v-model | ask
+default_speckit_mode: "ask" # classic | v-model | ask
 ```
 
 ### Run
@@ -446,6 +447,7 @@ default_speckit_mode: "ask"   # classic | v-model | ask
 See [config-template.yml](./config-template.yml) and [docs/config.md](./docs/config.md) for all options.
 
 Key settings:
+
 - `project_name` — used in all research prompts
 - `project_tech_stack` — helps tech research agents
 - `codebase_path` — required for codebase analysis and project-styled mockups
@@ -470,6 +472,7 @@ Key settings:
   `feature_mode: v-model` is selected.
 
   Install:
+
   ```bash
   specify extension add v-model \
     --from https://github.com/leocamello/spec-kit-v-model/archive/refs/tags/v0.5.0.zip
@@ -491,6 +494,7 @@ Key settings:
 - **[`playwright-cli`](https://github.com/microsoft/playwright-cli)** — interactive browser agent used by Phase 8B (`test-run`) to execute test cases step-by-step, capture screenshots, record traces, and manage auth sessions.
 
   Install:
+
   ```bash
   npm install -g playwright-cli
   ```

@@ -29,6 +29,7 @@ $ARGUMENTS
 3. If verify is not completed: **STOP** — "Phase 7 (Verification) must pass first."
 
 Load artifacts:
+
 - `{FEATURE_DIR}/spec.md` — requirements, NFRs, success metrics
 - `{FEATURE_DIR}/plan.md` — architecture, data model, migrations
 - `{FEATURE_DIR}/tasks.md` — implementation scope
@@ -55,6 +56,7 @@ No standalone report is produced — this is the input to the registry
 builder.
 
 Patterns searched:
+
 - Framework SDK imports: `LaunchDarkly`, `Unleash`, `GrowthBook`, `flagsmith`.
 - Custom predicates: `isFeatureEnabled(...)`, `flags.get(...)`,
   `useFlag(...)`, `featureFlags.*`.
@@ -67,6 +69,7 @@ branch that represents the treatment.
 ### 1B: Build rollout strategy (input)
 
 Derive from:
+
 - `pre-impl-review.md` risk level (if present).
 - `plan.md` — data migrations, breaking API changes.
 - `spec.md` — user-facing surface area, success metrics.
@@ -78,9 +81,9 @@ Produce a rollout plan object (feeds into Step 1D and into
 strategy: "{canary | percentage | internal-first | big-bang}"
 stages:
   - { name: "internal", duration: "1d" }
-  - { name: "canary-5",  duration: "3d" }
-  - { name: "25%",       duration: "3d" }
-  - { name: "100% GA",   duration: "—" }
+  - { name: "canary-5", duration: "3d" }
+  - { name: "25%", duration: "3d" }
+  - { name: "100% GA", duration: "—" }
 rollback_triggers:
   - "error_rate > 5% for 5m"
   - "p95_ms > <NFR target> for 10m"
@@ -124,7 +127,7 @@ flags:
     rollout_plan: "{strategy from Step 1B}"
     cleanup_after: "{ISO date — when the flag becomes dead code}"
     kill_switch: true
-    experiment: false     # set to true to trigger Phase 9B experiment-design
+    experiment: false # set to true to trigger Phase 9B experiment-design
 ```
 
 Record file path on `.forge-status.yml` under
@@ -142,30 +145,30 @@ The artifacts produced in 1D and the sections later compiled into
 
 Analyze spec.md user stories — does this feature need user docs?
 
-| Check | Status | Action Needed |
-|-------|:------:|--------------|
-| User-facing feature? | {Yes/No} | |
-| User docs needed? | {✅ Exists / ❌ Missing / N-A} | {what to write} |
-| In-app help/tooltips needed? | {✅/❌/N-A} | {screens needing help text} |
-| Changelog entry drafted? | {✅/❌} | |
-| Migration guide needed? | {✅/❌/N-A} | {if breaking change for users} |
+| Check                        |             Status             | Action Needed                  |
+| ---------------------------- | :----------------------------: | ------------------------------ |
+| User-facing feature?         |            {Yes/No}            |                                |
+| User docs needed?            | {✅ Exists / ❌ Missing / N-A} | {what to write}                |
+| In-app help/tooltips needed? |          {✅/❌/N-A}           | {screens needing help text}    |
+| Changelog entry drafted?     |            {✅/❌}             |                                |
+| Migration guide needed?      |          {✅/❌/N-A}           | {if breaking change for users} |
 
 ### 2B: Developer Documentation
 
-| Check | Status | Action Needed |
-|-------|:------:|--------------|
-| API docs generated? | {✅ api-docs/ exists / ❌ Run /speckit.product-forge.api-docs} | |
-| README updated? | {✅/❌/N-A} | |
-| Architecture decision recorded? | {✅/❌} | {from plan.md} |
-| Environment variables documented? | {✅/❌} | {new env vars from implementation} |
+| Check                             |                             Status                             | Action Needed                      |
+| --------------------------------- | :------------------------------------------------------------: | ---------------------------------- |
+| API docs generated?               | {✅ api-docs/ exists / ❌ Run /speckit.product-forge.api-docs} |                                    |
+| README updated?                   |                          {✅/❌/N-A}                           |                                    |
+| Architecture decision recorded?   |                            {✅/❌}                             | {from plan.md}                     |
+| Environment variables documented? |                            {✅/❌}                             | {new env vars from implementation} |
 
 ### 2C: Operational Documentation
 
-| Check | Status | Action Needed |
-|-------|:------:|--------------|
-| Runbook entry needed? | {✅ Exists / ❌ Write / N-A} | |
-| On-call context documented? | {✅/❌/N-A} | |
-| Known limitations documented? | {✅/❌} | |
+| Check                         |            Status            | Action Needed |
+| ----------------------------- | :--------------------------: | ------------- |
+| Runbook entry needed?         | {✅ Exists / ❌ Write / N-A} |               |
+| On-call context documented?   |         {✅/❌/N-A}          |               |
+| Known limitations documented? |           {✅/❌}            |               |
 
 ---
 
@@ -174,6 +177,7 @@ Analyze spec.md user stories — does this feature need user docs?
 ### 3A: Derive SLI candidates (input)
 
 Extract SLI candidates from three sources, deduplicated:
+
 - `spec.md` NFRs (latency targets, error-rate bounds, availability).
 - `research/metrics-roi.md` predicted KPIs.
 - `tracking/tracking-plan.md` events that imply rate/latency SLIs.
@@ -184,11 +188,11 @@ Each SLI candidate has: name, target, measurement window, source.
 
 From the SLI list above, propose alert rules:
 
-| Alert | Condition | Severity | Channel |
-|-------|-----------|:--------:|---------|
-| Error rate spike | `error_rate > 5% for 5m` | P1 | {project default} |
-| Latency degradation | `p95_ms > <target> for 10m` | P2 | {project default} |
-| {feature-specific} | ... | ... | ... |
+| Alert               | Condition                   | Severity | Channel           |
+| ------------------- | --------------------------- | :------: | ----------------- |
+| Error rate spike    | `error_rate > 5% for 5m`    |    P1    | {project default} |
+| Latency degradation | `p95_ms > <target> for 10m` |    P2    | {project default} |
+| {feature-specific}  | ...                         |   ...    | ...               |
 
 ### 3C: Build monitoring artifacts (active)
 
@@ -219,12 +223,12 @@ is the only output.
 
 ### 4A: Tracking Plan Status
 
-| Check | Status | Action Needed |
-|-------|:------:|--------------|
-| Tracking plan exists? | {✅ tracking/ exists / ❌ Run /speckit.product-forge.tracking-plan} | |
-| Key events instrumented? | {✅/❌} | {events to add} |
-| Funnel defined? | {✅/❌/N-A} | |
-| Success metrics measurable? | {✅/❌} | {which metrics can't be measured yet} |
+| Check                       |                               Status                                | Action Needed                         |
+| --------------------------- | :-----------------------------------------------------------------: | ------------------------------------- |
+| Tracking plan exists?       | {✅ tracking/ exists / ❌ Run /speckit.product-forge.tracking-plan} |                                       |
+| Key events instrumented?    |                               {✅/❌}                               | {events to add}                       |
+| Funnel defined?             |                             {✅/❌/N-A}                             |                                       |
+| Success metrics measurable? |                               {✅/❌}                               | {which metrics can't be measured yet} |
 
 ---
 
@@ -232,30 +236,30 @@ is the only output.
 
 ### 5A: Environment Readiness
 
-| Environment | Ready? | Blockers |
-|-------------|:------:|---------|
-| Development | {✅/❌} | |
-| Staging | {✅/❌} | {missing env vars, configs, etc.} |
-| Production | {✅/❌} | {missing env vars, configs, etc.} |
+| Environment | Ready?  | Blockers                          |
+| ----------- | :-----: | --------------------------------- |
+| Development | {✅/❌} |                                   |
+| Staging     | {✅/❌} | {missing env vars, configs, etc.} |
+| Production  | {✅/❌} | {missing env vars, configs, etc.} |
 
 ### 5B: Infrastructure
 
-| Check | Status | Details |
-|-------|:------:|---------|
-| New env vars set in all envs? | {✅/❌} | {list of new vars} |
-| Database migrations queued? | {✅/❌/N-A} | {migration status} |
-| External service access confirmed? | {✅/❌/N-A} | {APIs, webhooks, etc.} |
-| CI/CD pipeline updated? | {✅/❌/N-A} | {new build steps, test stages} |
-| Resource scaling needed? | {✅/❌/N-A} | {memory, CPU, storage} |
+| Check                              |   Status    | Details                        |
+| ---------------------------------- | :---------: | ------------------------------ |
+| New env vars set in all envs?      |   {✅/❌}   | {list of new vars}             |
+| Database migrations queued?        | {✅/❌/N-A} | {migration status}             |
+| External service access confirmed? | {✅/❌/N-A} | {APIs, webhooks, etc.}         |
+| CI/CD pipeline updated?            | {✅/❌/N-A} | {new build steps, test stages} |
+| Resource scaling needed?           | {✅/❌/N-A} | {memory, CPU, storage}         |
 
 ### 5C: Security Status
 
-| Check | Status | Details |
-|-------|:------:|---------|
-| Security check run? | {✅ security-check.md exists / ❌ Run /speckit.product-forge.security-check} | |
-| Critical security issues? | {✅ None / ❌ {N} unresolved} | |
-| Secrets management OK? | {✅/❌} | |
-| Permissions/RBAC configured? | {✅/❌/N-A} | |
+| Check                        |                                    Status                                    | Details |
+| ---------------------------- | :--------------------------------------------------------------------------: | ------- |
+| Security check run?          | {✅ security-check.md exists / ❌ Run /speckit.product-forge.security-check} |         |
+| Critical security issues?    |                        {✅ None / ❌ {N} unresolved}                         |         |
+| Secrets management OK?       |                                   {✅/❌}                                    |         |
+| Permissions/RBAC configured? |                                 {✅/❌/N-A}                                  |         |
 
 ---
 
@@ -271,23 +275,23 @@ Write `{FEATURE_DIR}/release-readiness.md`:
 
 ## Summary
 
-| Category | Status | Action Items |
-|----------|:------:|:------------:|
-| Feature Flags & Rollout | {✅/⚠️/❌} | {N} |
-| Documentation | {✅/⚠️/❌} | {N} |
-| Monitoring & Observability | {✅/⚠️/❌} | {N} |
-| Analytics | {✅/⚠️/❌} | {N} |
-| Deployment Dependencies | {✅/⚠️/❌} | {N} |
-| Security | {✅/⚠️/❌} | {N} |
+| Category                   |   Status   | Action Items |
+| -------------------------- | :--------: | :----------: |
+| Feature Flags & Rollout    | {✅/⚠️/❌} |     {N}      |
+| Documentation              | {✅/⚠️/❌} |     {N}      |
+| Monitoring & Observability | {✅/⚠️/❌} |     {N}      |
+| Analytics                  | {✅/⚠️/❌} |     {N}      |
+| Deployment Dependencies    | {✅/⚠️/❌} |     {N}      |
+| Security                   | {✅/⚠️/❌} |     {N}      |
 
 ## Prior Quality Gates
 
-| Gate | Status | Date |
-|------|:------:|------|
+| Gate            |                    Status                     | Date   |
+| --------------- | :-------------------------------------------: | ------ |
 | Pre-Impl Review | {result from pre-impl-review.md or "Skipped"} | {date} |
-| Code Review | {result from code-review.md or "Skipped"} | {date} |
-| Verification | {result from verify-report.md} | {date} |
-| Test Run | {result from test-report.md or "Skipped"} | {date} |
+| Code Review     |   {result from code-review.md or "Skipped"}   | {date} |
+| Verification    |        {result from verify-report.md}         | {date} |
+| Test Run        |   {result from test-report.md or "Skipped"}   | {date} |
 
 ## Rollout Plan
 
@@ -299,9 +303,9 @@ Write `{FEATURE_DIR}/release-readiness.md`:
 
 ## Action Items Before Ship
 
-| # | Category | Action | Priority | Status |
-|---|----------|--------|:--------:|:------:|
-| 1 | {cat} | {action} | {MUST/SHOULD/NICE-TO-HAVE} | {TODO/DONE} |
+| #   | Category | Action   |          Priority          |   Status    |
+| --- | -------- | -------- | :------------------------: | :---------: |
+| 1   | {cat}    | {action} | {MUST/SHOULD/NICE-TO-HAVE} | {TODO/DONE} |
 
 ## Ship Checklist
 
@@ -344,6 +348,7 @@ Write `{FEATURE_DIR}/release-readiness.md`:
 ```
 
 Gate options:
+
 - **Ship it** — all MUST items done, proceed
 - **Fix and re-check** — address action items, re-run readiness check
 - **Ship with known issues** — document accepted risks and proceed
@@ -357,7 +362,7 @@ Update `.forge-status.yml`:
 
 ```yaml
 phases:
-  release_readiness: completed  # or "skipped"
+  release_readiness: completed # or "skipped"
 ```
 
 Record gate decision:
@@ -369,10 +374,10 @@ gates:
     timestamp: "{ISO timestamp}"
     notes: "{verdict and conditions}"
     action_items:
-      must: {N}
-      must_completed: {N}
-      should: {N}
-      nice_to_have: {N}
+      must: { N }
+      must_completed: { N }
+      should: { N }
+      nice_to_have: { N }
 ```
 
 ---

@@ -56,21 +56,21 @@ Read `{FEATURE_DIR}/.forge-status.yml`.
 
 For each phase, check whether the expected artifacts exist:
 
-| Phase | Expected Artifact | Exists? |
-|-------|------------------|---------|
-| 1. Research | `research/README.md` | ✅/❌ |
-| 2. Product Spec | `product-spec/README.md` | ✅/❌ |
-| 3. Revalidation | `review.md` with "APPROVED" | ✅/❌ |
-| 4. Bridge | `spec.md` | ✅/❌ |
-| 5. Plan | `plan.md` | ✅/❌ |
-| 5B. Tasks | `tasks.md` | ✅/❌ |
-| 5C. Pre-Impl Review | `pre-impl-review.md` | ✅/❌/⏭️ |
-| 6. Implementation | All tasks `[x]` in tasks.md | ✅/❌ |
-| 6B. Code Review | `code-review.md` | ✅/❌/⏭️ |
-| 7. Verification | `verify-report.md` | ✅/❌ |
-| 8A. Test Plan | `testing/test-plan.md` | ✅/❌/⏭️ |
-| 8B. Test Run | `test-report.md` | ✅/❌/⏭️ |
-| 9. Release Readiness | `release-readiness.md` | ✅/❌/⏭️ |
+| Phase                | Expected Artifact           | Exists?  |
+| -------------------- | --------------------------- | -------- |
+| 1. Research          | `research/README.md`        | ✅/❌    |
+| 2. Product Spec      | `product-spec/README.md`    | ✅/❌    |
+| 3. Revalidation      | `review.md` with "APPROVED" | ✅/❌    |
+| 4. Bridge            | `spec.md`                   | ✅/❌    |
+| 5. Plan              | `plan.md`                   | ✅/❌    |
+| 5B. Tasks            | `tasks.md`                  | ✅/❌    |
+| 5C. Pre-Impl Review  | `pre-impl-review.md`        | ✅/❌/⏭️ |
+| 6. Implementation    | All tasks `[x]` in tasks.md | ✅/❌    |
+| 6B. Code Review      | `code-review.md`            | ✅/❌/⏭️ |
+| 7. Verification      | `verify-report.md`          | ✅/❌    |
+| 8A. Test Plan        | `testing/test-plan.md`      | ✅/❌/⏭️ |
+| 8B. Test Run         | `test-report.md`            | ✅/❌/⏭️ |
+| 9. Release Readiness | `release-readiness.md`      | ✅/❌/⏭️ |
 
 ---
 
@@ -168,20 +168,21 @@ For each phase, check whether the expected artifacts exist:
 
 ## Status Legend
 
-| Icon | Meaning |
-|------|---------|
-| ✅ | Phase complete, artifacts verified |
-| 🔄 | Phase in progress |
-| ⏳ | Phase not yet started |
-| ⚠️ | Phase started but has issues |
-| ⏭️ | Phase skipped by user |
-| ❌ | Phase failed or artifacts missing |
+| Icon | Meaning                            |
+| ---- | ---------------------------------- |
+| ✅   | Phase complete, artifacts verified |
+| 🔄   | Phase in progress                  |
+| ⏳   | Phase not yet started              |
+| ⚠️   | Phase started but has issues       |
+| ⏭️   | Phase skipped by user              |
+| ❌   | Phase failed or artifacts missing  |
 
 ---
 
 ## Special Flags
 
 If artifact file exists but status says pending → flag inconsistency:
+
 ```
 ⚠️  Status mismatch detected:
     .forge-status.yml says "Phase 2: pending"
@@ -190,6 +191,7 @@ If artifact file exists but status says pending → flag inconsistency:
 ```
 
 If `verify-report.md` exists with CRITICAL findings:
+
 ```
 ❌ ATTENTION: verify-report.md contains {N} CRITICAL findings.
    The feature cannot be considered done until these are resolved.

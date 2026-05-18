@@ -25,11 +25,13 @@ $ARGUMENTS
 ## Step 1: Validate Prerequisites
 
 Check that Phase 3 was approved:
+
 1. Read `{FEATURE_DIR}/.forge-status.yml` — `revalidation` must be `approved`
 2. Verify `{FEATURE_DIR}/product-spec/product-spec.md` exists
 3. Verify `{FEATURE_DIR}/review.md` contains "APPROVED"
 
 If not approved:
+
 > ⚠️ Product spec has not been approved yet. Please complete Phase 3 first: `/speckit.product-forge.revalidate`
 
 ---
@@ -39,9 +41,9 @@ If not approved:
 Read in this order (each enriches the spec.md we'll create):
 
 1. **product-spec/product-spec.md** — user stories, requirements, personas, risks
-2. **product-spec/user-journey*.md** — all flow files
+2. **product-spec/user-journey\*.md** — all flow files
 3. **product-spec/metrics.md** — success criteria, KPIs
-4. **product-spec/wireframes*** — screen descriptions
+4. **product-spec/wireframes\*** — screen descriptions
 5. **research/README.md** — research executive summary
 6. **research/competitors.md** — competitive intelligence (extract key patterns)
 7. **research/ux-patterns.md** — UX recommendations
@@ -76,7 +78,7 @@ Before writing the spec, identify related features that may block or overlap wit
 
 Ask the user (unless `default_speckit_mode` is set to `classic` or `v-model` in config):
 
-*"How would you like to proceed with SpecKit after the spec is created?"*
+_"How would you like to proceed with SpecKit after the spec is created?"_
 
 - **Classic** — `plan → tasks → implement → verify`
   Best for: well-scoped features, clear requirements, time-constrained implementations.
@@ -93,6 +95,7 @@ Store as `SPECKIT_MODE`.
 Create `{FEATURE_DIR}/spec.md` — this is the canonical SpecKit specification.
 
 The spec must be **richer than a standard SpecKit spec** because it's enriched with research context. It should:
+
 - Reference product-spec/ and research/ documents for full depth
 - Include all user stories with acceptance criteria
 - Include technical integration notes from codebase analysis
@@ -100,19 +103,20 @@ The spec must be **richer than a standard SpecKit spec** because it's enriched w
 
 **Conditional sections** (include or omit based on detection in Steps 2 and 2.5):
 
-| Section | Include when |
-|---------|-------------|
-| `## Prerequisites` | Step 2.5 found related features |
-| `## EDA Events` | Step 2 codebase-analysis.md shows event-driven patterns |
-| `## Consumer Contract` | `FEATURE_TYPE = shared_infrastructure` |
+| Section                | Include when                                            |
+| ---------------------- | ------------------------------------------------------- |
+| `## Prerequisites`     | Step 2.5 found related features                         |
+| `## EDA Events`        | Step 2 codebase-analysis.md shows event-driven patterns |
+| `## Consumer Contract` | `FEATURE_TYPE = shared_infrastructure`                  |
 
-```markdown
+````markdown
 # Spec: {Feature Name}
 
 > **Product Forge Feature** | Generated: {date}
 > Feature slug: `{feature-slug}` | SpecKit mode: {SPECKIT_MODE}
 >
 > **Source artifacts:**
+>
 > - Product Spec: [product-spec/README.md](./product-spec/README.md)
 > - Research: [research/README.md](./research/README.md)
 > - Review log: [review.md](./review.md)
@@ -122,13 +126,17 @@ The spec must be **richer than a standard SpecKit spec** because it's enriched w
 ## Overview
 
 ### What We're Building
+
 {2-3 sentences from product-spec.md overview}
 
 ### Why We're Building It
+
 {Problem statement + business justification from product-spec.md}
 
 ### Research Backing
+
 This spec is backed by a full research phase covering:
+
 - **Competitor analysis:** {top insight from competitors.md — what best implementations do}
 - **UX/UI patterns:** {top recommendation from ux-patterns.md}
 - **Codebase analysis:** {integration approach from codebase-analysis.md}
@@ -139,21 +147,24 @@ This spec is backed by a full research phase covering:
 
 ## Prerequisites
 
-| Priority | Feature | Status | Relationship | What's Needed |
-|----------|---------|--------|--------------|---------------|
-| P1 | {feature-slug} | {🟢 done / 🟡 partial / ⏳ pending} | blocks / complements | {what must exist before this feature can ship} |
+| Priority | Feature        | Status                              | Relationship         | What's Needed                                  |
+| -------- | -------------- | ----------------------------------- | -------------------- | ---------------------------------------------- |
+| P1       | {feature-slug} | {🟢 done / 🟡 partial / ⏳ pending} | blocks / complements | {what must exist before this feature can ship} |
 
 ---
 
 ## Goals
 
 ### Primary Goal
+
 {Single most important user outcome}
 
 ### Secondary Goals
+
 {2-3 supporting goals}
 
 ### Non-Goals (v1 scope)
+
 {Explicit out-of-scope list from product-spec.md}
 
 ---
@@ -161,17 +172,19 @@ This spec is backed by a full research phase covering:
 ## Users
 
 ### Primary Persona
+
 **{Persona Name}** — {role and context}
 Key need: {what they need from this feature}
 
 ### Secondary Personas
+
 {if any}
 
 ---
 
 ## User Stories
 
-> Full user journey flows: [product-spec/user-journey*.md](./product-spec/)
+> Full user journey flows: [product-spec/user-journey\*.md](./product-spec/)
 
 ### Must Have (MVP)
 
@@ -193,31 +206,31 @@ Key need: {what they need from this feature}
 
 ## Functional Requirements
 
-| ID | Requirement | Priority | Source |
-|----|-------------|----------|--------|
-| FR-001 | {requirement} | Must | US-001 |
-| FR-002 | {requirement} | Should | US-005 |
+| ID     | Requirement   | Priority | Source |
+| ------ | ------------- | -------- | ------ |
+| FR-001 | {requirement} | Must     | US-001 |
+| FR-002 | {requirement} | Should   | US-005 |
 
 ---
 
 ## Non-Functional Requirements
 
-| Category | Requirement | Source |
-|----------|-------------|--------|
-| Performance | {e.g., API response < 300ms P95} | research/codebase-analysis |
-| Accessibility | WCAG 2.1 AA | research/ux-patterns |
-| Security | {relevant requirement} | — |
-| Scalability | {requirement} | — |
+| Category      | Requirement                      | Source                     |
+| ------------- | -------------------------------- | -------------------------- |
+| Performance   | {e.g., API response < 300ms P95} | research/codebase-analysis |
+| Accessibility | WCAG 2.1 AA                      | research/ux-patterns       |
+| Security      | {relevant requirement}           | —                          |
+| Scalability   | {requirement}                    | —                          |
 
 ## NFR Measurement Contract
 
 > Every NFR must have a corresponding measurable signal. Without this, the NFR cannot be verified.
 > Rule: if you can't define how to measure it, it is not a real NFR.
 
-| NFR | How to Measure | Signal / Query | Threshold |
-|-----|----------------|----------------|-----------|
-| {e.g., P95 latency ≤ 300ms} | {e.g., `api_response_time` event, p95 field} | {analytics query or dashboard} | {value} |
-| {e.g., Error rate < 0.5%} | {e.g., `request_failed` / `request_total`} | {query} | {value} |
+| NFR                         | How to Measure                               | Signal / Query                 | Threshold |
+| --------------------------- | -------------------------------------------- | ------------------------------ | --------- |
+| {e.g., P95 latency ≤ 300ms} | {e.g., `api_response_time` event, p95 field} | {analytics query or dashboard} | {value}   |
+| {e.g., Error rate < 0.5%}   | {e.g., `request_failed` / `request_total`}   | {query}                        | {value}   |
 
 ---
 
@@ -226,37 +239,42 @@ Key need: {what they need from this feature}
 > Detailed analysis: [research/codebase-analysis.md](./research/codebase-analysis.md)
 
 ### Integration Points
+
 {Summary of where new code plugs into the existing codebase}
 
 ### Reusable Components
+
 {List of existing components/services that can be leveraged}
 
 ### New Modules Required
+
 {List of new modules/services to create}
 
 ### Data Model Impact
+
 {Schema changes, migrations, new collections}
 
 ### Tech Stack Notes
+
 {Relevant tech stack decisions from research/tech-stack.md if available}
 
 ### Codebase Constraints
 
 > From `research/codebase-analysis.md` — constraints the architecture must respect.
 
-| Constraint | Source | Impact |
-|------------|--------|--------|
+| Constraint                                          | Source             | Impact                 |
+| --------------------------------------------------- | ------------------ | ---------------------- |
 | {e.g., circuit breaker required for external calls} | {ADR or file path} | {how it shapes design} |
-| {e.g., ID format restrictions} | {source} | {impact} |
+| {e.g., ID format restrictions}                      | {source}           | {impact}               |
 
 ---
 
 ## EDA Events
 
-| Direction | Event Name | Exact Identifier | Payload Contract | Source File | Status |
-|-----------|------------|-----------------|-----------------|-------------|--------|
-| emits | {event} | `{EXACT_ENUM_OR_CONSTANT}` | {interface / schema ref} | {path} | ✅ exists / 🆕 to create |
-| listens | {event} | `{EXACT_ENUM_OR_CONSTANT}` | {interface / schema ref} | {path} | ✅ exists / 🆕 to create |
+| Direction | Event Name | Exact Identifier           | Payload Contract         | Source File | Status                   |
+| --------- | ---------- | -------------------------- | ------------------------ | ----------- | ------------------------ |
+| emits     | {event}    | `{EXACT_ENUM_OR_CONSTANT}` | {interface / schema ref} | {path}      | ✅ exists / 🆕 to create |
+| listens   | {event}    | `{EXACT_ENUM_OR_CONSTANT}` | {interface / schema ref} | {path}      | ✅ exists / 🆕 to create |
 
 > Every event marked 🆕 must become a task in tasks.md: "Define event [name] + payload interface".
 
@@ -279,21 +297,22 @@ Key need: {what they need from this feature}
 // Example:
 // const result = await this.{serviceName}.{method}({ userId, query });
 ```
+````
 
 ### Consumer Utilities
 
-| Utility | Purpose | Usage |
-|---------|---------|-------|
-| `{FormatterName}` | {what it formats} | `{FormatterName}.format(rawResult)` |
-| `{AdapterName}` | {what it adapts} | `{AdapterName}.toPromptContext(data)` |
+| Utility           | Purpose           | Usage                                 |
+| ----------------- | ----------------- | ------------------------------------- |
+| `{FormatterName}` | {what it formats} | `{FormatterName}.format(rawResult)`   |
+| `{AdapterName}`   | {what it adapts}  | `{AdapterName}.toPromptContext(data)` |
 
 ### Fallback Behaviour
 
-| Failure Mode | What Consumers Receive | Consumer Action Required |
-|--------------|----------------------|--------------------------|
-| Service unavailable | `null` / empty result | Use cached or default value |
-| Partial result | Result with `partial: true` flag | Degrade gracefully |
-| Timeout | Throws `ServiceTimeoutError` | Catch and fall back |
+| Failure Mode        | What Consumers Receive           | Consumer Action Required    |
+| ------------------- | -------------------------------- | --------------------------- |
+| Service unavailable | `null` / empty result            | Use cached or default value |
+| Partial result      | Result with `partial: true` flag | Degrade gracefully          |
+| Timeout             | Throws `ServiceTimeoutError`     | Catch and fall back         |
 
 ### Integration Pattern
 
@@ -330,40 +349,40 @@ Primary KPI: {metric name} — Target: {value} (Baseline: {current value})
 
 ### Coverage Targets
 
-| Module / Service | Target Coverage | Test Type |
-|-----------------|----------------|-----------|
-| {module} | {e.g., ≥ 80%} | unit / integration |
+| Module / Service | Target Coverage | Test Type          |
+| ---------------- | --------------- | ------------------ |
+| {module}         | {e.g., ≥ 80%}   | unit / integration |
 
 ### Critical Test Cases
 
 Minimum required test cases (happy path + key edge cases per critical component):
 
-| # | Scenario | Input | Expected Output | Type |
-|---|----------|-------|----------------|------|
-| TC-001 | {happy path} | {input} | {expected} | unit / integration / e2e |
-| TC-002 | {error path} | {input} | {expected} | unit |
-| TC-003 | {edge case} | {input} | {expected} | unit |
+| #      | Scenario     | Input   | Expected Output | Type                     |
+| ------ | ------------ | ------- | --------------- | ------------------------ |
+| TC-001 | {happy path} | {input} | {expected}      | unit / integration / e2e |
+| TC-002 | {error path} | {input} | {expected}      | unit                     |
+| TC-003 | {edge case}  | {input} | {expected}      | unit                     |
 
 ### E2E Scenarios
 
-| TC-ID | Scenario | Entry Point | Exit Condition |
-|-------|----------|------------|----------------|
-| TC-E2E-001 | {full happy path} | {starting state} | {success state} |
+| TC-ID      | Scenario           | Entry Point      | Exit Condition         |
+| ---------- | ------------------ | ---------------- | ---------------------- |
+| TC-E2E-001 | {full happy path}  | {starting state} | {success state}        |
 | TC-E2E-002 | {failure/recovery} | {starting state} | {graceful error state} |
 
 ---
 
 ## Risks
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
+| Risk                        | Impact       | Mitigation   |
+| --------------------------- | ------------ | ------------ |
 | {risk from product-spec.md} | High/Med/Low | {mitigation} |
 
 ---
 
 ## Wireframes Reference
 
-> Visual wireframes: [product-spec/wireframes*](./product-spec/)
+> Visual wireframes: [product-spec/wireframes\*](./product-spec/)
 
 Key screens:
 {for each screen: name + 1-line description + link}
@@ -373,6 +392,7 @@ Key screens:
 ## Open Questions
 
 {Remaining open questions from product-spec.md that implementation must resolve}
+
 ```
 
 ---
@@ -420,21 +440,23 @@ Fix any issues found silently.
 
 Show the user:
 ```
+
 📄 spec.md created: {FEATURE_DIR}/spec.md
 
 Contents:
-  • {N} Must Have stories + acceptance criteria
-  • {N} Should Have stories
-  • {N} Functional requirements
-  • {N} Non-functional requirements + NFR Measurement Contract
-  • {N} EDA events verified  [or: "EDA not applicable — section omitted"]
-  • {N} dependencies discovered  [or: "No prerequisite features found"]
-  • Consumer Contract: included  [or: "end-user feature — section omitted"]
-  • {N} test cases + {N} E2E scenarios (Testing Specification)
-  • {N} identified risks
-  • Full links to {N} source documents
+• {N} Must Have stories + acceptance criteria
+• {N} Should Have stories
+• {N} Functional requirements
+• {N} Non-functional requirements + NFR Measurement Contract
+• {N} EDA events verified [or: "EDA not applicable — section omitted"]
+• {N} dependencies discovered [or: "No prerequisite features found"]
+• Consumer Contract: included [or: "end-user feature — section omitted"]
+• {N} test cases + {N} E2E scenarios (Testing Specification)
+• {N} identified risks
+• Full links to {N} source documents
 
 SpecKit mode: {SPECKIT_MODE}
+
 ```
 
 Ask: *"spec.md looks good? Approve to proceed to Phase 5 (Plan + Tasks), or would you like to adjust anything?"*
@@ -449,15 +471,18 @@ After user approves spec.md, trigger SpecKit commands.
 
 Inform the user:
 ```
+
 🚀 Launching SpecKit Classic Flow
 
 Next commands (run in sequence):
-1. /speckit.product-forge.plan           — Technical plan with product-spec cross-validation
-2. /speckit.product-forge.tasks          — Task breakdown with coverage validation
+
+1. /speckit.product-forge.plan — Technical plan with product-spec cross-validation
+2. /speckit.product-forge.tasks — Task breakdown with coverage validation
 3. /speckit.product-forge.pre-impl-review — Design + architecture + risk review (optional)
-4. /speckit.product-forge.implement      — Implementation with progressive verification
-5. /speckit.product-forge.code-review    — Multi-agent code review (optional)
-6. /speckit.product-forge.verify-full    — Full traceability verification
+4. /speckit.product-forge.implement — Implementation with progressive verification
+5. /speckit.product-forge.code-review — Multi-agent code review (optional)
+6. /speckit.product-forge.verify-full — Full traceability verification
+
 ```
 
 Delegate to `speckit.product-forge.plan` with context:
@@ -467,18 +492,21 @@ Delegate to `speckit.product-forge.plan` with context:
 
 Inform the user:
 ```
+
 🚀 Launching V-Model Full Traceability Flow
 
 Phases:
-1. /speckit.v-model-requirements    — REQ-NNN traceable requirements
+
+1. /speckit.v-model-requirements — REQ-NNN traceable requirements
 2. /speckit.v-model-architecture-design — System architecture
-3. /speckit.v-model-system-design   — Component decomposition
-4. /speckit.v-model-module-design   — Module-level design
-5. /speckit.tasks                   — Implementation tasks
-6. /speckit.implement               — Execution
+3. /speckit.v-model-system-design — Component decomposition
+4. /speckit.v-model-module-design — Module-level design
+5. /speckit.tasks — Implementation tasks
+6. /speckit.implement — Execution
 7. /speckit.v-model-unit-test + integration/system/acceptance — Test specs
-8. /speckit.product-forge.verify-full       — Full traceability check
-```
+8. /speckit.product-forge.verify-full — Full traceability check
+
+````
 
 Delegate to SpecKit `v-model-requirements` with the same context note above.
 
@@ -492,6 +520,6 @@ phases:
   bridge: completed
 speckit_mode: "{SPECKIT_MODE}"
 last_updated: "{ISO timestamp}"
-```
+````
 
 Update `{FEATURE_DIR}/README.md` — mark Phase 4 as ✅ Complete.

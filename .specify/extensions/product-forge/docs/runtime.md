@@ -48,7 +48,12 @@ Location: `<FEATURE_DIR>/.forge-status.yml.lock` (next to the status file).
 Format (JSON, single line):
 
 ```json
-{"pid": 12345, "session_id": "claude-session-abc", "acquired_at": "2026-04-19T10:00:00Z", "ttl_seconds": 1800}
+{
+  "pid": 12345,
+  "session_id": "claude-session-abc",
+  "acquired_at": "2026-04-19T10:00:00Z",
+  "ttl_seconds": 1800
+}
 ```
 
 - `pid` — operating system process id of the writer.
@@ -178,25 +183,25 @@ Before starting any delegation:
      for the exact abort message.
    - Every `phases.<name>.status` MUST be one of
      `"pending" | "in_progress" | "completed" | "skipped" |
-     "not_applicable" | "completed_with_known_issues"`, plus the
+"not_applicable" | "completed_with_known_issues"`, plus the
      legacy literal `"approved"` on `phases.revalidation.status` which
      is treated as equivalent to `"completed"` per
      [schema.md](./schema.md).
    - Every `gates[].decision` MUST be one of
      `"approved" | "approved_with_conditions" | "revised" |
-     "skipped" | "rolled_back" | "aborted"` per
+"skipped" | "rolled_back" | "aborted"` per
      [policy.md §2](./policy.md#2-gate-decisions).
    - On any invalid value: abort with
-     *"Invalid {field}: '{value}' in .forge-status.yml. Expected one
-     of {enum}. Fix and re-run."* Do NOT auto-correct, silently
+     _"Invalid {field}: '{value}' in .forge-status.yml. Expected one
+     of {enum}. Fix and re-run."_ Do NOT auto-correct, silently
      re-run the phase, or coerce the value — a typo in the status
      file is a user error that must be surfaced.
 3. Summarize prior-phase outputs if resuming.
 4. Show the full phase checklist using `TodoWrite`. Mark optional phases
    (`5C`, `6B`, `8A`, `8B`, `9`) as "optional" and skipped phases as
    "skipped — reason: ...".
-5. Ask the user: *"Ready to start/resume from Phase N: [phase name]? Any
-   changes to the feature description?"*
+5. Ask the user: _"Ready to start/resume from Phase N: [phase name]? Any
+   changes to the feature description?"_
 
 ---
 
@@ -208,24 +213,24 @@ If `auto_sync_between_phases: true` (default), the orchestrator runs a
 lightweight sync-verify between every phase transition. No separate command
 delegation is needed — the orchestrator handles it internally.
 
-| Transition | Sync Layers |
-|------------|-------------|
-| Phase 1 → Phase 2 | (none — research is input) |
-| Phase 2 → Phase 3 | Layer 1 (research ↔ product-spec) |
-| Phase 3 → Phase 4 | Layer 1 |
-| Phase 4 → Phase 5 | Layer 2 (product-spec ↔ spec.md) |
-| Phase 5 → Phase 5B | Layer 3 (spec.md ↔ plan.md) |
-| Phase 5B → Phase 5C | Layer 4 (plan.md ↔ tasks.md) |
-| Phase 5C → Phase 6 | Layers 3, 4 |
-| Phase 6 → Phase 6B | Layers 5, 6 (tasks ↔ code, spec ↔ code) |
-| Phase 6B → Phase 7 | Full (all 7 layers) |
-| Phase 7 → Phase 8A | Layer 7 (cross-links only) |
+| Transition          | Sync Layers                             |
+| ------------------- | --------------------------------------- |
+| Phase 1 → Phase 2   | (none — research is input)              |
+| Phase 2 → Phase 3   | Layer 1 (research ↔ product-spec)       |
+| Phase 3 → Phase 4   | Layer 1                                 |
+| Phase 4 → Phase 5   | Layer 2 (product-spec ↔ spec.md)        |
+| Phase 5 → Phase 5B  | Layer 3 (spec.md ↔ plan.md)             |
+| Phase 5B → Phase 5C | Layer 4 (plan.md ↔ tasks.md)            |
+| Phase 5C → Phase 6  | Layers 3, 4                             |
+| Phase 6 → Phase 6B  | Layers 5, 6 (tasks ↔ code, spec ↔ code) |
+| Phase 6B → Phase 7  | Full (all 7 layers)                     |
+| Phase 7 → Phase 8A  | Layer 7 (cross-links only)              |
 
 ### 5.2 Quick-sync behavior
 
 - Only check layers relevant to the transition.
 - Only report `CRITICAL` items (suppress `WARNING` / `INFO`).
-- If zero CRITICAL: auto-proceed with note *"Quick sync: clean"*.
+- If zero CRITICAL: auto-proceed with note _"Quick sync: clean"_.
 - If CRITICAL found: pause and present to user before allowing phase transition.
 - Update `sync_runs` on `.forge-status.yml`.
 
@@ -247,14 +252,14 @@ gates:
     decision: "{approved | approved_with_conditions | revised | skipped | rolled_back | aborted}"
     timestamp: "{ISO timestamp}"
     notes: "{user's reasoning or empty}"
-    conditions: []            # required when decision == "approved_with_conditions"
+    conditions: [] # required when decision == "approved_with_conditions"
     sync_result: "{clean | N_critical | N_warning}"
-    approvals:                # present only when role_approvals.solo_mode is false
-      pm: { approved_by: "...", at: "..." }   # or null for pending
+    approvals: # present only when role_approvals.solo_mode is false
+      pm: { approved_by: "...", at: "..." } # or null for pending
       eng: { approved_by: "...", at: "..." }
       qa: null
-    skip_reason: null         # required when decision == "skipped" and require_skip_reason is true
-    rolled_back_to: null      # required when decision == "rolled_back" (phase name to rewind to)
+    skip_reason: null # required when decision == "skipped" and require_skip_reason is true
+    rolled_back_to: null # required when decision == "rolled_back" (phase name to rewind to)
 ```
 
 See [docs/policy.md §2](./policy.md#2-gate-decisions) for the full list of
@@ -290,11 +295,11 @@ a digest file before the orchestrator marks the phase `completed`.
 "In scope for the feature's mode" is resolved per
 [docs/policy.md §4](./policy.md#4-feature-modes-e1):
 
-| Mode | Phases that require a digest |
-|------|------------------------------|
-| `lite` | `product_spec`, `plan`, `implement`, `verify` |
+| Mode       | Phases that require a digest                                       |
+| ---------- | ------------------------------------------------------------------ |
+| `lite`     | `product_spec`, `plan`, `implement`, `verify`                      |
 | `standard` | `research`, `product_spec`, `plan`, `tasks`, `implement`, `verify` |
-| `v-model` | same as standard plus V-Model artifact phases when implemented |
+| `v-model`  | same as standard plus V-Model artifact phases when implemented     |
 
 Phases marked `not_applicable` (for example in `backfill`-ed features) are
 exempt regardless of mode.
@@ -338,8 +343,8 @@ For features that do NOT satisfy both conditions:
 - The orchestrator proceeds through gates without blocking.
 - On first write by a v2-aware sub-skill, if a phase is `completed` but
   has no `digest_path`, a minimal stub digest is synthesised at
-  `<phase>/digest.md` with the banner *"legacy migration — digest stub,
-  no original capture"*. This preserves the rule shape for future reads
+  `<phase>/digest.md` with the banner _"legacy migration — digest stub,
+  no original capture"_. This preserves the rule shape for future reads
   without fabricating content.
 
 The grandfathering is explicit and visible: every stubbed digest says so
@@ -347,12 +352,12 @@ in its opening line. Nothing is silently upgraded to "looks native".
 
 ### 8.4 Downstream consumers
 
-| Consumer | Uses digest for |
-|----------|-----------------|
-| `verify-full` | initial scan; pulls full artifacts only on demand |
-| `code-review` | per-phase context entry |
-| `portfolio` | feature-scan without full-artifact reads |
-| `retrospective` | cross-phase learning extraction |
+| Consumer        | Uses digest for                                   |
+| --------------- | ------------------------------------------------- |
+| `verify-full`   | initial scan; pulls full artifacts only on demand |
+| `code-review`   | per-phase context entry                           |
+| `portfolio`     | feature-scan without full-artifact reads          |
+| `retrospective` | cross-phase learning extraction                   |
 
 Downstream consumers MUST tolerate stub digests (§8.3) — they contain
 the banner instead of sections.
@@ -414,16 +419,16 @@ relative to `codebase_path`.
 When `codebase.workspace_type` is set, test commands are built from
 these templates:
 
-| workspace_type | Template |
-|----------------|----------|
-| `pnpm` | `pnpm --filter=<workspace> <script>` |
-| `yarn` | `yarn workspace <workspace> <script>` |
-| `npm` | `npm run <script> -w <workspace>` |
-| `turbo` | `turbo run <script> --filter=<workspace>` |
-| `nx` | `nx run <workspace>:<script>` |
-| `rush` | `rush <script> --to <workspace>` |
-| `lerna` | `lerna run <script> --scope=<workspace>` |
-| `none` | `(cd <path> && <script>)` |
+| workspace_type | Template                                  |
+| -------------- | ----------------------------------------- |
+| `pnpm`         | `pnpm --filter=<workspace> <script>`      |
+| `yarn`         | `yarn workspace <workspace> <script>`     |
+| `npm`          | `npm run <script> -w <workspace>`         |
+| `turbo`        | `turbo run <script> --filter=<workspace>` |
+| `nx`           | `nx run <workspace>:<script>`             |
+| `rush`         | `rush <script> --to <workspace>`          |
+| `lerna`        | `lerna run <script> --scope=<workspace>`  |
+| `none`         | `(cd <path> && <script>)`                 |
 
 Sub-skills substitute `<script>` with the detected command (`test`,
 `test:unit`, `lint`, `build`).

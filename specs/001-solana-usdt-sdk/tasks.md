@@ -39,3 +39,11 @@
 - [x] T014 Export all public modules and Kit signer helpers in `src/index.ts`
 - [x] T015 Add amount helper tests in `test/amounts.test.ts`
 - [x] T016 Run `pnpm install`, `tsc -p tsconfig.json --noEmit`, `vp test run`, and `vp pack`
+
+## Phase 7: Production Hardening
+
+- [x] T017 [US2] Store idempotent transfer submissions immediately after `sendTransaction` in `src/transfers.ts`
+- [x] T018 [US2] Reject idempotency key reuse for different transfer inputs in `src/transfers.ts`
+- [x] T019 [US3] Monitor recipient associated token accounts instead of wallet addresses in `src/payments.ts`
+- [x] T020 [US3] Verify recipient wallet expectations against destination associated token accounts in `src/payments.ts`
+- [x] T021 [P] Add regression tests for idempotent submission persistence, conflicts, ATA monitoring, and recipient verification in `test/client.test.ts`, `test/payments.test.ts`

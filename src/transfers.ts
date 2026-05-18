@@ -66,17 +66,25 @@ export async function createTransfer(
   ctx: ClientContext,
   input: TransferCreateInput,
 ): Promise<TransferResult> {
-  if (input.idempotencyKey && ctx.idempotencyStore) {
-    const existing = await ctx.idempotencyStore.get(input.idempotencyKey);
-    if (existing) return existing.result;
-  }
-
   const reference =
     input.reference ?? input.idempotencyKey ?? createReference(DEFAULT_REFERENCE_PREFIX);
   const destinationOwner = normalizeAddress(input.to, "recipient");
   const amount = parseTokenAmount(input.amount, ctx.decimals);
   const sourceTokenAccount = await getAssociatedTokenAddress(ctx.signer.address, ctx.mint);
   const destinationTokenAccount = await getAssociatedTokenAddress(destinationOwner, ctx.mint);
+
+  if (input.idempotencyKey && ctx.idempotencyStore) {
+    const existing = await ctx.idempotencyStore.get(input.idempotencyKey);
+    if (existing) {
+      assertIdempotentReplay(existing.result, {
+        amount,
+        destinationTokenAccount,
+        mint: ctx.mint,
+      });
+      return existing.result;
+    }
+  }
+
   const instructions = await buildTransferInstructions(ctx, {
     amount,
     destinationOwner,
@@ -108,9 +116,7 @@ export async function createTransfer(
         .send(),
     ),
   );
-  const status = await waitForTransaction(ctx, { signature });
-
-  const result: TransferResult = {
+  const submittedResult: TransferResult = {
     signature,
     reference,
     idempotencyKey: input.idempotencyKey,
@@ -119,20 +125,68 @@ export async function createTransfer(
     displayAmount: formatTokenAmount(amount, ctx.decimals),
     sourceTokenAccount,
     destinationTokenAccount,
+    confirmationStatus: "submitted",
+  };
+
+  if (input.idempotencyKey && ctx.idempotencyStore) {
+    await storeIdempotencyResult(ctx, input.idempotencyKey, reference, submittedResult);
+  }
+
+  const status = await waitForTransaction(ctx, { signature });
+  const result: TransferResult = {
+    ...submittedResult,
     slot: status.slot,
     confirmationStatus: status.confirmationStatus,
   };
 
   if (input.idempotencyKey && ctx.idempotencyStore) {
-    await ctx.idempotencyStore.set(input.idempotencyKey, {
-      key: input.idempotencyKey,
-      reference,
-      result,
-      createdAt: new Date().toISOString(),
-    });
+    await storeIdempotencyResult(ctx, input.idempotencyKey, reference, result);
   }
 
   return result;
+}
+
+async function storeIdempotencyResult(
+  ctx: ClientContext,
+  key: string,
+  reference: string,
+  result: TransferResult,
+): Promise<void> {
+  await ctx.idempotencyStore?.set(key, {
+    key,
+    reference,
+    result,
+    createdAt: new Date().toISOString(),
+  });
+}
+
+function assertIdempotentReplay(
+  existing: TransferResult,
+  expected: { amount: bigint; destinationTokenAccount: string; mint: string },
+): void {
+  if (
+    existing.amount !== expected.amount ||
+    existing.destinationTokenAccount !== expected.destinationTokenAccount ||
+    existing.mint !== expected.mint
+  ) {
+    throw new SolanaUsdtError({
+      code: "IDEMPOTENCY_CONFLICT",
+      message: "Idempotency key was already used for a different transfer.",
+      signature: existing.signature,
+      meta: {
+        existing: {
+          amount: existing.amount.toString(),
+          destinationTokenAccount: existing.destinationTokenAccount,
+          mint: existing.mint,
+        },
+        requested: {
+          amount: expected.amount.toString(),
+          destinationTokenAccount: expected.destinationTokenAccount,
+          mint: expected.mint,
+        },
+      },
+    });
+  }
 }
 
 export async function buildTransferInstructions(

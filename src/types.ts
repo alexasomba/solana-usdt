@@ -131,7 +131,10 @@ export interface VerifiedPayment {
   found: boolean;
   reference?: string | undefined;
   signature?: string | undefined;
+  /** Expected recipient wallet owner when it was supplied to verification or monitoring. */
   recipient?: string | undefined;
+  /** SPL token account that received the USDT transfer. */
+  recipientTokenAccount?: string | undefined;
   amount?: bigint | undefined;
   displayAmount?: string | undefined;
   slot?: bigint | undefined;

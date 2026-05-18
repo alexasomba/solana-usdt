@@ -4,6 +4,7 @@ import { DEFAULT_REFERENCE_PREFIX } from "./constants.js";
 import { SolanaUsdtError } from "./errors.js";
 import { createMemo, createReference, parseMemoReference } from "./idempotency.js";
 import { callRpc, getPath, requireRpcMethod } from "./rpc.js";
+import { getAssociatedTokenAddress } from "./token.js";
 import { retrieveTransaction } from "./transactions.js";
 import type {
   ClientContext,
@@ -49,7 +50,7 @@ export function createPaymentsModule(ctx: ClientContext) {
         const payment = monitored.payments.find(
           (candidate) => candidate.reference === input.reference,
         );
-        if (payment) return assertExpectedPayment(ctx, payment, input);
+        if (payment) return await assertExpectedPayment(ctx, payment, input);
       }
       return { found: false, reference: input.reference, signature: input.signature };
     },
@@ -78,10 +79,11 @@ async function monitorPayments(
   input: PaymentMonitorInput,
 ): Promise<PaymentMonitorResult> {
   const recipient = normalizeAddress(input.recipient, "recipient");
+  const recipientTokenAccount = await getAssociatedTokenAddress(recipient, ctx.mint);
   const getSignaturesForAddress = requireRpcMethod(ctx, "getSignaturesForAddress");
   const signatures = await callRpc<unknown[]>(ctx, "getSignaturesForAddress", async () => {
     const response = await getSignaturesForAddress
-      .call(ctx.rpc, recipient, {
+      .call(ctx.rpc, recipientTokenAccount, {
         before: input.cursor,
         limit: input.limit ?? 20,
       })
@@ -98,7 +100,8 @@ async function monitorPayments(
     if (typeof signature !== "string") continue;
     const status = await retrieveTransaction(ctx, signature);
     const payment = extractVerifiedPayment(ctx, status.transaction, signature);
-    if (payment) {
+    if (payment?.recipientTokenAccount === recipientTokenAccount) {
+      payment.recipient = recipient;
       payment.slot = status.slot;
       payment.confirmationStatus = status.confirmationStatus;
       payments.push(payment);
@@ -113,11 +116,11 @@ async function monitorPayments(
   return { cursor: typeof cursor === "string" ? cursor : undefined, payments };
 }
 
-function assertExpectedPayment(
+async function assertExpectedPayment(
   ctx: ClientContext,
   payment: VerifiedPayment,
   input: PaymentVerifyInput,
-): VerifiedPayment {
+): Promise<VerifiedPayment> {
   if (input.reference && payment.reference !== input.reference) {
     throw mismatch("Payment reference did not match.", payment);
   }
@@ -127,10 +130,32 @@ function assertExpectedPayment(
   }
   if (input.recipient) {
     const recipient = normalizeAddress(input.recipient, "recipient");
-    if (payment.recipient && payment.recipient !== recipient)
-      throw mismatch("Payment recipient did not match.", payment);
+    return await assertExpectedRecipient(ctx, payment, recipient);
   }
   return { ...payment, found: true };
+}
+
+async function assertExpectedRecipient(
+  ctx: ClientContext,
+  payment: VerifiedPayment,
+  recipient: string,
+): Promise<VerifiedPayment> {
+  const recipientTokenAccount = await getAssociatedTokenAddress(
+    normalizeAddress(recipient),
+    ctx.mint,
+  );
+  if (payment.recipientTokenAccount === undefined) {
+    throw mismatch("Payment recipient token account was not found.", payment);
+  }
+  if (payment.recipientTokenAccount !== recipientTokenAccount) {
+    throw mismatch("Payment recipient token account did not match.", payment);
+  }
+  return {
+    ...payment,
+    found: true,
+    recipient,
+    recipientTokenAccount: payment.recipientTokenAccount ?? recipientTokenAccount,
+  };
 }
 
 function extractVerifiedPayment(
@@ -145,7 +170,7 @@ function extractVerifiedPayment(
 
   let memo: string | undefined;
   let reference: string | undefined;
-  let recipient: string | undefined;
+  let recipientTokenAccount: string | undefined;
   let amount: bigint | undefined;
 
   for (const instruction of instructions) {
@@ -161,7 +186,8 @@ function extractVerifiedPayment(
     if (parsedType === "transferChecked" && typeof parsedInfo === "object" && parsedInfo !== null) {
       const info = parsedInfo as Record<string, unknown>;
       if (info.mint === ctx.mint) {
-        recipient = typeof info.destination === "string" ? info.destination : recipient;
+        recipientTokenAccount =
+          typeof info.destination === "string" ? info.destination : recipientTokenAccount;
         const rawAmount = getPath(info, ["tokenAmount", "amount"]) ?? info.amount;
         if (
           typeof rawAmount === "string" ||
@@ -174,12 +200,12 @@ function extractVerifiedPayment(
     }
   }
 
-  if (!reference && !amount) return undefined;
+  if (!reference && amount === undefined) return undefined;
   return {
     found: true,
     signature,
     reference,
-    recipient,
+    recipientTokenAccount,
     amount,
     displayAmount: amount === undefined ? undefined : formatTokenAmount(amount, ctx.decimals),
     memo,

@@ -21,3 +21,14 @@
 | Spec AC alignment |  PASS  | Required public modules and exported types are present.   |
 
 **Verdict:** CLEAN - implementation complete.
+
+## Checkpoint 3
+
+| Check                | Status | Notes                                                                                                                                  |
+| -------------------- | :----: | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Production hardening |  PASS  | Payment monitoring now scans recipient ATAs; recipient verification compares expected wallet owner to destination ATA.                 |
+| Idempotency safety   |  PASS  | Submitted transfer result is stored after `sendTransaction` returns a signature, before confirmation waits; conflicting reuse rejects. |
+| Regression coverage  |  PASS  | Added tests for ATA monitoring, recipient ATA verification, idempotency conflict, and submitted-before-confirmed replay.               |
+| Validation           |  PASS  | `node_modules/.bin/tsc -p tsconfig.json --noEmit`, `vp test run`, and `vp pack` passed.                                                |
+
+**Verdict:** CLEAN - production hardening complete, live funded integration still pending.

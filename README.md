@@ -56,6 +56,13 @@ await client.transactions.retrieve({ signature });
 await client.transactions.wait({ signature });
 ```
 
+## Production Notes
+
+- `payments.monitor({ recipient })` scans the recipient wallet's associated token account for the configured mint.
+- `payments.verify({ recipient })` validates against the recipient wallet's associated token account, not the wallet address as a token destination.
+- Transfer idempotency records are stored immediately after `sendTransaction` returns a signature, before confirmation finishes. This prevents duplicate sends if confirmation times out and the same idempotency key is retried.
+- Run a funded local-validator or devnet transfer before using this package with production funds.
+
 ## Development
 
 ```bash

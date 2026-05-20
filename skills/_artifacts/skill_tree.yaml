@@ -1,7 +1,7 @@
 # skills/_artifacts/skill_tree.yaml
 library:
   name: "solana-usdt"
-  version: "0.1.0"
+  version: "0.2.0"
   repository: "https://github.com/alexasomba/solana-usdt.git"
   description: "Developer-friendly Node.js SDK for USDT balances, transfers, and payment verification on Solana."
 generated_from:

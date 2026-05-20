@@ -1,0 +1,21 @@
+# skills/_artifacts/skill_tree.yaml
+library:
+  name: "solana-usdt"
+  version: "0.1.0"
+  repository: "https://github.com/alexasomba/solana-usdt.git"
+  description: "Developer-friendly Node.js SDK for USDT balances, transfers, and payment verification on Solana."
+generated_from:
+  domain_map: "skills/_artifacts/domain_map.yaml"
+  skill_spec: "skills/_artifacts/skill_spec.md"
+generated_at: "2026-05-20T14:13:30Z"
+
+skills:
+  - name: "solana-usdt"
+    slug: "solana-usdt"
+    type: "core"
+    domain: "solana-usdt-integration"
+    path: "skills/solana-usdt/SKILL.md"
+    description: "Guidelines and code examples for using the solana-usdt library to manage balances, create transfers, and handle payments on Solana."
+    sources:
+      - "alexasomba/solana-usdt:src/index.ts"
+      - "alexasomba/solana-usdt:src/types.ts"

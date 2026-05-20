@@ -32,3 +32,24 @@
 | Validation           |  PASS  | `node_modules/.bin/tsc -p tsconfig.json --noEmit`, `vp test run`, and `vp pack` passed.                                                |
 
 **Verdict:** CLEAN - production hardening complete, live funded integration still pending.
+
+## Checkpoint 4
+
+| Check                         | Status | Notes                                                                                                                     |
+| ----------------------------- | :----: | ------------------------------------------------------------------------------------------------------------------------- |
+| Solana testing best practices |  PASS  | Added the `solana-dev` skill guidance; LiteSVM is used for fast local Solana runtime coverage.                            |
+| Local runtime transfer        |  PASS  | `pnpm run test:integration` creates a local mint, mints tokens, sends through the SDK, verifies, monitors, and retrieves. |
+| Full validation               |  PASS  | `node_modules/.bin/tsc -p tsconfig.json --noEmit`, `vp test run`, `pnpm run test:integration`, and `vp pack` passed.      |
+| Cluster smoke                 |  WARN  | Public devnet faucet/RPC returned errors and Homebrew Solana CLI install was too slow; funded provider smoke remains.     |
+
+**Verdict:** CLEAN WITH WARNING - local runtime integration complete; cluster smoke should be run before production funds.
+
+## Checkpoint 5
+
+| Check                  | Status | Notes                                                                                                           |
+| ---------------------- | :----: | --------------------------------------------------------------------------------------------------------------- |
+| Read-only smoke script |  PASS  | Added `examples/smoke.mjs` and `pnpm run smoke:mainnet`; script does not load keys, sign, or send transactions. |
+| Public mainnet RPC     |  PASS  | `https://api.mainnet.solana.com` passed health, version, blockhash, balance, quote, and payment request checks. |
+| Validation             |  PASS  | Typecheck, unit tests, LiteSVM integration, build, and read-only mainnet smoke passed.                          |
+
+**Verdict:** CLEAN WITH WARNING - public mainnet read-only RPC works; funded provider transfer smoke remains the last production gate.

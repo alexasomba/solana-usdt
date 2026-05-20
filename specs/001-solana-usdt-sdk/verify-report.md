@@ -9,7 +9,7 @@
 | -------- | ----- |
 | CRITICAL | 0     |
 | WARNING  | 1     |
-| PASSED   | 22    |
+| PASSED   | 26    |
 | SKIPPED  | 3     |
 
 **Overall verdict:** PASS WITH WARNINGS
@@ -18,11 +18,11 @@
 
 ## Layer 1: Code to Tasks
 
-| Check                                   | Status | Finding                                                                                                                           |
-| --------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| All tasks have verifiable code          | PASSED | All 21 tasks in `tasks.md` are checked and map to package files, SDK modules, tests, docs, hardening work, or verification gates. |
-| No unchecked tasks                      | PASSED | `specs/001-solana-usdt-sdk/tasks.md` has 21 completed tasks and no unchecked tasks.                                               |
-| Task count matches implementation scope | PASSED | Implemented files match planned scaffold, modules, tests, docs, production hardening, and verification work.                      |
+| Check                                   | Status | Finding                                                                                                                                                                     |
+| --------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| All tasks have verifiable code          | PASSED | All 25 tasks in `tasks.md` are checked and map to package files, SDK modules, tests, docs, hardening work, local runtime integration, mainnet smoke, or verification gates. |
+| No unchecked tasks                      | PASSED | `specs/001-solana-usdt-sdk/tasks.md` has 25 completed tasks and no unchecked tasks.                                                                                         |
+| Task count matches implementation scope | PASSED | Implemented files match planned scaffold, modules, tests, docs, production hardening, local runtime integration, mainnet smoke, and verification work.                      |
 
 ## Layer 2: Code to Plan
 
@@ -48,7 +48,7 @@
 | US2: Send USDT transfers         | P1       | PASSED        | PASSED        | PASSED        | PASS   |
 | US3: Verify and monitor payments | P2       | PASSED        | PASSED        | PASSED        | PASS   |
 
-US2 has mocked coverage for quote, transfer construction, memo attachment, idempotent replay, idempotency conflicts, submitted-before-confirmation storage, confirmation success, timeout behavior, and preflight failure handling. A live devnet/local-validator transfer has not been executed yet.
+US2 has mocked coverage for quote, transfer construction, memo attachment, idempotent replay, idempotency conflicts, submitted-before-confirmation storage, confirmation success, timeout behavior, and preflight failure handling. It also has LiteSVM local runtime coverage that creates a mint, mints tokens, sends through the SDK, verifies by signature, monitors the recipient ATA, and retrieves the recipient balance.
 
 ## Layer 4: spec.md to Product Spec Drift
 
@@ -90,35 +90,56 @@ US2 has mocked coverage for quote, transfer construction, memo attachment, idemp
 | `research/README.md` complete     | SKIPPED |
 | Quickstart exists                 | PASSED  |
 
+## Layer 8: Local Runtime Integration
+
+| Check                         | Status | Notes                                                                                                                                                                  |
+| ----------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Solana skill guidance applied | PASSED | `solana-dev` guidance was used; LiteSVM was selected as the lightweight local runtime because Surfpool/Solana CLI were unavailable or impractical in this environment. |
+| Mint override runtime test    | PASSED | `test/litesvm.integration.test.ts` creates a local mint with `6` decimals and funds a source ATA.                                                                      |
+| SDK transfer path             | PASSED | The test sends through `client.transfers.create`, including recipient ATA creation, `TransferChecked`, Memo reference, send, and confirmation.                         |
+| Payment verification path     | PASSED | The test verifies by signature/reference/recipient/amount using parsed Memo and `transferChecked` data from the LiteSVM-backed RPC shim.                               |
+| Monitor and balance path      | PASSED | The test monitors the recipient ATA and retrieves the recipient token balance after settlement.                                                                        |
+
+## Layer 9: Mainnet RPC Smoke
+
+| Check                    | Status | Notes                                                                                                                                                   |
+| ------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Read-only smoke script   | PASSED | `examples/smoke.mjs` checks RPC health, version, latest blockhash, balance retrieval, quote, payment request creation, and optional transaction lookup. |
+| Public mainnet RPC smoke | PASSED | `SOLANA_RPC_URL=https://api.mainnet.solana.com pnpm run smoke:mainnet` passed on 2026-05-19.                                                            |
+| Signing safety           | PASSED | The smoke script generates temporary signers only for address derivation and does not sign or send transactions.                                        |
+
 ## Warnings
 
 ### WARNING-001
 
 - **Layer:** Integration Coverage
-- **Finding:** No live Solana local-validator/devnet transfer has been executed.
-- **Suggested action:** Before npm release or production funds, run a funded integration test using mint override or devnet fixture accounts.
+- **Finding:** No funded local-validator/devnet provider smoke transfer has been executed.
+- **Suggested action:** Before npm release or production funds, run a funded smoke test against the target RPC provider using mint override or devnet fixture accounts.
 
 ## Traceability Matrix
 
-| Requirement                 | Plan Component             | Task(s)                      | Code                                                        | Test                                                |
-| --------------------------- | -------------------------- | ---------------------------- | ----------------------------------------------------------- | --------------------------------------------------- |
-| FR-001 Factory API          | ESM package and public API | T001, T014                   | `src/index.ts`                                              | `test/client.test.ts`                               |
-| FR-002 USDT defaults        | Constants and context      | T003                         | `src/constants.ts`, `src/context.ts`                        | `test/amounts.test.ts`                              |
-| FR-003 Mint override        | Context options            | T003, T005                   | `src/context.ts`, `src/types.ts`                            | Typecheck                                           |
-| FR-004 Balance via ATA      | Balance module             | T006, T007                   | `src/token.ts`, `src/balances.ts`                           | `test/client.test.ts`                               |
-| FR-005 TransferChecked      | Transfer module            | T009, T010, T017, T018       | `src/transfers.ts`                                          | `test/client.test.ts`                               |
-| FR-006 Memo reference       | Transfer and idempotency   | T009, T012                   | `src/transfers.ts`, `src/idempotency.ts`, `src/payments.ts` | `test/idempotency.test.ts`, `test/payments.test.ts` |
-| FR-007 Idempotency          | Idempotency store          | T004, T010, T011, T017, T018 | `src/idempotency.ts`, `src/transfers.ts`                    | `test/client.test.ts`, `test/idempotency.test.ts`   |
-| FR-008 Payment verification | Payment module             | T012, T013, T017             | `src/payments.ts`                                           | `test/payments.test.ts`                             |
-| FR-009 Structured errors    | Error module               | T004, T011                   | `src/errors.ts`                                             | `test/errors.test.ts`                               |
-| FR-010 Declarations and ESM | Build config               | T001, T016                   | `package.json`, `vite.config.ts`, `tsconfig.pack.json`      | `vp pack`                                           |
+| Requirement                 | Plan Component             | Task(s)                      | Code                                                        | Test                                                        |
+| --------------------------- | -------------------------- | ---------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| FR-001 Factory API          | ESM package and public API | T001, T014                   | `src/index.ts`                                              | `test/client.test.ts`                                       |
+| FR-002 USDT defaults        | Constants and context      | T003                         | `src/constants.ts`, `src/context.ts`                        | `test/amounts.test.ts`                                      |
+| FR-003 Mint override        | Context options            | T003, T005                   | `src/context.ts`, `src/types.ts`                            | Typecheck                                                   |
+| FR-004 Balance via ATA      | Balance module             | T006, T007                   | `src/token.ts`, `src/balances.ts`                           | `test/client.test.ts`                                       |
+| FR-005 TransferChecked      | Transfer module            | T009, T010, T017, T018, T022 | `src/transfers.ts`                                          | `test/client.test.ts`, `test/litesvm.integration.test.ts`   |
+| FR-006 Memo reference       | Transfer and idempotency   | T009, T012                   | `src/transfers.ts`, `src/idempotency.ts`, `src/payments.ts` | `test/idempotency.test.ts`, `test/payments.test.ts`         |
+| FR-007 Idempotency          | Idempotency store          | T004, T010, T011, T017, T018 | `src/idempotency.ts`, `src/transfers.ts`                    | `test/client.test.ts`, `test/idempotency.test.ts`           |
+| FR-008 Payment verification | Payment module             | T012, T013, T017, T023       | `src/payments.ts`                                           | `test/payments.test.ts`, `test/litesvm.integration.test.ts` |
+| FR-009 Structured errors    | Error module               | T004, T011                   | `src/errors.ts`                                             | `test/errors.test.ts`                                       |
+| FR-010 Declarations and ESM | Build config               | T001, T016                   | `package.json`, `vite.config.ts`, `tsconfig.pack.json`      | `vp pack`                                                   |
+| FR-011 RPC smoke            | Provider validation        | T024, T025                   | `examples/smoke.mjs`, `package.json`, `README.md`           | `pnpm run smoke:mainnet`                                    |
 
 ## Verification Commands
 
 - `node_modules/.bin/tsc -p tsconfig.json --noEmit`: PASS
-- `vp test run`: PASS, 5 files and 18 tests
+- `vp test run`: PASS, 6 files and 19 tests
+- `pnpm run test:integration`: PASS, 1 LiteSVM integration test
 - `vp pack`: PASS, emitted ESM and declaration files
+- `SOLANA_RPC_URL=https://api.mainnet.solana.com pnpm run smoke:mainnet`: PASS, read-only public mainnet RPC smoke
 
 ## Conclusion
 
-PASS WITH WARNINGS. There are no critical traceability gaps. The SDK is now hardened for the main production failure modes identified in review: ATA-aware payment verification, ATA-based monitoring, and safer idempotency around confirmation timeouts. The remaining release risk is live Solana integration coverage before handling production funds.
+PASS WITH WARNINGS. There are no critical traceability gaps. The SDK is hardened for the main production failure modes identified in review: ATA-aware payment verification, ATA-based monitoring, safer idempotency around confirmation timeouts, local Solana runtime transfer behavior, and read-only mainnet RPC smoke. The remaining release risk is funded provider transfer smoke coverage before handling production funds.

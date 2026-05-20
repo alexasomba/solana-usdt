@@ -41,6 +41,9 @@
     "build": "vp pack",
     "dev": "vp pack --watch",
     "test": "vp test run",
+    "test:integration": "vp test run test/litesvm.integration.test.ts --testTimeout 120000",
+    "test:live": "pnpm run test:integration",
+    "smoke:mainnet": "pnpm run build && node examples/smoke.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "check": "vp check",
     "clean": "rm -rf dist coverage",
@@ -52,7 +55,9 @@
     "@solana/kit": "6.9.0"
   },
   "devDependencies": {
+    "@solana-program/system": "0.12.0",
     "@types/node": "^24.12.4",
+    "litesvm": "^1.0.0",
     "typescript": "^6.0.3",
     "vite-plus": "^0.1.21",
     "vitest": "npm:@voidzero-dev/vite-plus-test@^0.1.21"
@@ -60,5 +65,5 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "packageManager": "pnpm@11.1.2"
+  "packageManager": "pnpm@11.1.3"
 }

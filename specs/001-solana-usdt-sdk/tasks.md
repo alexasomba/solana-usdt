@@ -47,3 +47,13 @@
 - [x] T019 [US3] Monitor recipient associated token accounts instead of wallet addresses in `src/payments.ts`
 - [x] T020 [US3] Verify recipient wallet expectations against destination associated token accounts in `src/payments.ts`
 - [x] T021 [P] Add regression tests for idempotent submission persistence, conflicts, ATA monitoring, and recipient verification in `test/client.test.ts`, `test/payments.test.ts`
+
+## Phase 8: Local Runtime Integration
+
+- [x] T022 [US2] Add LiteSVM local token transfer integration test in `test/litesvm.integration.test.ts`
+- [x] T023 [US3] Cover signature verification, ATA monitor polling, and balance retrieval against LiteSVM runtime in `test/litesvm.integration.test.ts`
+
+## Phase 9: Mainnet RPC Smoke
+
+- [x] T024 Add read-only mainnet RPC smoke example in `examples/smoke.mjs`
+- [x] T025 Add `smoke:mainnet` package script and README usage docs

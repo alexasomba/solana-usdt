@@ -12,16 +12,16 @@ phases:
     status: completed
     digest_path: specs/001-solana-usdt-sdk/verify/digest.md
 implement:
-  tasks_completed: 21
-  tasks_total: 21
-  progressive_checkpoints: 3
-  progressive_warnings: 0
+  tasks_completed: 25
+  tasks_total: 25
+  progressive_checkpoints: 5
+  progressive_warnings: 1
   progressive_critical: 0
 verify:
   verdict: PASS_WITH_WARNINGS
   critical: 0
   warnings: 1
-  passed: 22
+  passed: 26
   skipped: 3
   report_path: specs/001-solana-usdt-sdk/verify-report.md
 scope:
@@ -33,4 +33,4 @@ scope:
     - src/
     - test/
     - specs/001-solana-usdt-sdk/
-last_updated: "2026-05-18T10:59:00.000+01:00"
+last_updated: "2026-05-19T04:33:00.000+01:00"

@@ -61,13 +61,32 @@ await client.transactions.wait({ signature });
 - `payments.monitor({ recipient })` scans the recipient wallet's associated token account for the configured mint.
 - `payments.verify({ recipient })` validates against the recipient wallet's associated token account, not the wallet address as a token destination.
 - Transfer idempotency records are stored immediately after `sendTransaction` returns a signature, before confirmation finishes. This prevents duplicate sends if confirmation times out and the same idempotency key is retried.
-- Run a funded local-validator or devnet transfer before using this package with production funds.
+- `pnpm run test:integration` runs an in-process LiteSVM transfer with a mint override, ATA creation, `TransferChecked`, Memo verification, monitoring, and balance retrieval.
+- Run a funded local-validator/devnet smoke transfer against your production RPC provider before handling production funds.
 
 ## Development
 
 ```bash
 pnpm install
 vp test run
+pnpm run test:integration
 tsc -p tsconfig.json --noEmit
 vp pack
 ```
+
+## Mainnet RPC Smoke Test
+
+Run a read-only smoke test against an RPC URL:
+
+```bash
+SOLANA_RPC_URL=https://api.mainnet.solana.com pnpm run smoke:mainnet
+```
+
+Optional inputs:
+
+```bash
+SOLANA_OWNER=YourWalletAddressHere SOLANA_RPC_URL=https://api.mainnet.solana.com pnpm run smoke:mainnet
+SOLANA_SIGNATURE=KnownSignatureHere SOLANA_RPC_URL=https://api.mainnet.solana.com pnpm run smoke:mainnet
+```
+
+The smoke script checks RPC health, version, blockhash, `balances.retrieve`, `transfers.quote`, and payment request creation. It does not sign or send transactions.

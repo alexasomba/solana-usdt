@@ -5,7 +5,6 @@
 - Branches: `main` + `feat/X`, `fix/X`, `chore/X`.
 - CI: GitHub Actions (tests/build) -> CF Workers Builds (deploy).
 - Release: Release Please (CHANGELOG, SemVer, GitHub tags).
-- Details: `docs/branching-and-ci.md`.
 
 ### Issue Tracking
 
@@ -43,7 +42,6 @@ End session -> do ALL steps. Done = `git push` success.
 - Never stop before push. Local code = lost code.
 - You push. Never ask user to push.
 - Push fail -> fix + retry -> success. changelog, repo-wide SemVer releases, GitHub releases, and `vX.Y.Z` tags.
-- See `docs/branching-ci-releases.md` for the full workflow.
 
 <!-- SPECKIT START -->
 

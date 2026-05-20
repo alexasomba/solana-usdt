@@ -1,5 +1,5 @@
 {
-  "name": "@alexasomba/solana-usdt-node",
+  "name": "solana-usdt",
   "version": "0.1.0",
   "description": "Developer-friendly Node.js SDK for USDT balances, transfers, and payment verification on Solana.",
   "keywords": [
@@ -10,15 +10,15 @@
     "typescript",
     "usdt"
   ],
-  "homepage": "https://github.com/alexasomba/solana-usdt-node#readme",
+  "homepage": "https://github.com/alexasomba/solana-usdt#readme",
   "bugs": {
-    "url": "https://github.com/alexasomba/solana-usdt-node/issues"
+    "url": "https://github.com/alexasomba/solana-usdt/issues"
   },
   "license": "MIT",
   "author": "alexasomba",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alexasomba/solana-usdt-node.git"
+    "url": "https://github.com/alexasomba/solana-usdt.git"
   },
   "files": [
     "dist"

@@ -3,13 +3,13 @@
 ## Install
 
 ```bash
-pnpm add @alexasomba/solana-usdt-node
+pnpm add solana-usd
 ```
 
 ## Create a Client
 
 ```ts
-import { createKeyPairSignerFromBytes, createSolanaUsdt } from "@alexasomba/solana-usdt-node";
+import { createKeyPairSignerFromBytes, createSolanaUsdt } from "solana-usd";
 
 const signer = await createKeyPairSignerFromBytes(secretKeyBytes);
 

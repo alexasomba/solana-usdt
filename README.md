@@ -1,11 +1,11 @@
-# @alexasomba/solana-usdt-node
+# solana-usd
 
 TypeScript SDK for USDT balances, transfers, and payment verification on Solana.
 It wraps Solana Kit, SPL Token, and Memo instructions behind a Paystack-style
 factory API.
 
 ```ts
-import { createSolanaUsdt, createKeyPairSignerFromBytes } from "@alexasomba/solana-usdt-node";
+import { createSolanaUsdt, createKeyPairSignerFromBytes } from "solana-usd
 
 const signer = await createKeyPairSignerFromBytes(secretKeyBytes);
 

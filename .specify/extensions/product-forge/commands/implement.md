@@ -34,6 +34,7 @@ $ARGUMENTS
 3. Verify `plan.md` and `spec.md` exist
 
 If all tasks are already `[x]`:
+
 > ✅ All tasks in `tasks.md` are already completed.
 > Run `/speckit.product-forge.verify-full` for full traceability verification.
 
@@ -69,14 +70,14 @@ Key context for implementation agents:
 
 **Delegate to SpecKit `implement`** with the enriched context note:
 
-> *"Product Forge context:
+> _"Product Forge context:
 > — Wireframes and mockups are in `product-spec/mockups/` — use them for UI implementation.
-> — User journeys are in `product-spec/user-journey*.md` — match UX flows exactly.
-> — Acceptance criteria are in `spec.md` — each task must satisfy its linked AC.
-> — If you need to clarify a product decision, check `product-spec/product-spec.md` first
->   before asking the user.
+> — User journeys are in `product-spec/user-journey_.md`— match UX flows exactly.
+— Acceptance criteria are in`spec.md`— each task must satisfy its linked AC.
+— If you need to clarify a product decision, check`product-spec/product-spec.md` first
+> before asking the user.
 > After all tasks are completed, do NOT run verification — stop and return control
-> to the Product Forge orchestrator."*
+> to the Product Forge orchestrator."\*
 
 ---
 
@@ -85,8 +86,8 @@ Key context for implementation agents:
 During implementation, if the agent asks a product question that is answered
 in the product spec, redirect:
 
-> *"Check `{FEATURE_DIR}/product-spec/product-spec.md § {section}` —
-> this decision was made in the product spec."*
+> _"Check `{FEATURE_DIR}/product-spec/product-spec.md § {section}` —
+> this decision was made in the product spec."_
 
 If a blocker arises that requires changing the plan or tasks, surface it to the user
 before proceeding. Do not silently deviate from `tasks.md`.
@@ -108,12 +109,12 @@ pause implementation and run a mini-verify checkpoint:
 ```markdown
 ## Checkpoint #{N} — After task {task-range}
 
-| Check | Status | Notes |
-|-------|:------:|-------|
-| Task-Code correspondence | {✅/⚠️/❌} | {details} |
-| Spec AC alignment | {✅/⚠️/❌} | {which AC checked} |
-| Unplanned changes | {✅ None / ⚠️ {N} files} | {file list} |
-| Plan alignment | {✅/⚠️/❌} | {details} |
+| Check                    |          Status          | Notes              |
+| ------------------------ | :----------------------: | ------------------ |
+| Task-Code correspondence |        {✅/⚠️/❌}        | {details}          |
+| Spec AC alignment        |        {✅/⚠️/❌}        | {which AC checked} |
+| Unplanned changes        | {✅ None / ⚠️ {N} files} | {file list}        |
+| Plan alignment           |        {✅/⚠️/❌}        | {details}          |
 
 **Verdict:** {CLEAN — continue / WARNING — review needed / CRITICAL — pause required}
 ```
@@ -142,6 +143,7 @@ If CLEAN: continue silently (just append to implementation-log.md).
 After SpecKit implement returns, verify all tasks in `tasks.md` are `[x]`.
 
 If incomplete tasks remain:
+
 > ⚠️ {N} tasks still pending. Resume implementation? Or mark as skipped with a reason?
 
 If all `[x]`:
@@ -175,11 +177,11 @@ Update `.forge-status.yml`:
 phases:
   implement: completed
 implement:
-  tasks_completed: {N}
-  tasks_total: {N}
-  progressive_checkpoints: {N}
-  progressive_warnings: {N}
-  progressive_critical: {N}
+  tasks_completed: { N }
+  tasks_total: { N }
+  progressive_checkpoints: { N }
+  progressive_warnings: { N }
+  progressive_critical: { N }
 last_updated: "{ISO timestamp}"
 ```
 
@@ -192,6 +194,7 @@ Before handoff, write `{FEATURE_DIR}/implement/digest.md` using the template at
 its path on `.forge-status.yml` under `phases.implement.digest_path`.
 
 The digest must include:
+
 - **Key decisions** — deviations from `plan.md`, shortcuts taken, intentional TODOs left for follow-up.
 - **Artifacts produced** — implementation log, new/modified source files grouped by module.
 - **Open risks** — areas not covered by progressive verify, untested paths, known-tricky code.

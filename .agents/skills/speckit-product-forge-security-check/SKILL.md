@@ -43,20 +43,20 @@ surfaces are actually present. Only check what applies.
 
 Detect the following surfaces from the artifacts and code:
 
-| Surface | Detected? | Relevant OWASP Categories |
-|---------|-----------|--------------------------|
-| User authentication / login | {yes/no} | A01, A07 |
-| Authorization / role checks | {yes/no} | A01, A05 |
-| User-supplied input (forms, query params) | {yes/no} | A03, A06 |
-| File upload / download | {yes/no} | A01, A03, A05 |
-| Payment processing | {yes/no} | A02, A03, A07 |
-| Third-party API calls | {yes/no} | A02, A08, A09 |
-| Database queries | {yes/no} | A03 |
-| Sensitive data storage | {yes/no} | A02 |
-| Admin / privileged operations | {yes/no} | A01, A05 |
-| Public endpoints (no auth) | {yes/no} | A05, A04 |
-| External webhooks received | {yes/no} | A03, A07 |
-| Cryptographic operations | {yes/no} | A02 |
+| Surface                                   | Detected? | Relevant OWASP Categories |
+| ----------------------------------------- | --------- | ------------------------- |
+| User authentication / login               | {yes/no}  | A01, A07                  |
+| Authorization / role checks               | {yes/no}  | A01, A05                  |
+| User-supplied input (forms, query params) | {yes/no}  | A03, A06                  |
+| File upload / download                    | {yes/no}  | A01, A03, A05             |
+| Payment processing                        | {yes/no}  | A02, A03, A07             |
+| Third-party API calls                     | {yes/no}  | A02, A08, A09             |
+| Database queries                          | {yes/no}  | A03                       |
+| Sensitive data storage                    | {yes/no}  | A02                       |
+| Admin / privileged operations             | {yes/no}  | A01, A05                  |
+| Public endpoints (no auth)                | {yes/no}  | A05, A04                  |
+| External webhooks received                | {yes/no}  | A03, A07                  |
+| Cryptographic operations                  | {yes/no}  | A02                       |
 
 Only perform checks for surfaces marked **yes**.
 
@@ -72,6 +72,7 @@ Read the actual implementation files — do not guess.
 **Check if detected:** auth, authorization, admin ops, file access
 
 For each protected endpoint:
+
 - [ ] Is auth guard applied? (`@UseGuards(JwtAuthGuard)` or equivalent)
 - [ ] Is ownership enforced? (user can only access their own resources)
 - [ ] Are role checks present for privileged operations?
@@ -210,6 +211,7 @@ Skipped (not applicable): {list of skipped OWASP categories}
 ### 🔴 CRITICAL (must fix before ship)
 
 #### SEC-001: {Title}
+
 **Category:** {OWASP A0X — name}
 **File:** `{path/to/file.ts}:{line}`
 **Evidence:**
@@ -227,6 +229,7 @@ Skipped (not applicable): {list of skipped OWASP categories}
 ### 🟠 HIGH (fix before release)
 
 #### SEC-002: {Title}
+
 ...
 
 ---
@@ -234,6 +237,7 @@ Skipped (not applicable): {list of skipped OWASP categories}
 ### 🟡 MEDIUM (fix soon, document workaround)
 
 #### SEC-003: {Title}
+
 ...
 
 ---
@@ -241,29 +245,30 @@ Skipped (not applicable): {list of skipped OWASP categories}
 ### 🟢 LOW (fix in maintenance)
 
 #### SEC-004: {Title}
+
 ...
 
 ---
 
 ## Passed Checks ✅
 
-| Check | Category | Result |
-|-------|----------|--------|
-| Auth guard on all protected endpoints | A01 | ✅ Pass |
-| No hardcoded secrets found | A02 | ✅ Pass |
-| ORM queries only (no string concat) | A03 | ✅ Pass |
-| Rate limiting on login endpoint | A04 | ✅ Pass |
-| ... | ... | ... |
+| Check                                 | Category | Result  |
+| ------------------------------------- | -------- | ------- |
+| Auth guard on all protected endpoints | A01      | ✅ Pass |
+| No hardcoded secrets found            | A02      | ✅ Pass |
+| ORM queries only (no string concat)   | A03      | ✅ Pass |
+| Rate limiting on login endpoint       | A04      | ✅ Pass |
+| ...                                   | ...      | ...     |
 
 ## Summary
 
-| Severity | Count | Status |
-|----------|-------|--------|
-| 🔴 Critical | {N} | {must fix} |
-| 🟠 High | {N} | {fix before release} |
-| 🟡 Medium | {N} | {fix soon} |
-| 🟢 Low | {N} | {maintenance} |
-| ✅ Passed | {N} | — |
+| Severity    | Count | Status               |
+| ----------- | ----- | -------------------- |
+| 🔴 Critical | {N}   | {must fix}           |
+| 🟠 High     | {N}   | {fix before release} |
+| 🟡 Medium   | {N}   | {fix soon}           |
+| 🟢 Low      | {N}   | {maintenance}        |
+| ✅ Passed   | {N}   | —                    |
 
 **Ship readiness:** {✅ Ready / ⚠️ Fix critical issues first / 🔴 Not ready}
 ```
@@ -278,12 +283,12 @@ Update `.forge-status.yml`:
 phases:
   security_check: completed
 security:
-  critical: {N}
-  high: {N}
-  medium: {N}
-  low: {N}
-  passed: {N}
-  ship_ready: {true/false}
+  critical: { N }
+  high: { N }
+  medium: { N }
+  low: { N }
+  passed: { N }
+  ship_ready: { true/false }
 last_updated: "{ISO timestamp}"
 ```
 
@@ -307,8 +312,10 @@ Full report: features/{slug}/security-check.md
 ```
 
 If critical issues found:
+
 > 🔴 {N} critical security issue(s) found. Fix required before shipping.
 > Create tasks in your tracker for: SEC-001, SEC-002, ...
 
 If clean:
+
 > ✅ No critical or high issues found. Feature is security-ready to ship.

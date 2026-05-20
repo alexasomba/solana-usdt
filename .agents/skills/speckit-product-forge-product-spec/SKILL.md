@@ -28,6 +28,7 @@ $ARGUMENTS
 ## Step 1: Load Context
 
 Read:
+
 - `{FEATURE_DIR}/research/README.md` — research summary
 - `{FEATURE_DIR}/research/competitors.md` — competitor insights
 - `{FEATURE_DIR}/research/ux-patterns.md` — UX/UI patterns
@@ -43,7 +44,8 @@ This is the most important configuration step. Ask the user ALL questions below 
 
 ### 2A. Feature Complexity Assessment
 
-Ask: *"How large/complex is this feature?"*
+Ask: _"How large/complex is this feature?"_
+
 - **Small** — Single screen or widget, 1-2 user flows, clear scope
 - **Medium** — 2-4 screens, multiple user roles or states, moderate complexity
 - **Large** — 5+ screens, multiple interconnected flows, requires decomposition into sub-features
@@ -54,7 +56,7 @@ Store as `FEATURE_SIZE`.
 
 ### 2B. Product Spec Main Document — Detail Level
 
-Ask: *"How detailed should the main product-spec.md be?"*
+Ask: _"How detailed should the main product-spec.md be?"_
 
 - **Concise** — 2-3 pages: feature summary, top 5 user stories, key metrics, decision log. Fast to write, fast to read.
 - **Standard** — 5-8 pages: full personas, user stories with acceptance criteria, feature breakdown, risks. Recommended for most features.
@@ -66,13 +68,13 @@ Store as `SPEC_DETAIL`.
 
 ### 2C. User Journey — Format and Detail
 
-Ask: *"How should we document user journeys?"*
+Ask: _"How should we document user journeys?"_
 
 - **Simple flow** — One linear Markdown text flow in user-journey.md
 - **Standard** — Separate sections per user role/persona in user-journey.md, with decision branches
 - **Detailed multi-file** — One file per major flow (e.g., `user-journey-onboarding.md`, `user-journey-settings.md`), all linked from README
 
-Also ask: *"How many distinct user journeys does this feature have? (best estimate)"*
+Also ask: _"How many distinct user journeys does this feature have? (best estimate)"_
 Store as `JOURNEY_COUNT`.
 
 If `JOURNEY_COUNT > 2` or `FEATURE_SIZE = large`, automatically suggest multi-file.
@@ -81,13 +83,13 @@ If `JOURNEY_COUNT > 2` or `FEATURE_SIZE = large`, automatically suggest multi-fi
 
 ### 2D. Wireframes — Format and Detail
 
-Ask: *"What level of wireframe fidelity do you need?"*
+Ask: _"What level of wireframe fidelity do you need?"_
 
 - **Text/ASCII** — Markdown text descriptions + ASCII box diagrams. Fast, version-controlled, no tools needed.
 - **Basic HTML** — Simple HTML wireframe per screen: boxes, labels, basic layout. Opens in any browser.
 - **Detailed HTML** — Full HTML/CSS interactive wireframe with actual colors, typography, spacing, hover states. Styled to match project design system if CSS found in codebase.
 
-Also ask: *"Should wireframes be decomposed by screen? If yes, approximately how many screens?"*
+Also ask: _"Should wireframes be decomposed by screen? If yes, approximately how many screens?"_
 Store as `WIREFRAME_DETAIL`, `WIREFRAME_SCREEN_COUNT`.
 
 If `WIREFRAME_SCREEN_COUNT > 3`, auto-suggest decomposition into individual files.
@@ -96,21 +98,23 @@ If `WIREFRAME_SCREEN_COUNT > 3`, auto-suggest decomposition into individual file
 
 ### 2E. Mockups — Create or Skip?
 
-Ask: *"Do you want HTML mockups created? These are higher-fidelity interactive previews."*
+Ask: _"Do you want HTML mockups created? These are higher-fidelity interactive previews."_
+
 - **No mockups** — Skip. Wireframes are sufficient.
 - **Generic mockups** — Clean HTML/CSS, no specific project styles. Works for any project.
 - **Project-styled mockups** — Agent analyzes your CSS/SCSS/design tokens and creates mockups that match your project's look and feel.
 
 If "Project-styled": agent will scan `{codebase_path}` for CSS variables, design tokens, color palettes, typography.
 
-Also ask: *"How many mockup screens? (If feature is large, we'll create multiple linked HTML files with a navigation index)"*
+Also ask: _"How many mockup screens? (If feature is large, we'll create multiple linked HTML files with a navigation index)"_
 Store as `MOCKUP_STYLE`, `MOCKUP_SCREEN_COUNT`.
 
 ---
 
 ### 2F. Metrics Document
 
-Ask: *"Do you want a separate metrics.md with KPIs and success criteria?"*
+Ask: _"Do you want a separate metrics.md with KPIs and success criteria?"_
+
 - **Yes, detailed** — Baseline metrics, target metrics, measurement method, reporting cadence
 - **Yes, concise** — Just success criteria and top 3 KPIs embedded in product-spec.md
 - **No** — Skip metrics.md, brief success criteria in main doc only
@@ -147,7 +151,7 @@ Estimated token budget per file: ~2000-4000 tokens
 Total estimated output: ~{N * 3000} tokens
 ```
 
-Ask: *"Does this document plan look correct? Approve to generate, or adjust."*
+Ask: _"Does this document plan look correct? Approve to generate, or adjust."_
 
 ---
 
@@ -193,13 +197,17 @@ Generate all documents **sequentially** (not in parallel, to maintain context an
 ## 1. Overview
 
 ### Problem Statement
+
 {What problem does this solve? Why does it matter?}
 
 ### Solution Summary
+
 {What are we building? 2-3 sentences.}
 
 ### Background & Research
+
 Key findings from research phase:
+
 - **Competitors:** {top finding from competitors.md}
 - **UX/UI:** {top finding from ux-patterns.md}
 - **Technical:** {top finding from codebase-analysis.md}
@@ -209,6 +217,7 @@ Key findings from research phase:
 ## 2. Users & Personas
 
 ### Primary Persona
+
 **Name:** {Persona Name}
 **Role:** {Role}
 **Context:** {When/why they use this feature}
@@ -216,23 +225,28 @@ Key findings from research phase:
 **Frustrations:** {Current pain points}
 
 ### Secondary Personas (if applicable)
+
 [...]
 
 ## 3. User Stories
 
 ### Must Have (MVP)
+
 - [ ] As a {user}, I want to {action} so that {benefit}. **AC:** {acceptance criteria}
-[...]
+      [...]
 
 ### Should Have
+
 [...]
 
 ### Could Have (Future)
+
 [...]
 
 ## 4. Feature Breakdown
 
 ### {Sub-feature or Section 1}
+
 **Description:** {what it does}
 **Key interactions:** {list}
 **Edge cases:** {list}
@@ -241,38 +255,43 @@ Key findings from research phase:
 
 ## 5. Functional Requirements
 
-| ID | Requirement | Priority | Notes |
-|----|-------------|----------|-------|
-| FR-001 | {requirement} | Must | |
+| ID     | Requirement   | Priority | Notes |
+| ------ | ------------- | -------- | ----- |
+| FR-001 | {requirement} | Must     |       |
+
 [...]
 
 ## 6. Non-Functional Requirements
 
-| Category | Requirement |
-|----------|-------------|
-| Performance | {e.g., loads in <2s on 3G} |
-| Accessibility | {WCAG 2.1 AA} |
-| Security | {...} |
+| Category      | Requirement                |
+| ------------- | -------------------------- |
+| Performance   | {e.g., loads in <2s on 3G} |
+| Accessibility | {WCAG 2.1 AA}              |
+| Security      | {...}                      |
 
 ## 7. Out of Scope (v1)
+
 {Explicit list of what is NOT in this version}
 
 ## 8. Success Criteria
+
 {How we define done. Measurable outcomes.}
 
 ## 9. Risks & Mitigations
 
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
+| Risk   | Probability  | Impact       | Mitigation   |
+| ------ | ------------ | ------------ | ------------ |
 | {risk} | Low/Med/High | Low/Med/High | {mitigation} |
 
 ## 10. Open Questions
+
 {Unresolved questions that need answers before or during implementation}
 
 ## 11. Decision Log
-| Decision | Rationale | Date |
-|----------|-----------|------|
-| {decision} | {why} | {date} |
+
+| Decision   | Rationale | Date   |
+| ---------- | --------- | ------ |
+| {decision} | {why}     | {date} |
 ```
 
 ---
@@ -283,6 +302,7 @@ If `JOURNEY_COUNT <= 2` → single `user-journey.md`
 If `JOURNEY_COUNT > 2` → create `user-journey-{name}.md` per flow, link from README
 
 Each journey file format:
+
 ```markdown
 # User Journey: {Flow Name}
 
@@ -291,20 +311,24 @@ Each journey file format:
 
 ## Journey Map
 
-| Step | User Action | System Response | Emotion | Notes |
-|------|-------------|-----------------|---------|-------|
-| 1 | {what user does} | {what system does} | 😊/😐/😤 | {edge case or note} |
+| Step | User Action      | System Response    | Emotion  | Notes               |
+| ---- | ---------------- | ------------------ | -------- | ------------------- |
+| 1    | {what user does} | {what system does} | 😊/😐/😤 | {edge case or note} |
+
 [...]
 
 ## Alternative Paths
 
 ### Path B: {Alternative scenario}
+
 [Step-by-step]
 
 ## Error Scenarios
+
 [How the journey breaks and recovers]
 
 ## Journey Metrics
+
 - **Entry point:** {where journey starts}
 - **Exit point:** {success state}
 - **Expected completion time:** {seconds/minutes}
@@ -316,6 +340,7 @@ Each journey file format:
 ### 4C. Wireframes
 
 **If `WIREFRAME_DETAIL = text/ascii`** → Single `wireframes.md` with text+ASCII diagrams:
+
 ```markdown
 # Wireframes: {Feature Name}
 
@@ -325,19 +350,20 @@ Each journey file format:
 ## Screen 1: {Screen Name}
 
 **Purpose:** {what this screen does}
-
 ```
+
 ┌─────────────────────────────────┐
-│  Header / Navigation            │
+│ Header / Navigation │
 ├─────────────────────────────────┤
-│  [Component: Search Bar]        │
-│                                 │
-│  ┌──────────┐  ┌──────────┐    │
-│  │  Card 1  │  │  Card 2  │    │
-│  └──────────┘  └──────────┘    │
-│                                 │
-│  [Button: Primary Action]       │
+│ [Component: Search Bar] │
+│ │
+│ ┌──────────┐ ┌──────────┐ │
+│ │ Card 1 │ │ Card 2 │ │
+│ └──────────┘ └──────────┘ │
+│ │
+│ [Button: Primary Action] │
 └─────────────────────────────────┘
+
 ```
 
 **Components:** {list of UI components}
@@ -348,32 +374,68 @@ Each journey file format:
 Create separate `wireframe-{screen-name}.html` per screen.
 
 For **basic HTML**:
+
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Wireframe: {Screen Name} — {Feature}</title>
-  <style>
-    /* Minimal wireframe styles — gray boxes, no decoration */
-    body { font-family: sans-serif; background: #f5f5f5; padding: 20px; }
-    .screen { max-width: 390px; margin: 0 auto; background: white; border: 2px solid #333; min-height: 844px; padding: 16px; }
-    .nav { background: #ddd; padding: 12px; text-align: center; margin-bottom: 16px; }
-    .component { background: #eee; border: 1px solid #bbb; padding: 12px; margin-bottom: 8px; border-radius: 4px; }
-    .button { background: #333; color: white; padding: 12px 24px; border: none; cursor: pointer; width: 100%; }
-    /* Navigation links to other screens */
-    .wireframe-nav { text-align: center; margin-bottom: 20px; }
-    .wireframe-nav a { margin: 0 8px; color: #0066cc; }
-  </style>
-</head>
-<body>
-  <div class="wireframe-nav">
-    <strong>Screens:</strong>
-    <!-- Links to other wireframe files -->
-  </div>
-  <div class="screen">
-    <!-- Screen content -->
-  </div>
-</body>
+  <head>
+    <title>Wireframe: {Screen Name} — {Feature}</title>
+    <style>
+      /* Minimal wireframe styles — gray boxes, no decoration */
+      body {
+        font-family: sans-serif;
+        background: #f5f5f5;
+        padding: 20px;
+      }
+      .screen {
+        max-width: 390px;
+        margin: 0 auto;
+        background: white;
+        border: 2px solid #333;
+        min-height: 844px;
+        padding: 16px;
+      }
+      .nav {
+        background: #ddd;
+        padding: 12px;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .component {
+        background: #eee;
+        border: 1px solid #bbb;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+      }
+      .button {
+        background: #333;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+      }
+      /* Navigation links to other screens */
+      .wireframe-nav {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .wireframe-nav a {
+        margin: 0 8px;
+        color: #0066cc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wireframe-nav">
+      <strong>Screens:</strong>
+      <!-- Links to other wireframe files -->
+    </div>
+    <div class="screen">
+      <!-- Screen content -->
+    </div>
+  </body>
 </html>
 ```
 
@@ -389,27 +451,32 @@ For **detailed HTML**: agent scans `{codebase_path}` for CSS variables and desig
 > Feature: {feature-slug} | Related: [Product Spec](./product-spec.md)
 
 ## Success Definition
+
 {In plain language: what does "success" look like 30 days after launch?}
 
 ## KPIs
 
-| Metric | Baseline | Target | Measurement Method |
-|--------|----------|--------|-------------------|
-| {metric} | {current} | {goal} | {how to measure} |
+| Metric   | Baseline  | Target | Measurement Method |
+| -------- | --------- | ------ | ------------------ |
+| {metric} | {current} | {goal} | {how to measure}   |
 
 ## Leading Indicators
+
 {Early signals that show we're on track, before final KPIs are measurable}
 
 ## Guardrail Metrics
+
 {Metrics that must NOT regress: {e.g., "P95 API response time must stay < 500ms"}}
 
 ## Measurement Plan
+
 - **Day 1:** {what to check immediately after launch}
 - **Week 1:** {early signals}
 - **Day 30:** {primary KPI review}
 - **Quarter:** {long-term impact}
 
 ## Anti-metrics (what failure looks like)
+
 {What signals would tell us the feature failed or caused harm}
 ```
 
@@ -422,12 +489,14 @@ For **detailed HTML**: agent scans `{codebase_path}` for CSS variables and desig
 **For each screen, create `mockups/mockup-{screen-name}.html`**:
 
 If `MOCKUP_STYLE = generic`:
+
 ```html
 <!-- Clean, professional HTML mockup with generic design system -->
 <!-- Bootstrap-inspired utility classes, no dependencies -->
 ```
 
 If `MOCKUP_STYLE = project-styled`:
+
 1. Agent scans `{codebase_path}` for:
    - CSS custom properties (`:root { --color-... }`)
    - SCSS variables
@@ -437,6 +506,7 @@ If `MOCKUP_STYLE = project-styled`:
 3. Creates mockup with extracted values inline
 
 Every mockup file includes:
+
 - Navigation bar linking to other screens in this feature
 - Back link to `index.html`
 - Note: `<!-- Product Forge Mockup | Feature: {slug} | Screen: {name} -->`
@@ -458,21 +528,22 @@ Every mockup file includes:
 
 ## Document Map
 
-| Document | Purpose | Detail Level | Status |
-|----------|---------|--------------|--------|
-| [product-spec.md](./product-spec.md) | Main PRD — goals, stories, requirements | {SPEC_DETAIL} | DRAFT |
-| [user-journey-{name}.md](./user-journey-{name}.md) | {Flow name} user journey | {detail} | DRAFT |
-| [wireframes.md](./wireframes.md) OR [wireframes/](./wireframes/) | Screen layouts | {WIREFRAME_DETAIL} | DRAFT |
-| [metrics.md](./metrics.md) | KPIs and success criteria | {detail} | DRAFT |
-| [mockups/index.html](./mockups/index.html) | Interactive visual mockups | {MOCKUP_STYLE} | DRAFT |
+| Document                                                         | Purpose                                 | Detail Level       | Status |
+| ---------------------------------------------------------------- | --------------------------------------- | ------------------ | ------ |
+| [product-spec.md](./product-spec.md)                             | Main PRD — goals, stories, requirements | {SPEC_DETAIL}      | DRAFT  |
+| [user-journey-{name}.md](./user-journey-{name}.md)               | {Flow name} user journey                | {detail}           | DRAFT  |
+| [wireframes.md](./wireframes.md) OR [wireframes/](./wireframes/) | Screen layouts                          | {WIREFRAME_DETAIL} | DRAFT  |
+| [metrics.md](./metrics.md)                                       | KPIs and success criteria               | {detail}           | DRAFT  |
+| [mockups/index.html](./mockups/index.html)                       | Interactive visual mockups              | {MOCKUP_STYLE}     | DRAFT  |
 
 ## Key Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| {key product decision} | {choice} | {why} |
+| Decision               | Choice   | Rationale |
+| ---------------------- | -------- | --------- |
+| {key product decision} | {choice} | {why}     |
 
 ## Must Read
+
 > Start with [product-spec.md](./product-spec.md), then review user journeys and wireframes.
 > Research artifacts are in [../research/](../research/README.md).
 ```
@@ -491,28 +562,28 @@ Create `{FEATURE_DIR}/README.md` — top-level index for the entire feature:
 
 ## Lifecycle Status
 
-| Phase | Status | Documents |
-|-------|--------|-----------|
-| 1. Research | ✅ Complete | [research/](./research/README.md) |
-| 2. Product Spec | 🔄 In Progress | [product-spec/](./product-spec/README.md) |
-| 3. Revalidation | ⏳ Pending | [review.md](./review.md) |
-| 4. SpecKit Bridge | ⏳ Pending | [spec.md](./spec.md) |
-| 5. Plan | ⏳ Pending | [plan.md](./plan.md) |
-| 5B. Tasks | ⏳ Pending | [tasks.md](./tasks.md) |
-| 5C. Pre-Impl Review | ⏳ Pending | [pre-impl-review.md](./pre-impl-review.md) |
-| 6. Implementation | ⏳ Pending | — |
-| 6B. Code Review | ⏳ Pending | [code-review.md](./code-review.md) |
-| 7. Verification | ⏳ Pending | [verify-report.md](./verify-report.md) |
-| 8A. Test Plan | ⏳ Pending | [testing/](./testing/) |
-| 8B. Test Run | ⏳ Pending | [test-report.md](./test-report.md) |
-| 9. Release Readiness | ⏳ Pending | [release-readiness.md](./release-readiness.md) |
+| Phase                | Status         | Documents                                      |
+| -------------------- | -------------- | ---------------------------------------------- |
+| 1. Research          | ✅ Complete    | [research/](./research/README.md)              |
+| 2. Product Spec      | 🔄 In Progress | [product-spec/](./product-spec/README.md)      |
+| 3. Revalidation      | ⏳ Pending     | [review.md](./review.md)                       |
+| 4. SpecKit Bridge    | ⏳ Pending     | [spec.md](./spec.md)                           |
+| 5. Plan              | ⏳ Pending     | [plan.md](./plan.md)                           |
+| 5B. Tasks            | ⏳ Pending     | [tasks.md](./tasks.md)                         |
+| 5C. Pre-Impl Review  | ⏳ Pending     | [pre-impl-review.md](./pre-impl-review.md)     |
+| 6. Implementation    | ⏳ Pending     | —                                              |
+| 6B. Code Review      | ⏳ Pending     | [code-review.md](./code-review.md)             |
+| 7. Verification      | ⏳ Pending     | [verify-report.md](./verify-report.md)         |
+| 8A. Test Plan        | ⏳ Pending     | [testing/](./testing/)                         |
+| 8B. Test Run         | ⏳ Pending     | [test-report.md](./test-report.md)             |
+| 9. Release Readiness | ⏳ Pending     | [release-readiness.md](./release-readiness.md) |
 
 ## Quick Start
 
 1. **Read the research:** [research/README.md](./research/README.md)
 2. **Read the spec:** [product-spec/product-spec.md](./product-spec/product-spec.md)
-3. **See the journeys:** [product-spec/user-journey*.md](./product-spec/)
-4. **See the wireframes:** [product-spec/wireframes*](./product-spec/)
+3. **See the journeys:** [product-spec/user-journey\*.md](./product-spec/)
+4. **See the wireframes:** [product-spec/wireframes\*](./product-spec/)
 
 ## Feature Description
 
@@ -524,6 +595,7 @@ Create `{FEATURE_DIR}/README.md` — top-level index for the entire feature:
 ## Step 7: Update Status
 
 Update `{FEATURE_DIR}/.forge-status.yml`:
+
 ```yaml
 phases:
   product_spec: completed
@@ -535,11 +607,12 @@ last_updated: "{ISO timestamp}"
 ## Step 8: Present Results
 
 Show the user:
+
 1. The complete document tree that was created
 2. Clickable paths to each document
 3. Summary of key product decisions captured
 
-Ask: *"Product spec complete with [N] documents. All cross-linked via product-spec/README.md. Ready to proceed to Phase 3: Revalidation? Or would you like to review and adjust any document now?"*
+Ask: _"Product spec complete with [N] documents. All cross-linked via product-spec/README.md. Ready to proceed to Phase 3: Revalidation? Or would you like to review and adjust any document now?"_
 
 ---
 
@@ -550,6 +623,7 @@ Before returning, write `{FEATURE_DIR}/product-spec/digest.md` using the templat
 its path on `.forge-status.yml` under `phases.product_spec.digest_path`.
 
 The digest must include:
+
 - **Key decisions** — target users, scope boundaries, top 3 user stories.
 - **Artifacts produced** — every document in `product-spec/` with one-line descriptions.
 - **Open risks** — any NEEDS-CLARIFICATION items unresolved and why.

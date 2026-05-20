@@ -5,7 +5,7 @@ Full documentation for all Product Forge lifecycle phases: 1 optional pre-phase 
 
 ---
 
-## Phase 0: Problem Discovery *(Optional)*
+## Phase 0: Problem Discovery _(Optional)_
 
 **Command:** `/speckit.product-forge.problem-discovery`
 **Output:** `features/{slug}/problem-discovery/`
@@ -14,6 +14,7 @@ Full documentation for all Product Forge lifecycle phases: 1 optional pre-phase 
 ### What happens
 
 Validates the problem before any research begins:
+
 1. **JTBD Analysis** — functional, emotional, and social job layers
 2. **Competing Forces Model** — Push + Pull vs Inertia + Anxiety
 3. **Problem Statement Canvas** — structured problem definition
@@ -22,10 +23,10 @@ Validates the problem before any research begins:
 
 ### Output files
 
-| File | Description |
-|------|-------------|
+| File                                     | Description                               |
+| ---------------------------------------- | ----------------------------------------- |
 | `problem-discovery/problem-statement.md` | JTBD + Problem Canvas + Go/No-go decision |
-| `problem-discovery/interview-script.md` | User interview guide with scoring rubric |
+| `problem-discovery/interview-script.md`  | User interview guide with scoring rubric  |
 
 ### What passes forward
 
@@ -42,24 +43,23 @@ Hypotheses H1–HN are passed to Phase 1 research agents to guide investigation.
 ### What happens
 
 Three research agents run **in parallel**:
+
 1. **Competitor Research** — finds 5-8 competitors, analyzes their feature implementation, identifies gaps and best practices
 2. **UX/UI Patterns** — researches best interactions, flows, empty states, animations, accessibility requirements
 3. **Codebase Analysis** — explores your codebase, finds reusable components, identifies integration points
 
-Two additional agents run **if opted-in**:
-4. **Tech Stack** — compares libraries and APIs with download stats, license, and bundle size
-5. **Metrics/ROI** — estimates business impact, KPIs, measurement plan
+Two additional agents run **if opted-in**: 4. **Tech Stack** — compares libraries and APIs with download stats, license, and bundle size 5. **Metrics/ROI** — estimates business impact, KPIs, measurement plan
 
 ### Output files
 
-| File | Always? | Description |
-|------|---------|-------------|
-| `research/README.md` | Yes | Master index + executive summary + open questions |
-| `research/competitors.md` | Yes | Competitor table + patterns + top implementations |
-| `research/ux-patterns.md` | Yes | Flows + states + micro-interactions + anti-patterns |
-| `research/codebase-analysis.md` | Yes | Integration points + reusable components + complexity |
-| `research/tech-stack.md` | Optional | Library comparison table + recommendation |
-| `research/metrics-roi.md` | Optional | KPI benchmarks + ROI model + measurement plan |
+| File                            | Always?  | Description                                           |
+| ------------------------------- | -------- | ----------------------------------------------------- |
+| `research/README.md`            | Yes      | Master index + executive summary + open questions     |
+| `research/competitors.md`       | Yes      | Competitor table + patterns + top implementations     |
+| `research/ux-patterns.md`       | Yes      | Flows + states + micro-interactions + anti-patterns   |
+| `research/codebase-analysis.md` | Yes      | Integration points + reusable components + complexity |
+| `research/tech-stack.md`        | Optional | Library comparison table + recommendation             |
+| `research/metrics-roi.md`       | Optional | KPI benchmarks + ROI model + measurement plan         |
 
 ---
 
@@ -76,14 +76,14 @@ conducts a brief interview, then generates all documents.
 
 ### Output files
 
-| File | Always? |
-|------|---------|
-| `product-spec/README.md` | Yes |
-| `product-spec/product-spec.md` | Yes |
-| `product-spec/user-journey.md` (or multiple) | Yes |
-| `product-spec/wireframes.md` (or folder) | Yes |
-| `product-spec/metrics.md` | Optional |
-| `product-spec/mockups/index.html` + screens | Optional |
+| File                                         | Always?  |
+| -------------------------------------------- | -------- |
+| `product-spec/README.md`                     | Yes      |
+| `product-spec/product-spec.md`               | Yes      |
+| `product-spec/user-journey.md` (or multiple) | Yes      |
+| `product-spec/wireframes.md` (or folder)     | Yes      |
+| `product-spec/metrics.md`                    | Optional |
+| `product-spec/mockups/index.html` + screens  | Optional |
 
 ---
 
@@ -102,6 +102,7 @@ The agent applies changes and loops until approval.
 ### Consistency check before lock
 
 Before locking, the agent automatically verifies:
+
 - All cross-links in README files are valid
 - All referenced files exist
 - User stories in product-spec align with user-journey flows
@@ -122,9 +123,9 @@ competitive intelligence, UX recommendations, and technical integration notes.
 
 ### SpecKit Mode Selection
 
-| Mode | When to use | Phases triggered |
-|------|-------------|-----------------|
-| Classic | Well-scoped features, clear requirements | plan → tasks → implement → verify |
+| Mode    | When to use                                               | Phases triggered                                         |
+| ------- | --------------------------------------------------------- | -------------------------------------------------------- |
+| Classic | Well-scoped features, clear requirements                  | plan → tasks → implement → verify                        |
 | V-Model | Complex features, safety-critical, need full traceability | v-model-requirements → architecture → design → implement |
 
 ---
@@ -139,11 +140,11 @@ competitive intelligence, UX recommendations, and technical integration notes.
 
 Delegates to SpecKit `plan` with product-spec context, then cross-validates:
 
-| Check | Severity if fails |
-|-------|------------------|
-| All Must Have stories addressed? | Warning |
-| Integration matches codebase analysis? | Warning |
-| NFR approach defined? | Warning |
+| Check                                  | Severity if fails |
+| -------------------------------------- | ----------------- |
+| All Must Have stories addressed?       | Warning           |
+| Integration matches codebase analysis? | Warning           |
+| NFR approach defined?                  | Warning           |
 
 ---
 
@@ -157,16 +158,16 @@ Delegates to SpecKit `plan` with product-spec context, then cross-validates:
 
 Delegates to SpecKit `tasks` with product-spec context, then cross-validates:
 
-| Check | Severity if fails |
-|-------|------------------|
-| Every Must Have US has ≥1 task? | Critical |
-| Every FR has ≥1 task? | Warning |
-| Test tasks included? | Warning |
-| No orphan tasks (untraceable)? | Warning |
+| Check                           | Severity if fails |
+| ------------------------------- | ----------------- |
+| Every Must Have US has ≥1 task? | Critical          |
+| Every FR has ≥1 task?           | Warning           |
+| Test tasks included?            | Warning           |
+| No orphan tasks (untraceable)?  | Warning           |
 
 ---
 
-## Phase 5C: Pre-Implementation Review *(Optional)*
+## Phase 5C: Pre-Implementation Review _(Optional)_
 
 **Command:** `/speckit.product-forge.pre-impl-review`
 **Output:** `features/{slug}/pre-impl-review.md`
@@ -198,6 +199,7 @@ Delegates to SpecKit `implement` with product-spec context (wireframes, user jou
 
 **Progressive verification** (new in v1.3.0): after every N completed tasks (configurable),
 a mini-verify checkpoint runs:
+
 - Task-code correspondence
 - Spec AC alignment
 - Unplanned changes detection
@@ -207,7 +209,7 @@ Results logged in `implementation-log.md`. CRITICAL drift pauses implementation.
 
 ---
 
-## Phase 6B: Code Review *(Optional)*
+## Phase 6B: Code Review _(Optional)_
 
 **Command:** `/speckit.product-forge.code-review`
 **Output:** `features/{slug}/code-review.md`
@@ -217,12 +219,12 @@ Results logged in `implementation-log.md`. CRITICAL drift pauses implementation.
 
 Multi-agent code review with 4 parallel dimensions:
 
-| Dimension | What it checks |
-|-----------|---------------|
-| Quality | SOLID, DRY, error handling, naming, complexity, dead code |
-| Security | OWASP surfaces from plan.md — input validation, injection, auth, secrets |
-| Patterns | Consistency with codebase-analysis.md conventions |
-| Tests | Coverage against spec.md requirements and acceptance criteria |
+| Dimension | What it checks                                                           |
+| --------- | ------------------------------------------------------------------------ |
+| Quality   | SOLID, DRY, error handling, naming, complexity, dead code                |
+| Security  | OWASP surfaces from plan.md — input validation, injection, auth, secrets |
+| Patterns  | Consistency with codebase-analysis.md conventions                        |
+| Tests     | Coverage against spec.md requirements and acceptance criteria            |
 
 Findings use `REV-NNN` IDs with CRITICAL/HIGH/MEDIUM/LOW severity.
 
@@ -236,27 +238,27 @@ Findings use `REV-NNN` IDs with CRITICAL/HIGH/MEDIUM/LOW severity.
 
 ### 6 Verification Layers
 
-| Layer | What it checks |
-|-------|---------------|
-| 1: Code ↔ Tasks | Every task has verifiable code |
-| 2: Code ↔ Plan | All planned components implemented |
-| 3: Stories ↔ Code | Every Must Have story implemented + tested |
-| 4: spec.md ↔ product-spec | No spec drift from approved product spec |
-| 5: Research alignment | Key research recommendations followed |
-| 6: Document integrity | All cross-links valid, no broken references |
+| Layer                     | What it checks                              |
+| ------------------------- | ------------------------------------------- |
+| 1: Code ↔ Tasks           | Every task has verifiable code              |
+| 2: Code ↔ Plan            | All planned components implemented          |
+| 3: Stories ↔ Code         | Every Must Have story implemented + tested  |
+| 4: spec.md ↔ product-spec | No spec drift from approved product spec    |
+| 5: Research alignment     | Key research recommendations followed       |
+| 6: Document integrity     | All cross-links valid, no broken references |
 
 ### Severity levels
 
-| Severity | Meaning | Blocks completion? |
-|----------|---------|-------------------|
-| CRITICAL | Genuine implementation gap or scope violation | Yes |
-| WARNING | Deviation that may be intentional | No |
-| PASSED | Check verified successfully | — |
-| SKIPPED | Cannot verify (missing context) | No |
+| Severity | Meaning                                       | Blocks completion? |
+| -------- | --------------------------------------------- | ------------------ |
+| CRITICAL | Genuine implementation gap or scope violation | Yes                |
+| WARNING  | Deviation that may be intentional             | No                 |
+| PASSED   | Check verified successfully                   | —                  |
+| SKIPPED  | Cannot verify (missing context)               | No                 |
 
 ---
 
-## Phase 8A: Test Plan *(Optional)*
+## Phase 8A: Test Plan _(Optional)_
 
 **Command:** `/speckit.product-forge.test-plan`
 **Output:** `features/{slug}/testing/`
@@ -269,16 +271,16 @@ creates runnable Playwright `.spec.ts` files.
 
 ### Test types generated
 
-| Type | ID Format | Source |
-|------|-----------|--------|
-| Smoke | `TC-SMK-NNN` | Key Must Have stories |
-| E2E | `TC-E2E-NNN` | All user stories |
-| API | `TC-API-NNN` | Functional requirements |
+| Type       | ID Format    | Source                     |
+| ---------- | ------------ | -------------------------- |
+| Smoke      | `TC-SMK-NNN` | Key Must Have stories      |
+| E2E        | `TC-E2E-NNN` | All user stories           |
+| API        | `TC-API-NNN` | Functional requirements    |
 | Regression | `TC-REG-NNN` | Adjacent existing features |
 
 ---
 
-## Phase 8B: Test Run *(Optional)*
+## Phase 8B: Test Run _(Optional)_
 
 **Command:** `/speckit.product-forge.test-run`
 **Output:** `features/{slug}/bugs/`, `features/{slug}/test-report.md`
@@ -301,7 +303,7 @@ Auto-fix loop for P0/P1 bugs with retest and smoke regression check.
 
 ---
 
-## Phase 9: Release Readiness *(Optional)*
+## Phase 9: Release Readiness _(Optional)_
 
 **Command:** `/speckit.product-forge.release-readiness`
 **Output:** `features/{slug}/release-readiness.md`
@@ -311,14 +313,14 @@ Auto-fix loop for P0/P1 bugs with retest and smoke regression check.
 
 Pre-ship checklist:
 
-| Section | What it checks |
-|---------|---------------|
+| Section                 | What it checks                                   |
+| ----------------------- | ------------------------------------------------ |
 | Feature Flags & Rollout | Flag configured, rollout strategy, rollback plan |
-| Documentation | User docs, API docs, changelog, migration guide |
-| Monitoring | Metrics, alerts, dashboard, runbook |
-| Analytics | Tracking plan status, event instrumentation |
-| Dependencies | Env vars, migrations, external services, CI/CD |
-| Security | Security check status, secrets, permissions |
+| Documentation           | User docs, API docs, changelog, migration guide  |
+| Monitoring              | Metrics, alerts, dashboard, runbook              |
+| Analytics               | Tracking plan status, event instrumentation      |
+| Dependencies            | Env vars, migrations, external services, CI/CD   |
+| Security                | Security check status, secrets, permissions      |
 
 Consolidates status of api-docs, security-check, and tracking-plan commands.
 Verdict: READY TO SHIP / CONDITIONALLY READY / NOT READY.
@@ -363,12 +365,12 @@ Runs sync-verify after application.
 
 ## Supporting Commands
 
-| Command | Description |
-|---------|-------------|
-| `/speckit.product-forge.status` | Show lifecycle status, gate audit trail, sync history |
-| `/speckit.product-forge.api-docs` | Generate OpenAPI 3.1 + Postman collection from plan.md |
-| `/speckit.product-forge.security-check` | OWASP audit scoped to detected surfaces |
-| `/speckit.product-forge.tracking-plan` | Analytics events, funnels, SDK snippets |
+| Command                                 | Description                                            |
+| --------------------------------------- | ------------------------------------------------------ |
+| `/speckit.product-forge.status`         | Show lifecycle status, gate audit trail, sync history  |
+| `/speckit.product-forge.api-docs`       | Generate OpenAPI 3.1 + Postman collection from plan.md |
+| `/speckit.product-forge.security-check` | OWASP audit scoped to detected surfaces                |
+| `/speckit.product-forge.tracking-plan`  | Analytics events, funnels, SDK snippets                |
 
 ---
 
@@ -423,11 +425,11 @@ Runs sync-verify after application.
 
 ## Appendix C — Feature modes (v1.5.0)
 
-| Mode | Active phases | Excluded phases |
-|------|---------------|-----------------|
-| `lite` | problem-discovery (opt), product-spec, plan, implement, verify | everything else → `status: "not_applicable"` |
-| `standard` | all phases per the matrix above | — |
-| `v-model` | standard + V-Model artifact phases via `speckit:v-model-*` | — |
+| Mode       | Active phases                                                  | Excluded phases                              |
+| ---------- | -------------------------------------------------------------- | -------------------------------------------- |
+| `lite`     | problem-discovery (opt), product-spec, plan, implement, verify | everything else → `status: "not_applicable"` |
+| `standard` | all phases per the matrix above                                | —                                            |
+| `v-model`  | standard + V-Model artifact phases via `speckit:v-model-*`     | —                                            |
 
 See [`docs/policy.md §4`](./policy.md#4-feature-modes-e1) for mode
 selection, escalation triggers, and deselection rules.

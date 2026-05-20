@@ -29,6 +29,7 @@ $ARGUMENTS
 4. Read `research/metrics-roi.md` (if exists) → predicted KPIs
 
 If not ready:
+
 > ⚠️ Product spec (Phase 2) must be completed before generating a tracking plan.
 > Run: `/speckit.product-forge.product-spec`
 
@@ -43,6 +44,7 @@ Scan the codebase to identify the analytics SDK in use:
 ```
 
 Look for:
+
 - **Mixpanel:** `mixpanel-browser`, `mixpanel.track(`, `import Mixpanel`
 - **Amplitude:** `@amplitude/analytics-browser`, `amplitude.track(`
 - **Segment:** `@segment/analytics-next`, `analytics.track(`
@@ -51,6 +53,7 @@ Look for:
 - **Custom / none:** no SDK found
 
 Ask the user to confirm:
+
 ```
 Analytics SDK detected: {SDK name or "None found"}
 
@@ -76,6 +79,7 @@ Store: `ANALYTICS_SDK`, `TRACKING_LAYER`, `NAMING_CONVENTION`.
 Read every step in every user journey file. For each meaningful user action or system event:
 
 **Trigger event when:**
+
 - User navigates to a key screen / view
 - User performs a primary action (clicks CTA, submits form, completes step)
 - User encounters an error state
@@ -84,6 +88,7 @@ Read every step in every user journey file. For each meaningful user action or s
 - User reaches a conversion point
 
 **Do NOT track:**
+
 - Every mouse move or trivial navigation
 - Internal implementation details
 - Events that won't influence product decisions
@@ -122,6 +127,7 @@ Create `{FEATURE_DIR}/tracking/tracking-plan.md`:
 `{object}_{action}` — snake_case, past tense for completed actions, present tense for states.
 
 Examples:
+
 - `{feature}_viewed` — screen/page view
 - `{feature}_completed` — successful completion
 - `{feature}_{action}_clicked` — button interaction
@@ -134,101 +140,104 @@ Examples:
 
 #### `{feature_slug}_viewed`
 
-| Property | | |
-|----------|--|--|
-| **Trigger** | User opens the {feature} screen | |
-| **Story** | {US-NNN} | |
-| **Success metric** | Session start, funnel entry | |
+| Property           |                                 |     |
+| ------------------ | ------------------------------- | --- |
+| **Trigger**        | User opens the {feature} screen |     |
+| **Story**          | {US-NNN}                        |     |
+| **Success metric** | Session start, funnel entry     |     |
 
 **Properties:**
 
-| Property | Type | Required | Description | Example |
-|----------|------|----------|-------------|---------|
-| `source` | string | ✅ | Where user came from | `"home_tab"`, `"push_notification"`, `"deep_link"` |
-| `user_id` | string | ✅ | User identifier | `"usr_123"` |
-| `session_id` | string | ✅ | Session identifier | `"ses_abc"` |
-| `feature_version` | string | ✅ | Feature version for A/B tracking | `"1.0"` |
-| `is_first_view` | boolean | ✅ | First time user sees this feature | `true` |
+| Property          | Type    | Required | Description                       | Example                                            |
+| ----------------- | ------- | -------- | --------------------------------- | -------------------------------------------------- |
+| `source`          | string  | ✅       | Where user came from              | `"home_tab"`, `"push_notification"`, `"deep_link"` |
+| `user_id`         | string  | ✅       | User identifier                   | `"usr_123"`                                        |
+| `session_id`      | string  | ✅       | Session identifier                | `"ses_abc"`                                        |
+| `feature_version` | string  | ✅       | Feature version for A/B tracking  | `"1.0"`                                            |
+| `is_first_view`   | boolean | ✅       | First time user sees this feature | `true`                                             |
 
 ---
 
 #### `{feature_slug}_completed`
 
-| Property | | |
-|----------|--|--|
-| **Trigger** | User successfully completes the primary action | |
-| **Story** | {US-NNN} | |
-| **Success metric** | Primary conversion — maps to "{success metric from product-spec}" | |
+| Property           |                                                                   |     |
+| ------------------ | ----------------------------------------------------------------- | --- |
+| **Trigger**        | User successfully completes the primary action                    |     |
+| **Story**          | {US-NNN}                                                          |     |
+| **Success metric** | Primary conversion — maps to "{success metric from product-spec}" |     |
 
 **Properties:**
 
-| Property | Type | Required | Description | Example |
-|----------|------|----------|-------------|---------|
-| `user_id` | string | ✅ | | `"usr_123"` |
-| `time_to_complete_ms` | number | ✅ | Time from view to completion | `4500` |
-| `steps_taken` | number | ✅ | How many steps user went through | `3` |
-| `{feature_attribute}` | {type} | ✅ | Key attribute of what was completed | `{example}` |
+| Property              | Type   | Required | Description                         | Example     |
+| --------------------- | ------ | -------- | ----------------------------------- | ----------- |
+| `user_id`             | string | ✅       |                                     | `"usr_123"` |
+| `time_to_complete_ms` | number | ✅       | Time from view to completion        | `4500`      |
+| `steps_taken`         | number | ✅       | How many steps user went through    | `3`         |
+| `{feature_attribute}` | {type} | ✅       | Key attribute of what was completed | `{example}` |
 
 ---
 
 #### `{feature_slug}_error_shown`
 
-| Property | | |
-|----------|--|--|
-| **Trigger** | Any error state is displayed to the user | |
-| **Story** | {US-NNN} — error handling AC | |
-| **Success metric** | Error rate — should decrease after fixes | |
+| Property           |                                          |     |
+| ------------------ | ---------------------------------------- | --- |
+| **Trigger**        | Any error state is displayed to the user |     |
+| **Story**          | {US-NNN} — error handling AC             |     |
+| **Success metric** | Error rate — should decrease after fixes |     |
 
 **Properties:**
 
-| Property | Type | Required | Description | Example |
-|----------|------|----------|-------------|---------|
-| `user_id` | string | ✅ | | |
-| `error_code` | string | ✅ | Machine-readable error type | `"network_timeout"`, `"validation_failed"` |
-| `error_message` | string | ✅ | User-facing error message shown | `"Something went wrong"` |
-| `context` | string | ✅ | Which step triggered the error | `"form_submit"`, `"data_load"` |
+| Property        | Type   | Required | Description                     | Example                                    |
+| --------------- | ------ | -------- | ------------------------------- | ------------------------------------------ |
+| `user_id`       | string | ✅       |                                 |                                            |
+| `error_code`    | string | ✅       | Machine-readable error type     | `"network_timeout"`, `"validation_failed"` |
+| `error_message` | string | ✅       | User-facing error message shown | `"Something went wrong"`                   |
+| `context`       | string | ✅       | Which step triggered the error  | `"form_submit"`, `"data_load"`             |
 
 ---
 
 #### `{feature_slug}_abandoned`
 
-| Property | | |
-|----------|--|--|
-| **Trigger** | User leaves the flow without completing | |
-| **Story** | All stories — retention signal | |
-| **Success metric** | Abandonment rate — target: <{N}% | |
+| Property           |                                         |     |
+| ------------------ | --------------------------------------- | --- |
+| **Trigger**        | User leaves the flow without completing |     |
+| **Story**          | All stories — retention signal          |     |
+| **Success metric** | Abandonment rate — target: <{N}%        |     |
 
 **Properties:**
 
-| Property | Type | Required | Description | Example |
-|----------|------|----------|-------------|---------|
-| `user_id` | string | ✅ | | |
-| `last_step` | string | ✅ | Which step user was on when they left | `"step_2_form"` |
-| `time_spent_ms` | number | ✅ | Time from entry to exit | `12000` |
-| `reason` | string | ❌ | If determinable (back button, app background) | `"back_button"` |
+| Property        | Type   | Required | Description                                   | Example         |
+| --------------- | ------ | -------- | --------------------------------------------- | --------------- |
+| `user_id`       | string | ✅       |                                               |                 |
+| `last_step`     | string | ✅       | Which step user was on when they left         | `"step_2_form"` |
+| `time_spent_ms` | number | ✅       | Time from entry to exit                       | `12000`         |
+| `reason`        | string | ❌       | If determinable (back button, app background) | `"back_button"` |
 
 ---
 
 ## Funnels
 
 ### Primary Conversion Funnel
-
 ```
-{feature_slug}_viewed
-  → {feature_slug}_action_started
-    → {feature_slug}_form_submitted
-      → {feature_slug}_completed
+
+{feature_slug}\_viewed
+→ {feature_slug}\_action_started
+→ {feature_slug}\_form_submitted
+→ {feature_slug}\_completed
 
 Target conversion rate: {N}% (from metrics-roi.md)
+
 ```
 
 ### Error Recovery Funnel
 
 ```
-{feature_slug}_error_shown
-  → {feature_slug}_retry_clicked
-    → {feature_slug}_completed (recovery)
-    OR {feature_slug}_abandoned (drop-off)
+
+{feature_slug}\_error_shown
+→ {feature_slug}\_retry_clicked
+→ {feature_slug}\_completed (recovery)
+OR {feature_slug}\_abandoned (drop-off)
+
 ```
 
 ## Coverage Matrix
@@ -345,8 +354,8 @@ phases:
   tracking_plan: completed
 tracking:
   sdk: "{ANALYTICS_SDK}"
-  events: {N}
-  funnels: {N}
+  events: { N }
+  funnels: { N }
   files:
     - "tracking/tracking-plan.md"
     - "tracking/snippets.md"

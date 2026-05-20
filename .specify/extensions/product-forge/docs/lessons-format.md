@@ -108,17 +108,17 @@ lowercase, domain-scoped.
 
 Recommended roots (extend per project):
 
-| Domain | Examples |
-|--------|----------|
+| Domain              | Examples                                           |
+| ------------------- | -------------------------------------------------- |
 | `external-provider` | fcm, apns, stripe, openai, anthropic, dodopayments |
-| `data` | schema-migration, backfill, data-loss, pii |
-| `auth` | oauth, jwt, session, rbac |
-| `payments` | iap, webhook, receipt, subscription |
-| `performance` | n-plus-one, cache-miss, cold-start, bundle-size |
-| `observability` | logging, metrics, trace, sentry, newrelic |
-| `process` | estimation, scope-creep, handoff, rollout |
-| `channel` | push, email, sms, in-app, notifications |
-| `rate-limit` | quota, throttle, backoff, 429, soft-limit |
+| `data`              | schema-migration, backfill, data-loss, pii         |
+| `auth`              | oauth, jwt, session, rbac                          |
+| `payments`          | iap, webhook, receipt, subscription                |
+| `performance`       | n-plus-one, cache-miss, cold-start, bundle-size    |
+| `observability`     | logging, metrics, trace, sentry, newrelic          |
+| `process`           | estimation, scope-creep, handoff, rollout          |
+| `channel`           | push, email, sms, in-app, notifications            |
+| `rate-limit`        | quota, throttle, backoff, 429, soft-limit          |
 
 Avoid single-use tags; they do not help future matching. Prefer the
 least specific tag that still discriminates.
@@ -136,7 +136,7 @@ dimension:
 3. Score each lesson for relevance against the new feature's implied tags
    (from domain / tech stack / phase hints in the intake).
 4. Surface the top matches in a new section of `research/README.md`:
-   *"Prior lessons that apply"*.
+   _"Prior lessons that apply"_.
 5. Lessons cited become part of the feature's context for product-spec
    and plan.
 

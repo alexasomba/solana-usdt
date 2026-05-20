@@ -29,6 +29,7 @@ $ARGUMENTS
 3. If implement phase is not completed: **STOP** — "Phase 6 (Implementation) must be completed first."
 
 Load artifacts:
+
 - `{FEATURE_DIR}/tasks.md` — extract completed tasks with file paths
 - `{FEATURE_DIR}/spec.md` — requirements and acceptance criteria
 - `{FEATURE_DIR}/plan.md` — architecture decisions and patterns
@@ -65,33 +66,33 @@ Run all four review dimensions simultaneously. Each produces a findings list.
 
 Check each file in REVIEW_FILES for:
 
-| Check | What to Look For |
-|-------|-----------------|
-| **Single Responsibility** | Functions >50 LOC, classes with >5 public methods, files >400 LOC |
-| **DRY** | Duplicated logic across files (>10 similar lines), copy-pasted patterns |
-| **Error Handling** | Unhandled promise rejections, empty catch blocks, missing error responses |
-| **Naming** | Unclear variable/function names, inconsistent naming conventions |
-| **Immutability** | Direct mutation of objects/arrays where immutable patterns expected |
-| **Complexity** | Nesting >4 levels, cyclomatic complexity >10, long parameter lists |
-| **Dead Code** | Unused imports, commented-out code, unreachable branches |
-| **Hardcoded Values** | Magic numbers, hardcoded strings that should be constants/config |
+| Check                     | What to Look For                                                          |
+| ------------------------- | ------------------------------------------------------------------------- |
+| **Single Responsibility** | Functions >50 LOC, classes with >5 public methods, files >400 LOC         |
+| **DRY**                   | Duplicated logic across files (>10 similar lines), copy-pasted patterns   |
+| **Error Handling**        | Unhandled promise rejections, empty catch blocks, missing error responses |
+| **Naming**                | Unclear variable/function names, inconsistent naming conventions          |
+| **Immutability**          | Direct mutation of objects/arrays where immutable patterns expected       |
+| **Complexity**            | Nesting >4 levels, cyclomatic complexity >10, long parameter lists        |
+| **Dead Code**             | Unused imports, commented-out code, unreachable branches                  |
+| **Hardcoded Values**      | Magic numbers, hardcoded strings that should be constants/config          |
 
 ### Dimension 2: Security
 
 Based on `plan.md` threat model (what attack surfaces this feature introduces):
 
-| Check | When Applicable |
-|-------|----------------|
-| **Input Validation** | Any user input, API parameters, file uploads |
-| **SQL/NoSQL Injection** | Database queries with dynamic values |
-| **XSS** | HTML rendering of user-provided content |
-| **Authentication** | New endpoints, middleware bypass |
-| **Authorization** | Resource access, ownership checks |
-| **Mass Assignment** | DTO/model binding without explicit allowlists |
-| **Secrets** | Hardcoded API keys, passwords, tokens in code |
-| **Rate Limiting** | New public endpoints without throttling |
-| **CSRF** | State-changing operations via forms |
-| **Path Traversal** | File operations with user-provided paths |
+| Check                   | When Applicable                               |
+| ----------------------- | --------------------------------------------- |
+| **Input Validation**    | Any user input, API parameters, file uploads  |
+| **SQL/NoSQL Injection** | Database queries with dynamic values          |
+| **XSS**                 | HTML rendering of user-provided content       |
+| **Authentication**      | New endpoints, middleware bypass              |
+| **Authorization**       | Resource access, ownership checks             |
+| **Mass Assignment**     | DTO/model binding without explicit allowlists |
+| **Secrets**             | Hardcoded API keys, passwords, tokens in code |
+| **Rate Limiting**       | New public endpoints without throttling       |
+| **CSRF**                | State-changing operations via forms           |
+| **Path Traversal**      | File operations with user-provided paths      |
 
 Only check surfaces present in this feature (from plan.md). Don't flag irrelevant categories.
 
@@ -99,11 +100,12 @@ Only check surfaces present in this feature (from plan.md). Don't flag irrelevan
 
 From `research/codebase-analysis.md`, extract existing project conventions:
 
-| Existing Pattern | Followed in New Code? | Notes |
-|-----------------|:--------------------:|-------|
-| {pattern from codebase-analysis} | {✅/❌} | {specifics} |
+| Existing Pattern                 | Followed in New Code? | Notes       |
+| -------------------------------- | :-------------------: | ----------- |
+| {pattern from codebase-analysis} |        {✅/❌}        | {specifics} |
 
 Additionally check:
+
 - Consistent import ordering
 - Consistent file structure within modules
 - Consistent error response format
@@ -114,11 +116,12 @@ Additionally check:
 
 From `spec.md` requirements:
 
-| Requirement | Has Unit Test? | Has Integration Test? | Coverage Adequate? |
-|------------|:--------------:|:--------------------:|:-----------------:|
-| {FR-NNN / US-NNN} | {✅/❌} | {✅/❌/N-A} | {✅/⚠️/❌} |
+| Requirement       | Has Unit Test? | Has Integration Test? | Coverage Adequate? |
+| ----------------- | :------------: | :-------------------: | :----------------: |
+| {FR-NNN / US-NNN} |    {✅/❌}     |      {✅/❌/N-A}      |     {✅/⚠️/❌}     |
 
 Check:
+
 - Every public function in new services has at least one test
 - Every API endpoint has at least one request/response test
 - Edge cases from spec.md acceptance criteria are covered
@@ -130,21 +133,22 @@ Check:
 
 Each finding:
 
-```markdown
+````markdown
 ### REV-{NNN}: {short title}
 
-| Field | Value |
-|-------|-------|
+| Field         | Value                                 |
+| ------------- | ------------------------------------- |
 | **Dimension** | Quality / Security / Patterns / Tests |
-| **Severity** | CRITICAL / HIGH / MEDIUM / LOW |
-| **File** | `{file path}:{line range}` |
-| **Rule** | {which principle is violated} |
+| **Severity**  | CRITICAL / HIGH / MEDIUM / LOW        |
+| **File**      | `{file path}:{line range}`            |
+| **Rule**      | {which principle is violated}         |
 
 **What:** {description of the issue}
 
 **Why it matters:** {impact — security risk, maintenance burden, bug risk}
 
 **Suggested fix:**
+
 ```{language}
 // Before
 {current code}
@@ -152,7 +156,9 @@ Each finding:
 // After
 {suggested code}
 ```
-```
+````
+
+````
 
 Severity assignment:
 - **CRITICAL**: Security vulnerability, data loss risk, broken functionality
@@ -213,7 +219,7 @@ Write `{FEATURE_DIR}/code-review.md`:
 - [ ] All HIGH findings addressed or acknowledged
 - [ ] Test coverage adequate for Must Have stories
 - [ ] No security vulnerabilities in new code
-```
+````
 
 ---
 
@@ -260,6 +266,7 @@ REV-001 [CRITICAL] Security: Missing ownership check in updateNotificationPrefer
 ```
 
 Gate options:
+
 - **Approve** — all CRITICAL/HIGH addressed, proceed to Phase 7
 - **Fix now** — user fixes specific findings, then re-run review on affected files
 - **Acknowledge** — user accepts findings, they become warnings in verify-report.md
@@ -273,7 +280,7 @@ Update `.forge-status.yml`:
 
 ```yaml
 phases:
-  code_review: completed  # or "skipped"
+  code_review: completed # or "skipped"
 ```
 
 Record gate decision:
@@ -285,12 +292,12 @@ gates:
     timestamp: "{ISO timestamp}"
     notes: "{summary}"
     findings:
-      critical: {N}
-      high: {N}
-      medium: {N}
-      low: {N}
-      fixed: {N}
-      acknowledged: {N}
+      critical: { N }
+      high: { N }
+      medium: { N }
+      low: { N }
+      fixed: { N }
+      acknowledged: { N }
 ```
 
 ---

@@ -97,11 +97,11 @@ banner so nobody mistakes inference for original intent.
 
 `feature_mode` on `.forge-status.yml` selects which phases run.
 
-| Mode | Phase count | Use case |
-|------|:----------:|----------|
-| `lite` | 5 | Bug fixes, small refactors, trivial features |
-| `standard` | 14 (+ 4 opt) | Default — full lifecycle |
-| `v-model` | standard + IEEE artifacts | Safety-critical / regulated |
+| Mode       |        Phase count        | Use case                                     |
+| ---------- | :-----------------------: | -------------------------------------------- |
+| `lite`     |             5             | Bug fixes, small refactors, trivial features |
+| `standard` |       14 (+ 4 opt)        | Default — full lifecycle                     |
+| `v-model`  | standard + IEEE artifacts | Safety-critical / regulated                  |
 
 The lite map is:
 
@@ -187,15 +187,16 @@ At every phase boundary:
 ```yaml
 gates:
   - phase: pre_impl_review
-    decision: approved            # approved | approved_with_conditions
-                                  # | revised | skipped | rolled_back | aborted
+    decision:
+      approved # approved | approved_with_conditions
+      # | revised | skipped | rolled_back | aborted
     timestamp: 2026-04-24T10:15Z
     notes: "design looks good"
     conditions: []
     sync_result: clean
-    skip_reason: null             # required if decision == skipped
-    rolled_back_to: null          # required if decision == rolled_back
-    approvals: null               # present only if role_approvals.solo_mode = false
+    skip_reason: null # required if decision == skipped
+    rolled_back_to: null # required if decision == rolled_back
+    approvals: null # present only if role_approvals.solo_mode = false
 ```
 
 Skip policy (E2): if `require_skip_reason: true` (default) and the user
@@ -280,13 +281,13 @@ the `implement` phase as each task runs:
 ```yaml
 task_log:
   - id: T001
-    size: M                     # XS | S | M | L | XL  (D4 sizing)
-    status: completed           # pending | in_progress | completed | failed | skipped
-    paths: ["back/src/modules/users/users.service.ts"]  # from tasks.md Paths: line
+    size: M # XS | S | M | L | XL  (D4 sizing)
+    status: completed # pending | in_progress | completed | failed | skipped
+    paths: ["back/src/modules/users/users.service.ts"] # from tasks.md Paths: line
     commit_sha: abc1234
     started_at: 2026-04-19T10:00Z
     completed_at: 2026-04-19T11:15Z
-    failure_log_path: null      # points to failures/<id>.md if failed
+    failure_log_path: null # points to failures/<id>.md if failed
 ```
 
 Renamed from initial-v3 `tasks[]` to avoid collision with
@@ -369,10 +370,10 @@ Drift budget:
 ```yaml
 sync_verify:
   drift_budget:
-    cosmetic: 20        # WARNING when exceeded
-    structural: 0       # always gates
+    cosmetic: 20 # WARNING when exceeded
+    structural: 0 # always gates
   auto_resolve:
-    cosmetic: false     # opt-in; structural is never auto-resolved
+    cosmetic: false # opt-in; structural is never auto-resolved
 ```
 
 Budget exceedance produces a WARNING; it does not silently accept
@@ -421,8 +422,8 @@ they become action items in `release-readiness.md`.
 `config-template.yml` → `.product-forge/config.yml`. New v1.5 keys:
 
 ```yaml
-default_feature_mode: standard       # lite | standard | v-model
-require_skip_reason: true            # forces free-text reason for gate Skip
+default_feature_mode: standard # lite | standard | v-model
+require_skip_reason: true # forces free-text reason for gate Skip
 sync_verify:
   drift_budget:
     cosmetic: 20
@@ -452,7 +453,7 @@ Greenfield standard-mode feature, happy path:
    phase map, offers Phase 0.
 3. Phase 0 (optional) runs problem-discovery. User approves →
    `gates[]` gains an entry, `phases.problem_discovery.status =
-   completed`, `digest_path = problem-discovery/digest.md`.
+completed`, `digest_path = problem-discovery/digest.md`.
 4. Phase 1 runs research. Step 2.5 pulls matching lessons from
    `.product-forge/lessons.md` and includes them. Digest written.
 5. Phase 2 product-spec. Sync-verify Layer 1 runs at the transition.
@@ -521,15 +522,15 @@ self-review can only simulate.
 
 ## 19. Document map
 
-| File | Read when |
-|------|-----------|
-| [README.md](../README.md) | first time, user-facing overview |
-| [docs/phases.md](./phases.md) | understanding each phase's artifacts and gates |
-| [docs/file-structure.md](./file-structure.md) | browsing the on-disk layout |
-| [docs/config.md](./config.md) | configuring a project |
-| [docs/policy.md](./policy.md) | writing a sub-skill; understanding gate rules |
-| [docs/runtime.md](./runtime.md) | implementing/modifying a sub-skill that mutates status |
-| [docs/schema.md](./schema.md) | reading or writing `.forge-status.yml` |
-| [docs/lessons-format.md](./lessons-format.md) | writing retrospective lessons |
-| [docs/qa/plugin-test-plan.md](./qa/plugin-test-plan.md) | validating the plugin itself |
-| [CHANGELOG.md](../CHANGELOG.md) | what changed between versions |
+| File                                                    | Read when                                              |
+| ------------------------------------------------------- | ------------------------------------------------------ |
+| [README.md](../README.md)                               | first time, user-facing overview                       |
+| [docs/phases.md](./phases.md)                           | understanding each phase's artifacts and gates         |
+| [docs/file-structure.md](./file-structure.md)           | browsing the on-disk layout                            |
+| [docs/config.md](./config.md)                           | configuring a project                                  |
+| [docs/policy.md](./policy.md)                           | writing a sub-skill; understanding gate rules          |
+| [docs/runtime.md](./runtime.md)                         | implementing/modifying a sub-skill that mutates status |
+| [docs/schema.md](./schema.md)                           | reading or writing `.forge-status.yml`                 |
+| [docs/lessons-format.md](./lessons-format.md)           | writing retrospective lessons                          |
+| [docs/qa/plugin-test-plan.md](./qa/plugin-test-plan.md) | validating the plugin itself                           |
+| [CHANGELOG.md](../CHANGELOG.md)                         | what changed between versions                          |

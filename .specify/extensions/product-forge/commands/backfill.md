@@ -30,6 +30,7 @@ $ARGUMENTS
 ```
 
 Parse for:
+
 - `--source=<path>` — required. Path to the module/directory to backfill
   (e.g. `back/src/modules/core/users`, `apps/web/src/features/checkout`).
 - `--slug=<feature-slug>` — optional. Default: last path component of source.
@@ -40,6 +41,7 @@ Parse for:
 ## Step 0: Load Config
 
 Read `.product-forge/config.yml`:
+
 - `project_name`, `project_tech_stack`, `project_domain`, `codebase_path`,
   `features_dir`.
 
@@ -111,8 +113,8 @@ Sections:
 A flat list of tasks representing the **components that currently exist**:
 
 ```markdown
-- [x] T001 — {component name}  — {file path}
-- [x] T002 — {component name}  — {file path}
+- [x] T001 — {component name} — {file path}
+- [x] T002 — {component name} — {file path}
 ```
 
 All marked `[x]` because they are shipped. `task_log[]` on the status
@@ -121,9 +123,9 @@ or sizes to record. The gaps report flags this explicitly.
 
 ### 3D — `verify/digest.md` (skipped verification)
 
-Single paragraph: *"Verification was not run because this feature was
+Single paragraph: _"Verification was not run because this feature was
 backfilled from existing code. See gaps-report.md for what a modern
-verification would check."* Sets `phases.verify.digest_path` so the phase
+verification would check."_ Sets `phases.verify.digest_path` so the phase
 can be marked completed without bypassing the digest rule from
 [runtime.md §8](../docs/runtime.md#8-phase-digest-requirement-a4).
 
@@ -170,7 +172,7 @@ phases:
     digest_path: "verify/digest.md"
   # Remaining phases are pending — the user may choose to run them
   # retroactively, so they stay as real optional phases, not not_applicable.
-task_log: []     # optional population in a later run
+task_log: [] # optional population in a later run
 gates: []
 sync_runs:
   last_run: ""
@@ -241,7 +243,7 @@ Sections (required):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Ask: *"Open the gaps report?"* — do not auto-open.
+Ask: _"Open the gaps report?"_ — do not auto-open.
 
 ---
 

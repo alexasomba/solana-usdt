@@ -1,0 +1,59 @@
+# Tasks: Solana USDT Node SDK
+
+**Input**: Design documents from `/specs/001-solana-usdt-sdk/`
+
+**Prerequisites**: plan.md, spec.md, research.md, data-model.md, quickstart.md
+
+**Tests**: Vitest tests are required for public API behavior.
+
+## Phase 1: Setup
+
+- [x] T001 Create package scaffold in `package.json`, `tsconfig.json`, `tsconfig.pack.json`, `vitest.config.ts`, `.gitignore`, `LICENSE`
+- [x] T002 Add README usage documentation in `README.md`
+
+## Phase 2: Foundational
+
+- [x] T003 [P] Implement constants, amount parsing, and address/context helpers in `src/constants.ts`, `src/amounts.ts`, `src/context.ts`
+- [x] T004 [P] Implement structured errors, retry, RPC wrapper, and idempotency in `src/errors.ts`, `src/retry.ts`, `src/rpc.ts`, `src/idempotency.ts`
+- [x] T005 Define public API types in `src/types.ts`
+
+## Phase 3: User Story 1 - Retrieve USDT balances
+
+- [x] T006 [US1] Implement ATA derivation and token account balance reads in `src/token.ts`
+- [x] T007 [US1] Implement `balances.retrieve` in `src/balances.ts`
+- [x] T008 [P] [US1] Add balance and quote tests in `test/client.test.ts`
+
+## Phase 4: User Story 2 - Send USDT transfers
+
+- [x] T009 [US2] Implement transfer quotes and instruction construction in `src/transfers.ts`
+- [x] T010 [US2] Implement transaction signing, sending, confirmation, and idempotency reuse in `src/transfers.ts`, `src/transactions.ts`
+- [x] T011 [P] [US2] Add idempotency and error tests in `test/idempotency.test.ts`, `test/errors.test.ts`
+
+## Phase 5: User Story 3 - Verify and monitor payments
+
+- [x] T012 [US3] Implement payment request creation, signature verification, and monitor polling in `src/payments.ts`
+- [x] T013 [P] [US3] Add payment verification tests in `test/payments.test.ts`
+
+## Phase 6: Polish
+
+- [x] T014 Export all public modules and Kit signer helpers in `src/index.ts`
+- [x] T015 Add amount helper tests in `test/amounts.test.ts`
+- [x] T016 Run `pnpm install`, `tsc -p tsconfig.json --noEmit`, `vp test run`, and `vp pack`
+
+## Phase 7: Production Hardening
+
+- [x] T017 [US2] Store idempotent transfer submissions immediately after `sendTransaction` in `src/transfers.ts`
+- [x] T018 [US2] Reject idempotency key reuse for different transfer inputs in `src/transfers.ts`
+- [x] T019 [US3] Monitor recipient associated token accounts instead of wallet addresses in `src/payments.ts`
+- [x] T020 [US3] Verify recipient wallet expectations against destination associated token accounts in `src/payments.ts`
+- [x] T021 [P] Add regression tests for idempotent submission persistence, conflicts, ATA monitoring, and recipient verification in `test/client.test.ts`, `test/payments.test.ts`
+
+## Phase 8: Local Runtime Integration
+
+- [x] T022 [US2] Add LiteSVM local token transfer integration test in `test/litesvm.integration.test.ts`
+- [x] T023 [US3] Cover signature verification, ATA monitor polling, and balance retrieval against LiteSVM runtime in `test/litesvm.integration.test.ts`
+
+## Phase 9: Mainnet RPC Smoke
+
+- [x] T024 Add read-only mainnet RPC smoke example in `examples/smoke.mjs`
+- [x] T025 Add `smoke:mainnet` package script and README usage docs

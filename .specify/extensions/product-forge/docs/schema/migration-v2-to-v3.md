@@ -10,6 +10,7 @@ v3 is **strictly additive** over v2. Every v2 file is a valid v3 file with
 defaults. No field is removed, renamed, or changed in meaning.
 
 As a result:
+
 - Old sub-skills keep writing v2 shape — this produces valid v3 files.
 - New sub-skills write v3 shape — old sub-skills ignore unknown fields.
 - Readers of v3 must tolerate missing new fields.
@@ -31,23 +32,23 @@ When the orchestrator reads `.forge-status.yml`:
 
 ## New fields introduced in v3
 
-| Field | Purpose | Default |
-|-------|---------|---------|
-| `feature_mode` | Selects phase map (lite/standard/v-model). See E1. | `"standard"` |
-| `backfilled` | Marks reverse-engineered features. Set by B2. | `false` |
-| `phases.<name>.started_at` / `completed_at` | Wall-clock timestamps. | absent |
-| `phases.<name>.tokens_in` / `tokens_out` / `tool_calls` | AI cost tracking. | absent |
-| `phases.<name>.digest_path` | Path to per-phase digest (A4). | absent |
-| `phases.<name>.skipped` / `skip_reason` | E2 skip-reason policy. | `false` / `null` |
-| `task_log[]` | Per-task runtime log: id, size, paths, status, commit_sha. (D4 + D5 + HI-4 from code review.) | `[]` |
-| `gates[].approvals` | Per-role approval records (E3 foundation). | absent |
-| `gates[].skip_reason` | Reason recorded at gate level. | `null` |
-| `dependencies.depends_on` / `depended_on_by` | Cross-feature graph (B1). | `[]` / `[]` |
-| `scope.paths` | Monorepo scope — workspace names the feature touches. Set only when project config has `codebase.paths`. | — |
-| `scope.cross_workspace` | `true` when `len(scope.paths) > 1`. | — |
-| `scope.primary` | Default workspace for ambiguous operations. | — |
-| `role_approvals.solo_mode` | When `true`, gates require a single approval. | `true` |
-| `role_approvals.required_roles_per_phase` | Consulted when `solo_mode: false`. | `{}` |
+| Field                                                   | Purpose                                                                                                  | Default          |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------- |
+| `feature_mode`                                          | Selects phase map (lite/standard/v-model). See E1.                                                       | `"standard"`     |
+| `backfilled`                                            | Marks reverse-engineered features. Set by B2.                                                            | `false`          |
+| `phases.<name>.started_at` / `completed_at`             | Wall-clock timestamps.                                                                                   | absent           |
+| `phases.<name>.tokens_in` / `tokens_out` / `tool_calls` | AI cost tracking.                                                                                        | absent           |
+| `phases.<name>.digest_path`                             | Path to per-phase digest (A4).                                                                           | absent           |
+| `phases.<name>.skipped` / `skip_reason`                 | E2 skip-reason policy.                                                                                   | `false` / `null` |
+| `task_log[]`                                            | Per-task runtime log: id, size, paths, status, commit_sha. (D4 + D5 + HI-4 from code review.)            | `[]`             |
+| `gates[].approvals`                                     | Per-role approval records (E3 foundation).                                                               | absent           |
+| `gates[].skip_reason`                                   | Reason recorded at gate level.                                                                           | `null`           |
+| `dependencies.depends_on` / `depended_on_by`            | Cross-feature graph (B1).                                                                                | `[]` / `[]`      |
+| `scope.paths`                                           | Monorepo scope — workspace names the feature touches. Set only when project config has `codebase.paths`. | —                |
+| `scope.cross_workspace`                                 | `true` when `len(scope.paths) > 1`.                                                                      | —                |
+| `scope.primary`                                         | Default workspace for ambiguous operations.                                                              | —                |
+| `role_approvals.solo_mode`                              | When `true`, gates require a single approval.                                                            | `true`           |
+| `role_approvals.required_roles_per_phase`               | Consulted when `solo_mode: false`.                                                                       | `{}`             |
 
 ## Writer responsibilities
 

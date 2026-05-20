@@ -20,6 +20,7 @@ $ARGUMENTS
 ```
 
 Parse the input:
+
 1. **Change description** (e.g., "Add notification sound selection to preferences") → new scope
 2. **Feature slug** (if not obvious from context) → target feature
 3. **Empty** → ask for change description interactively
@@ -72,16 +73,16 @@ For each existing artifact, analyze how the change affects it:
 
 ### 2A: Artifact Impact Matrix
 
-| Artifact | Exists? | Impact | Changes Needed |
-|----------|:-------:|:------:|---------------|
-| product-spec/product-spec.md | {✅/❌} | {None/Minor/Major} | {description of changes} |
-| product-spec/user-journey*.md | {✅/❌} | {None/Minor/Major} | {new flow or modified flow} |
-| product-spec/wireframes* | {✅/❌} | {None/Minor/Major} | {new screen or modified screen} |
-| spec.md | {✅/❌} | {None/Minor/Major} | {new US-NNN, new FR-NNN, modified AC} |
-| plan.md | {✅/❌} | {None/Minor/Major} | {new component, modified architecture} |
-| tasks.md | {✅/❌} | {None/Minor/Major} | {new tasks, modified tasks} |
-| Code (implemented) | {✅/❌} | {None/Minor/Major} | {new files, modified files} |
-| Tests | {✅/❌} | {None/Minor/Major} | {new test cases, modified tests} |
+| Artifact                       | Exists? |       Impact       | Changes Needed                         |
+| ------------------------------ | :-----: | :----------------: | -------------------------------------- |
+| product-spec/product-spec.md   | {✅/❌} | {None/Minor/Major} | {description of changes}               |
+| product-spec/user-journey\*.md | {✅/❌} | {None/Minor/Major} | {new flow or modified flow}            |
+| product-spec/wireframes\*      | {✅/❌} | {None/Minor/Major} | {new screen or modified screen}        |
+| spec.md                        | {✅/❌} | {None/Minor/Major} | {new US-NNN, new FR-NNN, modified AC}  |
+| plan.md                        | {✅/❌} | {None/Minor/Major} | {new component, modified architecture} |
+| tasks.md                       | {✅/❌} | {None/Minor/Major} | {new tasks, modified tasks}            |
+| Code (implemented)             | {✅/❌} | {None/Minor/Major} | {new files, modified files}            |
+| Tests                          | {✅/❌} | {None/Minor/Major} | {new test cases, modified tests}       |
 
 ### 2B: Effort Delta
 
@@ -108,12 +109,12 @@ Phase rollback needed:
 
 ### 2C: Risk Assessment
 
-| Risk | Likelihood | Impact | Notes |
-|------|:----------:|:------:|-------|
-| Scope creep — more changes will follow | {H/M/L} | {H/M/L} | |
-| Schedule delay — blocks release | {H/M/L} | {H/M/L} | {estimated delay} |
-| Regression — affects completed work | {H/M/L} | {H/M/L} | {what might break} |
-| Test invalidation — existing tests need updates | {H/M/L} | {H/M/L} | {which test cases} |
+| Risk                                            | Likelihood | Impact  | Notes              |
+| ----------------------------------------------- | :--------: | :-----: | ------------------ |
+| Scope creep — more changes will follow          |  {H/M/L}   | {H/M/L} |                    |
+| Schedule delay — blocks release                 |  {H/M/L}   | {H/M/L} | {estimated delay}  |
+| Regression — affects completed work             |  {H/M/L}   | {H/M/L} | {what might break} |
+| Test invalidation — existing tests need updates |  {H/M/L}   | {H/M/L} | {which test cases} |
 
 ---
 
@@ -153,13 +154,14 @@ If ACCEPTED:
 ### 4A: Update Artifacts (in dependency order)
 
 1. **product-spec/product-spec.md** — Add/modify user stories with `<!-- CR-{NNN} -->` marker
-2. **product-spec/user-journey*.md** — Add/modify flows with marker
-3. **product-spec/wireframes*** — Add/modify screens (if UI change)
+2. **product-spec/user-journey\*.md** — Add/modify flows with marker
+3. **product-spec/wireframes\*** — Add/modify screens (if UI change)
 4. **spec.md** — Add/modify US-NNN, FR-NNN, acceptance criteria with marker
 5. **plan.md** — Add/modify architecture sections with marker
 6. **tasks.md** — Add new tasks, modify existing tasks with marker
 
 Each artifact modification:
+
 - Show the proposed edit to the user
 - Wait for confirmation
 - Apply with change marker: `<!-- CR-{NNN}: {brief description} -->`
@@ -182,6 +184,7 @@ If the change requires re-running an earlier phase:
 ```
 
 If user confirms rollback:
+
 - Update `.forge-status.yml` to set affected phases back to `in_progress`
 - The forge orchestrator will pick up from the rolled-back phase on next run
 
@@ -201,26 +204,29 @@ Append to `{FEATURE_DIR}/change-log.md`:
 
 ## CR-{NNN}: {title} — {date}
 
-| Field | Value |
-|-------|-------|
-| **Status** | ACCEPTED / DEFERRED / REJECTED |
-| **Priority** | Must Have / Should Have / Could Have |
-| **Requested at phase** | {current phase when requested} |
-| **Rationale** | {why the change was needed} |
-| **Impact** | {N} artifacts, +{N} tasks, {effort delta} |
-| **Phase rollback** | {yes/no — to which phase} |
+| Field                  | Value                                     |
+| ---------------------- | ----------------------------------------- |
+| **Status**             | ACCEPTED / DEFERRED / REJECTED            |
+| **Priority**           | Must Have / Should Have / Could Have      |
+| **Requested at phase** | {current phase when requested}            |
+| **Rationale**          | {why the change was needed}               |
+| **Impact**             | {N} artifacts, +{N} tasks, {effort delta} |
+| **Phase rollback**     | {yes/no — to which phase}                 |
 
 ### Artifacts Modified
-| Artifact | Change Type | Description |
-|----------|:----------:|-------------|
-| {file} | Added / Modified / Removed | {what changed} |
+
+| Artifact |        Change Type         | Description    |
+| -------- | :------------------------: | -------------- |
+| {file}   | Added / Modified / Removed | {what changed} |
 
 ### New Tasks Added
-| Task | Description | Phase |
-|------|-------------|-------|
+
+| Task   | Description   | Phase     |
+| ------ | ------------- | --------- |
 | {task} | {description} | Phase {N} |
 
 ### Decision Notes
+
 {User's reasoning for accept/defer/reject}
 ```
 
@@ -236,8 +242,8 @@ change_requests:
     title: "{title}"
     status: "{accepted/deferred/rejected}"
     timestamp: "{ISO timestamp}"
-    artifacts_affected: {N}
-    tasks_added: {N}
+    artifacts_affected: { N }
+    tasks_added: { N }
     phase_rollback: "{phase or null}"
 ```
 
@@ -246,6 +252,7 @@ change_requests:
 ## Deferred Changes
 
 If DEFERRED:
+
 - Log in `change-log.md` with status DEFERRED
 - Add to `{FEATURE_DIR}/backlog.md` (create if not exists):
 
@@ -255,6 +262,7 @@ If DEFERRED:
 Deferred changes and v2 improvements logged during the lifecycle.
 
 ## CR-{NNN}: {title} [DEFERRED]
+
 - **Priority:** {priority}
 - **Rationale for deferral:** {reason}
 - **Estimated effort:** {effort}

@@ -143,8 +143,8 @@ require_skip_reason: true
 # Values are upper bounds per feature: exceeding cosmetic→warning, structural→gate.
 sync_verify:
   drift_budget:
-    cosmetic: 20          # whitespace, ordering, date churn — tolerable
-    structural: 0         # field meaning, contract shape — always gated
+    cosmetic: 20 # whitespace, ordering, date churn — tolerable
+    structural: 0 # field meaning, contract shape — always gated
   # Whitelist of drift categories that sync-verify may auto-resolve.
   # Only "cosmetic" is supported; opt-in by setting to true.
   auto_resolve:

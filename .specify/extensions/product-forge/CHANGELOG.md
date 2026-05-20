@@ -484,7 +484,7 @@ Surfaced by the plugin test plan dry-run and closed before release:
 - `forge.md` Phase Map table updated; Phase 8A/8B offer shown after every successful Phase 7 completion
 - `extension.yml` version bumped to `1.1.0`; tags updated to include `testing`
 - `docs/phases.md` updated with full Phase 8A and 8B documentation
-- `docs/file-structure.md` updated with `testing/`, `bugs/`, and `test-report.md` in directory layout; `.forge-status.yml` schema updated with `test_plan`, `test_run`, and `testing:` block; `BUG-NNN.md` and `test-report.md` schemas added; naming conventions updated with TC-* and BUG-NNN IDs
+- `docs/file-structure.md` updated with `testing/`, `bugs/`, and `test-report.md` in directory layout; `.forge-status.yml` schema updated with `test_plan`, `test_run`, and `testing:` block; `BUG-NNN.md` and `test-report.md` schemas added; naming conventions updated with TC-\* and BUG-NNN IDs
 - `README.md` updated with 9-phase lifecycle diagram, 10-command table, and expanded file structure
 
 ### Bug Fixes
@@ -509,6 +509,7 @@ Surfaced by the plugin test plan dry-run and closed before release:
 ### Feature File Structure
 
 Introduced the `features/<name>/` directory convention with:
+
 - `research/` — all research artifacts + README index
 - `product-spec/` — all product spec artifacts + README index
 - `.forge-status.yml` — phase tracker

@@ -28,6 +28,7 @@ $ARGUMENTS
 ```
 
 Parse for optional flags:
+
 - `--features-dir=<path>` — override default `features/` (from config).
 - `--include-archived` — include `features/_archived/*` in the scan.
 - `--format=markdown|html` — output format. `markdown` is default; `html`
@@ -38,6 +39,7 @@ Parse for optional flags:
 ## Step 0: Load Config
 
 Read `.product-forge/config.yml`:
+
 - `features_dir` (default `features`)
 - `project_name` (for report header)
 
@@ -53,6 +55,7 @@ For each immediate child directory of `{features_dir}/` that contains a
 3. Read `<phase>/digest.md` files where `digest_path` is set.
 
 Directories to skip:
+
 - Names starting with `_` (e.g. `_portfolio`, `_archived`) unless
   `--include-archived` is given.
 - Directories with no `.forge-status.yml` (not yet under Product Forge).
@@ -64,7 +67,7 @@ Directories to skip:
 Columns:
 
 | feature | mode | current phase | status | days in phase | backfilled | blocked_by |
-|---------|------|---------------|--------|---------------|------------|-----------|
+| ------- | ---- | ------------- | ------ | ------------- | ---------- | ---------- |
 
 - `current phase` = first non-completed, non-skipped phase in the feature's mode map.
 - `days in phase` = `now - phases[<current>].started_at`, or `now - last_updated` if unset.
@@ -93,12 +96,12 @@ following sources in priority order:
 
 For each feature, record the extraction accuracy:
 
-| Accuracy level | Source used |
-|----------------|-------------|
-| exact | `task_log[].paths` |
-| pre-implementation | `tasks.md` `Paths:` lines |
-| module-level | `plan.md` module names |
-| unknown | no source available — feature appears in report without conflict rows |
+| Accuracy level     | Source used                                                           |
+| ------------------ | --------------------------------------------------------------------- |
+| exact              | `task_log[].paths`                                                    |
+| pre-implementation | `tasks.md` `Paths:` lines                                             |
+| module-level       | `plan.md` module names                                                |
+| unknown            | no source available — feature appears in report without conflict rows |
 
 For every pair of in-flight features `(A, B)`:
 
@@ -205,7 +208,7 @@ Console output example:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Ask: *"Open the portfolio report?"* — do not auto-open.
+Ask: _"Open the portfolio report?"_ — do not auto-open.
 
 ---
 

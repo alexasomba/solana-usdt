@@ -21,7 +21,7 @@ to it instead of repeating rules in their own files.
    - **Rollback** → jump back to an earlier phase by name
 3. **Show progress.** Use `TodoWrite` (or equivalent) to show all phases and mark current/completed.
 4. **Pass full context forward.** When delegating, always include: `FEATURE_DESCRIPTION`, `FEATURE_DIR`, project config, and prior phase outputs summary.
-5. **Suppress sub-agent handoffs.** When delegating, prepend: *"You are invoked by Product Forge Orchestrator. Do NOT follow handoffs or auto-forward. Return output to the orchestrator and stop."*
+5. **Suppress sub-agent handoffs.** When delegating, prepend: _"You are invoked by Product Forge Orchestrator. Do NOT follow handoffs or auto-forward. Return output to the orchestrator and stop."_
 6. **Context budget awareness.** If context feels heavy at phase boundaries, summarize prior phases and offer to continue in a new session with auto-resume via `.forge-status.yml`.
 7. **Git checkpoints.** After Phase 6, Phase 7, and Phase 8B complete, offer a WIP commit. Never auto-commit — always ask first.
 8. **Testing phases are optional.** After Phase 7, ask whether to run 8A/8B. Respect the user's choice.
@@ -37,14 +37,14 @@ to it instead of repeating rules in their own files.
 Every gate decision is one of the following literals, recorded in the `decision`
 field of a `gates[]` entry:
 
-| Decision | Meaning | Requires |
-|----------|---------|----------|
-| `approved` | User approved, proceed to next phase. | — |
-| `approved_with_conditions` | User approved but flagged follow-ups. | `conditions: [...]` populated. |
-| `revised` | User asked for re-run with feedback. | `notes` populated. |
-| `skipped` | User chose to skip an optional phase. | `skip_reason` populated when `require_skip_reason: true`. See §3. |
-| `rolled_back` | User rewound to an earlier phase. | `rolled_back_to: "<phase-name>"` field populated. Subsequent phases' statuses reset to `pending`; their original completion is preserved in `gates[]` history. |
-| `aborted` | User terminated the lifecycle for this feature. | `notes` populated. |
+| Decision                   | Meaning                                         | Requires                                                                                                                                                       |
+| -------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `approved`                 | User approved, proceed to next phase.           | —                                                                                                                                                              |
+| `approved_with_conditions` | User approved but flagged follow-ups.           | `conditions: [...]` populated.                                                                                                                                 |
+| `revised`                  | User asked for re-run with feedback.            | `notes` populated.                                                                                                                                             |
+| `skipped`                  | User chose to skip an optional phase.           | `skip_reason` populated when `require_skip_reason: true`. See §3.                                                                                              |
+| `rolled_back`              | User rewound to an earlier phase.               | `rolled_back_to: "<phase-name>"` field populated. Subsequent phases' statuses reset to `pending`; their original completion is preserved in `gates[]` history. |
+| `aborted`                  | User terminated the lifecycle for this feature. | `notes` populated.                                                                                                                                             |
 
 The user-facing Rollback action in §1.2 maps to a `rolled_back` gate entry.
 Abort (stop everything) maps to `aborted`. The two are distinct: rollback
@@ -62,7 +62,7 @@ traceability.
 
 ```yaml
 # .product-forge/config.yml
-require_skip_reason: true   # default
+require_skip_reason: true # default
 ```
 
 **Rules:**
@@ -111,13 +111,13 @@ in `.forge-status.yml` under `feature_mode` and defaults to `standard`.
 
 **Lite mode** — for bug fixes, refactors, and small features (≤5 tasks, single module):
 
-| # | Phase | Required? |
-|---|-------|-----------|
-| 0 | `problem_discovery` | optional |
-| 2 | `product_spec` (light) | required |
-| 5 | `plan` | required |
-| 6 | `implement` | required |
-| 7 | `verify` | required |
+| #   | Phase                  | Required? |
+| --- | ---------------------- | --------- |
+| 0   | `problem_discovery`    | optional  |
+| 2   | `product_spec` (light) | required  |
+| 5   | `plan`                 | required  |
+| 6   | `implement`            | required  |
+| 7   | `verify`               | required  |
 
 **Standard mode** — the full 14-phase lifecycle documented in `commands/forge.md`.
 
@@ -170,8 +170,8 @@ approval.
 ```yaml
 # .forge-status.yml
 role_approvals:
-  solo_mode: true                  # default
-  required_roles_per_phase: {}     # used only when solo_mode: false
+  solo_mode: true # default
+  required_roles_per_phase: {} # used only when solo_mode: false
 ```
 
 ### 5.1 Solo mode
@@ -202,13 +202,13 @@ Multi-role mode is **opt-in** and is not forced on solo users.
 
 ## 6. Optional Phase Governance
 
-| Phase | Default state | May be made required via config key |
-|-------|---------------|--------------------------------------|
-| `problem_discovery` | optional | `require_problem_discovery: true` |
-| `pre_impl_review` | optional | `require_pre_impl_review: true` |
-| `code_review` | optional | `require_code_review: true` |
-| `test_plan` / `test_run` | optional | `require_testing: true` |
-| `release_readiness` | optional | `release_readiness: required` |
+| Phase                    | Default state | May be made required via config key |
+| ------------------------ | ------------- | ----------------------------------- |
+| `problem_discovery`      | optional      | `require_problem_discovery: true`   |
+| `pre_impl_review`        | optional      | `require_pre_impl_review: true`     |
+| `code_review`            | optional      | `require_code_review: true`         |
+| `test_plan` / `test_run` | optional      | `require_testing: true`             |
+| `release_readiness`      | optional      | `release_readiness: required`       |
 
 When a phase is required by config, the "Skip" option is hidden at the gate.
 

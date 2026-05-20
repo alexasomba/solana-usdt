@@ -58,11 +58,11 @@ At the start of a v-model feature, the orchestrator detects whether the
 plugin is installed by probing for the command
 `speckit.v-model.requirements`.
 
-| Detection result | Behaviour |
-|------------------|-----------|
-| Installed, version matches | Proceed with v-model phase map (§4 below). |
-| Installed, version below required | Abort with upgrade instructions. Do NOT fall back to standard — version mismatches cause silent artifact incompatibility. |
-| Not installed | Abort with install command. Do NOT fall back to standard — regulated work must not silently degrade to unregulated. |
+| Detection result                                                          | Behaviour                                                                                                                                                                                 |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Installed, version matches                                                | Proceed with v-model phase map (§4 below).                                                                                                                                                |
+| Installed, version below required                                         | Abort with upgrade instructions. Do NOT fall back to standard — version mismatches cause silent artifact incompatibility.                                                                 |
+| Not installed                                                             | Abort with install command. Do NOT fall back to standard — regulated work must not silently degrade to unregulated.                                                                       |
 | User toggles `feature_mode: v-model` on a feature created with `standard` | Warn that a mid-feature mode change is unusual for formal work; require explicit confirmation; re-run the backfill of missing V-Model artifacts from existing product-spec / plan if any. |
 
 ### Domain configuration
@@ -71,7 +71,7 @@ The V-Model plugin accepts `v-model-config.yml` with domain selection:
 
 ```yaml
 # v-model-config.yml — placed at project root alongside .product-forge/config.yml
-domain: "iec_62304"   # iec_62304 | iso_26262 | do_178c | generic
+domain: "iec_62304" # iec_62304 | iso_26262 | do_178c | generic
 ```
 
 Product Forge reads this file (if present) and passes the domain to
@@ -216,8 +216,8 @@ design element without a test pair is flagged CRITICAL.
 ### Peer-review integration
 
 Any phase gate in v-model mode CAN request peer-review before
-approval. The orchestrator offers: *"Run peer-review on this
-artifact?"* — delegates to `speckit.v-model.peer-review`, attaches
+approval. The orchestrator offers: _"Run peer-review on this
+artifact?"_ — delegates to `speckit.v-model.peer-review`, attaches
 findings to the gate entry.
 
 ---
@@ -229,22 +229,22 @@ populated by the delegated commands (our plugin only reads it):
 
 ```yaml
 v_model:
-  domain: "iec_62304"                  # copied from v-model-config.yml
-  version: "0.5.0"                     # detected extension version
+  domain: "iec_62304" # copied from v-model-config.yml
+  version: "0.5.0" # detected extension version
   artifacts:
-    REQ: 42                            # count of REQ-NNN records
+    REQ: 42 # count of REQ-NNN records
     HAZ: 7
     SYS: 12
     ARCH: 28
     MOD: 85
-    ATP: 42                            # one ATP per REQ (100% coverage)
-    STP: 12                            # one STP per SYS
-    ITP: 28                            # one ITP per ARCH
-    UTP: 85                            # one UTP per MOD
-    PRF: 14                            # peer-review findings, open
+    ATP: 42 # one ATP per REQ (100% coverage)
+    STP: 12 # one STP per SYS
+    ITP: 28 # one ITP per ARCH
+    UTP: 85 # one UTP per MOD
+    PRF: 14 # peer-review findings, open
   trace:
     last_rebuild: "2026-04-24T10:15:00Z"
-    orphan_count: 0                    # gates: zero before proceeding
+    orphan_count: 0 # gates: zero before proceeding
     coverage_pct: 100
   audit:
     last_report: "audit-reports/release-candidate-1.md"

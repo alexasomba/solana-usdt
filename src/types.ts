@@ -24,7 +24,7 @@ export interface SolanaRpcLike {
 export interface SolanaUsdtClientOptions {
   rpcUrl: string;
   rpcSubscriptionsUrl?: string | undefined;
-  signer: TransactionSigner;
+  signer?: TransactionSigner | undefined;
   commitment?: Commitment | undefined;
   fetch?: typeof fetch | undefined;
   timeoutMs?: number | undefined;
@@ -35,10 +35,15 @@ export interface SolanaUsdtClientOptions {
   rpc?: SolanaRpcLike | undefined;
 }
 
+export type SolanaUsdtReadOnlyClientOptions = Omit<
+  SolanaUsdtClientOptions,
+  "signer" | "idempotencyStore"
+>;
+
 export interface ClientContext {
   rpcUrl: string;
   rpc: SolanaRpcLike;
-  signer: TransactionSigner;
+  signer?: TransactionSigner | undefined;
   commitment: Commitment;
   timeoutMs?: number | undefined;
   retry?: RetryOptions | undefined;
@@ -108,6 +113,14 @@ export interface PaymentCreateRequestInput {
   metadata?: Record<string, unknown> | undefined;
 }
 
+export interface SolanaPayUrlOptions {
+  recipient?: AddressInput | undefined;
+  reference?: string | readonly string[] | undefined;
+  memo?: string | undefined;
+  label?: string | undefined;
+  message?: string | undefined;
+}
+
 export interface PaymentRequest {
   reference: string;
   recipient?: string | undefined;
@@ -125,6 +138,17 @@ export interface PaymentVerifyInput {
   signature?: string | undefined;
   recipient?: AddressInput | undefined;
   amount?: TokenAmountInput | undefined;
+  cursor?: string | undefined;
+  limit?: number | undefined;
+  maxPages?: number | undefined;
+}
+
+export interface PaymentVerificationScanDiagnostics {
+  pagesScanned: number;
+  signaturesScanned: number;
+  limit: number;
+  cursor?: string | undefined;
+  hasMore: boolean;
 }
 
 export interface VerifiedPayment {
@@ -140,6 +164,7 @@ export interface VerifiedPayment {
   slot?: bigint | undefined;
   confirmationStatus?: string | undefined;
   memo?: string | undefined;
+  scan?: PaymentVerificationScanDiagnostics | undefined;
 }
 
 export interface PaymentMonitorInput {
@@ -150,6 +175,8 @@ export interface PaymentMonitorInput {
 
 export interface PaymentMonitorResult {
   cursor?: string | undefined;
+  signaturesScanned: number;
+  hasMore: boolean;
   payments: VerifiedPayment[];
 }
 
@@ -182,6 +209,7 @@ export interface SolanaUsdtClient {
   };
   payments: {
     createRequest(input: PaymentCreateRequestInput): PaymentRequest;
+    toSolanaPayUrl(request: PaymentRequest, options?: SolanaPayUrlOptions): URL;
     verify(input: PaymentVerifyInput): Promise<VerifiedPayment>;
     monitor(input: PaymentMonitorInput): Promise<PaymentMonitorResult>;
   };
@@ -190,3 +218,8 @@ export interface SolanaUsdtClient {
     wait(input: TransactionWaitInput): Promise<TransactionStatus>;
   };
 }
+
+export type SolanaUsdtReadOnlyClient = Pick<
+  SolanaUsdtClient,
+  "balances" | "payments" | "transactions"
+>;

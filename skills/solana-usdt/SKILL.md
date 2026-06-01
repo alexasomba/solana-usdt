@@ -17,17 +17,27 @@ A developer-friendly SDK for USDT balance retrieval, transfer quotes, payments, 
 
 ### 1. Client Instantiation
 
-Always import `createSolanaUsdt` and configure it with an RPC URL and a `signer` (which must be a `TransactionSigner` from `@solana/kit`).
+Import `createSolanaUsdt` and configure it with an RPC URL. Add a real `TransactionSigner` from `@solana/kit` only when the app will quote or create transfers.
 
 ```typescript
 import { createSolanaUsdt, generateKeyPairSigner } from "solana-usdt";
 
-// Instantiate the SDK client
 const signer = await generateKeyPairSigner();
 const client = createSolanaUsdt({
   rpcUrl: "https://api.devnet.solana.com",
   signer,
   commitment: "confirmed", // 'processed' | 'confirmed' | 'finalized'
+});
+```
+
+For balances, payment request creation, payment verification, payment monitoring, and transaction lookup, use the read-only client and do not generate a keypair:
+
+```typescript
+import { createReadOnlySolanaUsdt } from "solana-usdt";
+
+const client = createReadOnlySolanaUsdt({
+  rpcUrl: "https://api.mainnet-beta.solana.com",
+  commitment: "confirmed",
 });
 ```
 
@@ -90,6 +100,17 @@ const request = client.payments.createRequest({
 });
 ```
 
+#### Build a Solana Pay URL
+
+Convert a payment request into a canonical `URL` object. The helper encodes `amount`, `spl-token`, `reference`, `memo`, and optional `label`/`message` query parameters.
+
+```typescript
+const url = client.payments.toSolanaPayUrl(request, {
+  label: "Acme Store",
+  message: `Order ${request.reference}`,
+});
+```
+
 #### Verify a Payment
 
 Verify if a transaction signature or reference key contains a valid transfer matching the payment requirements.
@@ -99,10 +120,14 @@ const verified = await client.payments.verify({
   reference: "UniqueRefString",
   recipient: "RecipientAddressString",
   amount: "10.50",
+  limit: 50,
+  maxPages: 3,
 });
 
 if (verified.found) {
   console.log(`Payment confirmed in slot: ${verified.slot}`);
+} else {
+  console.log(`Scanned ${verified.scan?.signaturesScanned ?? 0} signatures`);
 }
 ```
 
@@ -132,5 +157,8 @@ const status = await client.transactions.wait({
 ## Best Practices & Pitfalls
 
 - **Idempotency Store**: Implement custom `IdempotencyStore` for production to avoid double-spend/double-transfer scenarios on retry.
-- **Node.js Environment**: The SDK is fully platform-agnostic (works in browser and Node.js) and uses standard `globalThis.crypto` for UUID generation.
+- **Serverless Checkout**: Do not call `generateKeyPairSigner()` for payment-only checkout flows in Cloudflare Workers or other serverless runtimes. Use `createReadOnlySolanaUsdt()` unless the code signs transfers.
+- **No-op Signers**: `createNoopSigner()` is re-exported from Solana Kit for advanced external-signing compatibility, but SDK-managed transfers require a real signer.
+- **Node.js Environment**: The SDK targets Node.js backends and uses standard `globalThis.crypto` for UUID generation.
 - **Commitment Level**: Prefer `confirmed` or `finalized` commitment levels for balance checks and transfer verification to avoid race conditions.
+- **Reference Verification Depth**: The default reference scan checks one page of 20 signatures. Use bounded `limit`, `cursor`, and `maxPages` options for delayed checkout confirmations.

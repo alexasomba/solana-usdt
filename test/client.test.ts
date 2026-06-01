@@ -40,6 +40,17 @@ describe("createSolanaUsdt", () => {
     expect(quote.estimatedFeeLamports).toBeGreaterThan(5_000n);
   });
 
+  it("keeps transfer APIs behind an explicit signer", async () => {
+    const client = createSolanaUsdt({
+      rpcUrl: "http://localhost:8899",
+      rpc: {},
+    });
+
+    await expect(
+      client.transfers.quote({ to: "11111111111111111111111111111111", amount: "1" }),
+    ).rejects.toMatchObject({ code: "SIGNER_REQUIRED" });
+  });
+
   it("returns an existing idempotent transfer result without resending", async () => {
     const signer = await generateKeyPairSigner();
     const recipient = await generateKeyPairSigner();

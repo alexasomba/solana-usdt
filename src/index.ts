@@ -12,6 +12,7 @@ export * from "./types.js";
 export {
   createKeyPairSignerFromBytes,
   createKeyPairSignerFromPrivateKeyBytes,
+  createNoopSigner,
   createSignerFromKeyPair,
   generateKeyPairSigner,
   type TransactionSigner,
@@ -22,13 +23,29 @@ import { createContext } from "./context.js";
 import { createPaymentsModule } from "./payments.js";
 import { createTransactionsModule } from "./transactions.js";
 import { createTransfersModule } from "./transfers.js";
-import type { SolanaUsdtClient, SolanaUsdtClientOptions } from "./types.js";
+import type {
+  SolanaUsdtClient,
+  SolanaUsdtClientOptions,
+  SolanaUsdtReadOnlyClient,
+  SolanaUsdtReadOnlyClientOptions,
+} from "./types.js";
 
 export function createSolanaUsdt(options: SolanaUsdtClientOptions): SolanaUsdtClient {
   const ctx = createContext(options);
   return {
     balances: createBalancesModule(ctx),
     transfers: createTransfersModule(ctx),
+    payments: createPaymentsModule(ctx),
+    transactions: createTransactionsModule(ctx),
+  };
+}
+
+export function createReadOnlySolanaUsdt(
+  options: SolanaUsdtReadOnlyClientOptions,
+): SolanaUsdtReadOnlyClient {
+  const ctx = createContext(options);
+  return {
+    balances: createBalancesModule(ctx),
     payments: createPaymentsModule(ctx),
     transactions: createTransactionsModule(ctx),
   };

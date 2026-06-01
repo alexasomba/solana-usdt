@@ -1,4 +1,4 @@
-import { address, createSolanaRpc, type Address } from "@solana/kit";
+import { address, createSolanaRpc, type Address, type TransactionSigner } from "@solana/kit";
 import { DEFAULT_COMMITMENT, SOLANA_USDT_DECIMALS, SOLANA_USDT_MINT_ADDRESS } from "./constants.js";
 import { SolanaUsdtError } from "./errors.js";
 import type { AddressInput, ClientContext, SolanaUsdtClientOptions } from "./types.js";
@@ -34,4 +34,14 @@ export function normalizeAddress(value: AddressInput, field = "address"): Addres
       cause: error,
     });
   }
+}
+
+export function requireSigner(ctx: ClientContext, operation: string): TransactionSigner {
+  if (!ctx.signer) {
+    throw new SolanaUsdtError({
+      code: "SIGNER_REQUIRED",
+      message: `${operation} requires a TransactionSigner. Configure signer on createSolanaUsdt(...) before calling transfer APIs.`,
+    });
+  }
+  return ctx.signer;
 }

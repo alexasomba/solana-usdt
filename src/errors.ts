@@ -1,7 +1,9 @@
 export type SolanaUsdtErrorCode =
   | "INVALID_ADDRESS"
+  | "INVALID_INPUT"
   | "INVALID_AMOUNT"
   | "RPC_ERROR"
+  | "SIGNER_REQUIRED"
   | "RPC_TIMEOUT"
   | "TRANSACTION_FAILED"
   | "TRANSACTION_TIMEOUT"

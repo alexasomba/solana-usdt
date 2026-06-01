@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.2 - 2026-06-01
+
+### Changed
+
+- Added a GitHub Actions npm publish workflow for provenance-backed releases.
+- Enabled npm provenance in `publishConfig` so future publishes must include provenance.
+- Normalized the package repository URL used by npm provenance checks.
+
 ## 0.3.1 - 2026-06-01
 
 ### Documentation

@@ -1,6 +1,6 @@
 {
   "name": "solana-usdt",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Developer-friendly Node.js SDK for USDT balances, transfers, and payment verification on Solana.",
   "keywords": [
     "payments",
@@ -19,7 +19,7 @@
   "author": "alexasomba",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alexasomba/solana-usdt.git"
+    "url": "git+https://github.com/alexasomba/solana-usdt.git"
   },
   "files": [
     "dist",
@@ -38,7 +38,8 @@
     }
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack",

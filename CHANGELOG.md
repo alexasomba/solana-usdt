@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.3 - 2026-06-01
+
+### Changed
+
+- Updated the npm publish workflow to use npm trusted publishing through GitHub Actions OIDC instead of a long-lived npm token.
+
 ## 0.3.2 - 2026-06-01
 
 ### Changed

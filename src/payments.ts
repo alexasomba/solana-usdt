@@ -13,8 +13,15 @@ import type {
   PaymentMonitorResult,
   PaymentRequest,
   PaymentVerifyInput,
+  PaymentVerificationScanDiagnostics,
+  SolanaPayUrlOptions,
   VerifiedPayment,
 } from "./types.js";
+
+const DEFAULT_SIGNATURE_SCAN_LIMIT = 20;
+const MAX_SIGNATURE_SCAN_LIMIT = 1_000;
+const DEFAULT_VERIFY_MAX_PAGES = 1;
+const MAX_VERIFY_PAGES = 100;
 
 export function createPaymentsModule(ctx: ClientContext) {
   return {
@@ -34,6 +41,10 @@ export function createPaymentsModule(ctx: ClientContext) {
       };
     },
 
+    toSolanaPayUrl(request: PaymentRequest, options?: SolanaPayUrlOptions): URL {
+      return toSolanaPayUrl(request, options);
+    },
+
     async verify(input: PaymentVerifyInput): Promise<VerifiedPayment> {
       if (!input.signature && !input.reference) {
         throw new SolanaUsdtError({
@@ -46,11 +57,11 @@ export function createPaymentsModule(ctx: ClientContext) {
         if (payment) return payment;
       }
       if (input.reference && input.recipient) {
-        const monitored = await monitorPayments(ctx, { recipient: input.recipient, limit: 20 });
-        const payment = monitored.payments.find(
-          (candidate) => candidate.reference === input.reference,
-        );
-        if (payment) return await assertExpectedPayment(ctx, payment, input);
+        return await verifyReference(ctx, {
+          ...input,
+          reference: input.reference,
+          recipient: input.recipient,
+        });
       }
       return { found: false, reference: input.reference, signature: input.signature };
     },
@@ -59,6 +70,33 @@ export function createPaymentsModule(ctx: ClientContext) {
       return monitorPayments(ctx, input);
     },
   };
+}
+
+export function toSolanaPayUrl(request: PaymentRequest, options: SolanaPayUrlOptions = {}): URL {
+  const recipient = options.recipient
+    ? normalizeAddress(options.recipient, "recipient")
+    : request.recipient;
+  if (!recipient) {
+    throw new SolanaUsdtError({
+      code: "INVALID_ADDRESS",
+      message: "A payment request recipient is required to build a Solana Pay URL.",
+    });
+  }
+
+  const url = new URL(`solana:${recipient}`);
+  url.searchParams.set("amount", formatTokenAmount(request.amount, request.decimals));
+  url.searchParams.set("spl-token", request.mint);
+
+  const references = normalizeReferences(options.reference ?? request.reference);
+  for (const reference of references) {
+    url.searchParams.append("reference", reference);
+  }
+
+  const memo = options.memo ?? request.memo;
+  if (memo) url.searchParams.set("memo", memo);
+  if (options.label !== undefined) url.searchParams.set("label", options.label);
+  if (options.message !== undefined) url.searchParams.set("message", options.message);
+  return url;
 }
 
 async function verifySignature(
@@ -74,10 +112,64 @@ async function verifySignature(
   return assertExpectedPayment(ctx, payment, input);
 }
 
+async function verifyReference(
+  ctx: ClientContext,
+  input: PaymentVerifyInput & {
+    reference: string;
+    recipient: NonNullable<PaymentVerifyInput["recipient"]>;
+  },
+): Promise<VerifiedPayment> {
+  const limit = normalizeSignatureScanLimit(input.limit);
+  const maxPages = normalizeMaxPages(input.maxPages);
+  let cursor = input.cursor;
+  let pagesScanned = 0;
+  let signaturesScanned = 0;
+  let finalCursor: string | undefined;
+  let hasMore = false;
+
+  while (pagesScanned < maxPages) {
+    const monitored = await monitorPayments(ctx, {
+      recipient: input.recipient,
+      limit,
+      cursor,
+    });
+    pagesScanned += 1;
+    signaturesScanned += monitored.signaturesScanned;
+    finalCursor = monitored.cursor;
+    hasMore = monitored.hasMore;
+
+    const payment = monitored.payments.find((candidate) => candidate.reference === input.reference);
+    if (payment) {
+      const verified = await assertExpectedPayment(ctx, payment, input);
+      return {
+        ...verified,
+        scan: createScanDiagnostics({
+          pagesScanned,
+          signaturesScanned,
+          limit,
+          finalCursor,
+          hasMore,
+        }),
+      };
+    }
+
+    if (!monitored.hasMore || !monitored.cursor) break;
+    cursor = monitored.cursor;
+  }
+
+  return {
+    found: false,
+    reference: input.reference,
+    signature: input.signature,
+    scan: createScanDiagnostics({ pagesScanned, signaturesScanned, limit, finalCursor, hasMore }),
+  };
+}
+
 async function monitorPayments(
   ctx: ClientContext,
   input: PaymentMonitorInput,
 ): Promise<PaymentMonitorResult> {
+  const limit = normalizeSignatureScanLimit(input.limit);
   const recipient = normalizeAddress(input.recipient, "recipient");
   const recipientTokenAccount = await getAssociatedTokenAddress(recipient, ctx.mint);
   const getSignaturesForAddress = requireRpcMethod(ctx, "getSignaturesForAddress");
@@ -85,7 +177,7 @@ async function monitorPayments(
     const response = await getSignaturesForAddress
       .call(ctx.rpc, recipientTokenAccount, {
         before: input.cursor,
-        limit: input.limit ?? 20,
+        limit,
       })
       .send();
     return Array.isArray(response) ? response : [];
@@ -113,7 +205,13 @@ async function monitorPayments(
     typeof last === "object" && last !== null
       ? (last as Record<string, unknown>).signature
       : undefined;
-  return { cursor: typeof cursor === "string" ? cursor : undefined, payments };
+  const nextCursor = typeof cursor === "string" ? cursor : undefined;
+  return {
+    cursor: nextCursor,
+    signaturesScanned: signatures.length,
+    hasMore: signatures.length >= limit && nextCursor !== undefined,
+    payments,
+  };
 }
 
 async function assertExpectedPayment(
@@ -220,4 +318,54 @@ function mismatch(message: string, payment: VerifiedPayment): SolanaUsdtError {
     slot: payment.slot,
     meta: { payment },
   });
+}
+
+function normalizeReferences(reference: string | readonly string[]): readonly string[] {
+  return typeof reference === "string" ? [reference] : reference;
+}
+
+function normalizeSignatureScanLimit(limit: number | undefined): number {
+  return normalizeBoundedInteger(limit, {
+    defaultValue: DEFAULT_SIGNATURE_SCAN_LIMIT,
+    field: "payment scan limit",
+    max: MAX_SIGNATURE_SCAN_LIMIT,
+  });
+}
+
+function normalizeMaxPages(maxPages: number | undefined): number {
+  return normalizeBoundedInteger(maxPages, {
+    defaultValue: DEFAULT_VERIFY_MAX_PAGES,
+    field: "payment verify maxPages",
+    max: MAX_VERIFY_PAGES,
+  });
+}
+
+function normalizeBoundedInteger(
+  value: number | undefined,
+  options: { defaultValue: number; field: string; max: number },
+): number {
+  if (value === undefined) return options.defaultValue;
+  if (!Number.isInteger(value) || value < 1 || value > options.max) {
+    throw new SolanaUsdtError({
+      code: "INVALID_INPUT",
+      message: `${options.field} must be an integer between 1 and ${options.max}.`,
+    });
+  }
+  return value;
+}
+
+function createScanDiagnostics(input: {
+  pagesScanned: number;
+  signaturesScanned: number;
+  limit: number;
+  finalCursor?: string | undefined;
+  hasMore: boolean;
+}): PaymentVerificationScanDiagnostics {
+  return {
+    pagesScanned: input.pagesScanned,
+    signaturesScanned: input.signaturesScanned,
+    limit: input.limit,
+    cursor: input.finalCursor,
+    hasMore: input.hasMore,
+  };
 }

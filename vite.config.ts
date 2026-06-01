@@ -14,19 +14,9 @@ export default defineConfig({
   },
   run: {
     tasks: {
-      typecheck: {
-        command: "tsc -p tsconfig.json --noEmit",
-      },
-      check: {
-        command: "vp check",
-      },
-      build: {
+      "repo:build": {
         command: "vp pack",
         dependsOn: ["typecheck"],
-      },
-      test: {
-        command: "vp test run",
-        dependsOn: ["build"],
       },
     },
   },

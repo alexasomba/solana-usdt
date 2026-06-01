@@ -3,19 +3,32 @@
 ## Install
 
 ```bash
-pnpm add solana-usd
+pnpm add solana-usdt
 ```
 
 ## Create a Client
 
 ```ts
-import { createKeyPairSignerFromBytes, createSolanaUsdt } from "solana-usd";
+import {
+  createKeyPairSignerFromBytes,
+  createReadOnlySolanaUsdt,
+  createSolanaUsdt,
+} from "solana-usdt";
 
 const signer = await createKeyPairSignerFromBytes(secretKeyBytes);
 
 const solanaUsdt = createSolanaUsdt({
   rpcUrl: process.env.SOLANA_RPC_URL!,
   signer,
+  commitment: "confirmed",
+});
+```
+
+For payment-only checkout flows, use a read-only client and skip keypair generation:
+
+```ts
+const payments = createReadOnlySolanaUsdt({
+  rpcUrl: process.env.SOLANA_RPC_URL!,
   commitment: "confirmed",
 });
 ```

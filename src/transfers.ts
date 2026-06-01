@@ -13,7 +13,7 @@ import {
   type Instruction,
 } from "@solana/kit";
 import { formatTokenAmount, parseTokenAmount } from "./amounts.js";
-import { normalizeAddress } from "./context.js";
+import { normalizeAddress, requireSigner } from "./context.js";
 import { DEFAULT_REFERENCE_PREFIX } from "./constants.js";
 import { SolanaUsdtError } from "./errors.js";
 import { createMemo, createReference } from "./idempotency.js";
@@ -34,9 +34,10 @@ const APPROX_ATA_RENT_LAMPORTS = 2_039_280n;
 export function createTransfersModule(ctx: ClientContext) {
   return {
     async quote(input: TransferQuoteInput): Promise<TransferQuote> {
+      const signer = requireSigner(ctx, "transfers.quote");
       const destinationOwner = normalizeAddress(input.to, "recipient");
       const amount = parseTokenAmount(input.amount, ctx.decimals);
-      const sourceTokenAccount = await getAssociatedTokenAddress(ctx.signer.address, ctx.mint);
+      const sourceTokenAccount = await getAssociatedTokenAddress(signer.address, ctx.mint);
       const destinationTokenAccount = await getAssociatedTokenAddress(destinationOwner, ctx.mint);
       const destination = await getTokenAccountAmount(ctx, destinationTokenAccount);
       const willCreateRecipientAta = !destination.exists;
@@ -66,11 +67,12 @@ export async function createTransfer(
   ctx: ClientContext,
   input: TransferCreateInput,
 ): Promise<TransferResult> {
+  const signer = requireSigner(ctx, "transfers.create");
   const reference =
     input.reference ?? input.idempotencyKey ?? createReference(DEFAULT_REFERENCE_PREFIX);
   const destinationOwner = normalizeAddress(input.to, "recipient");
   const amount = parseTokenAmount(input.amount, ctx.decimals);
-  const sourceTokenAccount = await getAssociatedTokenAddress(ctx.signer.address, ctx.mint);
+  const sourceTokenAccount = await getAssociatedTokenAddress(signer.address, ctx.mint);
   const destinationTokenAccount = await getAssociatedTokenAddress(destinationOwner, ctx.mint);
 
   if (input.idempotencyKey && ctx.idempotencyStore) {
@@ -99,7 +101,7 @@ export async function createTransfer(
     instructions,
     setTransactionMessageLifetimeUsingBlockhash(
       latestBlockhash,
-      setTransactionMessageFeePayerSigner(ctx.signer, createTransactionMessage({ version: 0 })),
+      setTransactionMessageFeePayerSigner(signer, createTransactionMessage({ version: 0 })),
     ),
   );
   const signedTransaction = await signTransactionMessageWithSigners(message);
@@ -200,6 +202,7 @@ export async function buildTransferInstructions(
     sourceTokenAccount: string;
   },
 ): Promise<Instruction[]> {
+  const signer = requireSigner(ctx, "transfer instruction building");
   if (input.amount <= 0n) {
     throw new SolanaUsdtError({
       code: "INVALID_AMOUNT",
@@ -211,7 +214,7 @@ export async function buildTransferInstructions(
   if (input.createRecipientAta) {
     instructions.push(
       getCreateAssociatedTokenIdempotentInstruction({
-        payer: ctx.signer,
+        payer: signer,
         ata: normalizeAddress(input.destinationTokenAccount, "destination token account"),
         owner: normalizeAddress(input.destinationOwner, "destination owner"),
         mint: ctx.mint,
@@ -224,7 +227,7 @@ export async function buildTransferInstructions(
       source: normalizeAddress(input.sourceTokenAccount, "source token account"),
       mint: ctx.mint,
       destination: normalizeAddress(input.destinationTokenAccount, "destination token account"),
-      authority: ctx.signer,
+      authority: signer,
       amount: input.amount,
       decimals: ctx.decimals,
     }),

@@ -6,7 +6,7 @@ license: MIT
 compatibility: Requires Node.js 22+, typescript
 metadata:
   author: alexasomba
-  version: 0.3.0
+  version: 0.3.1
 ---
 
 # Solana USDT SDK Skill

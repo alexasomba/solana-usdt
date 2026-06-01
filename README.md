@@ -61,6 +61,46 @@ const solanaPayUrl = solanaUsdt.payments.toSolanaPayUrl(request, {
 - Provides polling monitor helpers for incoming payments
 - Normalizes RPC and transaction errors into `SolanaUsdtError`
 
+## Agent Skill
+
+The npm package ships an agent skill at `skills/solana-usdt/SKILL.md`. Use it
+when asking an AI coding agent to integrate, configure, troubleshoot, or review
+`solana-usdt` usage.
+
+Install the SDK and symlink bundled npm skills into your agent skill directory:
+
+```bash
+pnpm add solana-usdt
+pnpm add -D skills-npm
+pnpm exec skills-npm
+```
+
+For npm projects, the equivalent commands are:
+
+```bash
+npm install solana-usdt
+npm install --save-dev skills-npm
+npx skills-npm
+```
+
+`skills-npm` links the bundled skill as
+`skills/npm-solana-usdt-solana-usdt/SKILL.md`. Add `skills/npm-*` to your
+`.gitignore` if you do not want generated skill symlinks committed.
+
+You can also inspect the skill directly with TanStack Intent:
+
+```bash
+npx @tanstack/intent@latest load solana-usdt#solana-usdt
+```
+
+Once installed, ask your agent to use the `solana-usdt` skill for tasks such as:
+
+- setting up a signer-backed transfer client
+- building payment-only checkout flows without keypair generation
+- generating Solana Pay URLs
+- verifying payments by signature or memo reference
+- debugging RPC, commitment, or recipient ATA issues
+
 ## API
 
 ```ts

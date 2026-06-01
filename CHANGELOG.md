@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 - 2026-06-01
+
+### Documentation
+
+- Added README instructions for loading the packaged `solana-usdt` agent skill from npm packages.
+
 ## 0.3.0 - 2026-06-01
 
 ### Added

@@ -23,6 +23,6 @@ export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  fmt: {},
+  fmt: { ignorePatterns: ["CHANGELOG.md"] },
   lint: { options: { typeAware: true, typeCheck: true } },
 });

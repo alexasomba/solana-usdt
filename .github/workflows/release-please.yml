@@ -76,7 +76,7 @@ jobs:
 
       - name: Check
         if: ${{ env.release_tag != '' }}
-        run: pnpm exec vp check
+        run: pnpm exec vp check --fix
 
       - name: Test
         if: ${{ env.release_tag != '' }}

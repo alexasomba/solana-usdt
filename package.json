@@ -1,6 +1,6 @@
 {
   "name": "solana-usdt",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Developer-friendly Node.js SDK for USDT balances, transfers, and payment verification on Solana.",
   "keywords": [
     "payments",

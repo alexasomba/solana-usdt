@@ -17,6 +17,14 @@ describe("references and idempotency", () => {
     expect(parseMemoReference(memo)).toBe("invoice_123");
   });
 
+  it("round-trips custom memo prefixes", () => {
+    const memo = createMemo("invoice_123", "custom-payments");
+
+    expect(memo).toBe("custom-payments:invoice_123");
+    expect(parseMemoReference(memo, "custom-payments")).toBe("invoice_123");
+    expect(parseMemoReference(memo)).toBeUndefined();
+  });
+
   it("stores idempotency records in memory", async () => {
     const store = new MemoryIdempotencyStore<{ ok: true }>();
     store.set("key", {

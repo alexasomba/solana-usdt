@@ -1,25 +1,26 @@
 {
-  "name": "solana-usdt",
-  "version": "0.3.4",
-  "description": "Developer-friendly Node.js SDK for USDT balances, transfers, and payment verification on Solana.",
+  "name": "solana-payments",
+  "version": "0.4.0",
+  "description": "Developer-friendly Node.js SDK for SPL-token balances, transfers, and payment verification on Solana.",
   "keywords": [
     "payments",
     "sdk",
     "solana",
+    "solana-payments",
     "spl-token",
     "tanstack-intent",
-    "typescript",
-    "usdt"
+    "token",
+    "typescript"
   ],
-  "homepage": "https://github.com/alexasomba/solana-usdt#readme",
+  "homepage": "https://github.com/alexasomba/solana-payments#readme",
   "bugs": {
-    "url": "https://github.com/alexasomba/solana-usdt/issues"
+    "url": "https://github.com/alexasomba/solana-payments/issues"
   },
   "license": "MIT",
   "author": "alexasomba",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexasomba/solana-usdt.git"
+    "url": "git+https://github.com/alexasomba/solana-payments.git"
   },
   "files": [
     "dist",
@@ -49,6 +50,8 @@
     "test:live": "pnpm run test:integration",
     "smoke:mainnet": "pnpm run build && node examples/smoke.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint:package": "publint run --strict",
+    "lint:types": "attw --profile esm-only --pack .",
     "check": "vp check",
     "clean": "rm -rf dist coverage",
     "prepack": "vp pack",
@@ -60,13 +63,15 @@
     "@solana/kit": "8.0.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@solana-program/system": "0.14.0",
     "@tanstack/intent": "^0.3.6",
     "@types/node": "^24.13.3",
     "litesvm": "^1.3.0",
+    "publint": "^0.3.24",
     "skills-npm": "^1.2.0",
     "typescript": "^6.0.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
+    "vite": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {

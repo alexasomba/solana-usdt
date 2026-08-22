@@ -17,17 +17,19 @@ function paymentTransaction(input: {
   reference: string;
   destination: string;
   amount?: string | undefined;
+  mint?: string | undefined;
+  prefix?: string | undefined;
 }) {
   return {
     transaction: {
       message: {
         instructions: [
-          { program: "spl-memo", parsed: `solana-usdt:${input.reference}` },
+          { program: "spl-memo", parsed: `${input.prefix ?? "solana-usdt"}:${input.reference}` },
           {
             parsed: {
               type: "transferChecked",
               info: {
-                mint: SOLANA_USDT_MINT,
+                mint: input.mint ?? SOLANA_USDT_MINT,
                 destination: input.destination,
                 tokenAmount: { amount: input.amount ?? "12340000" },
               },
@@ -158,6 +160,44 @@ describe("payments", () => {
     expect(verified.slot).toBe(55n);
   });
 
+  it("verifies payment memos with the configured reference prefix", async () => {
+    const client = createReadOnlySolanaUsdt({
+      rpcUrl: "http://localhost:8899",
+      token: {
+        mint: "So11111111111111111111111111111111111111112",
+        decimals: 9,
+        referencePrefix: "custom-payments",
+      },
+      rpc: {
+        getSignatureStatuses: () =>
+          sendable({ value: [{ slot: 55, confirmationStatus: "confirmed", err: null }] }),
+        getTransaction: () =>
+          sendable(
+            paymentTransaction({
+              reference: "invoice_123",
+              prefix: "custom-payments",
+              destination: "destAta",
+              amount: "12340000000",
+              mint: "So11111111111111111111111111111111111111112",
+            }),
+          ),
+      },
+    });
+
+    const verified = await client.payments.verify({
+      signature: "sig",
+      reference: "invoice_123",
+      amount: "12.34",
+    });
+
+    expect(verified).toMatchObject({
+      found: true,
+      reference: "invoice_123",
+      amount: 12_340_000_000n,
+      memo: "custom-payments:invoice_123",
+    });
+  });
+
   it("verifies recipient wallets against their associated token account destination", async () => {
     const signer = await generateKeyPairSigner();
     const recipient = await generateKeyPairSigner();
@@ -266,12 +306,12 @@ describe("payments", () => {
     const client = createReadOnlySolanaUsdt({
       rpcUrl: "http://localhost:8899",
       rpc: {
-        getSignaturesForAddress: (address, options) => {
+        getSignaturesForAddress: (address: unknown, options: unknown) => {
           scannedTokenAccount = String(address);
           calls.push(options as { before?: unknown; limit?: unknown });
           return sendable([{ signature: calls.length === 1 ? "sig1" : "sig2" }]);
         },
-        getSignatureStatuses: (signatures) => {
+        getSignatureStatuses: (signatures: unknown) => {
           const signature = Array.isArray(signatures) ? signatures[0] : undefined;
           return sendable({
             value: [
@@ -283,7 +323,7 @@ describe("payments", () => {
             ],
           });
         },
-        getTransaction: (signature) =>
+        getTransaction: (signature: unknown) =>
           sendable(
             paymentTransaction({
               reference: signature === "sig2" ? "invoice_123" : "invoice_other",
@@ -319,7 +359,7 @@ describe("payments", () => {
     const client = createReadOnlySolanaUsdt({
       rpcUrl: "http://localhost:8899",
       rpc: {
-        getSignaturesForAddress: (address) => {
+        getSignaturesForAddress: (address: unknown) => {
           scannedTokenAccount = String(address);
           return sendable([{ signature: "sig1" }]);
         },

@@ -1,5 +1,5 @@
 import { address, createSolanaRpc, generateKeyPairSigner } from "@solana/kit";
-import { createSolanaUsdt } from "../dist/index.mjs";
+import { createSolanaPayments } from "../dist/index.mjs";
 
 const rpcUrl = process.env.SOLANA_RPC_URL ?? "https://api.mainnet.solana.com";
 const owner = process.env.SOLANA_OWNER;
@@ -8,7 +8,7 @@ const knownSignature = process.env.SOLANA_SIGNATURE;
 const rpc = createSolanaRpc(rpcUrl);
 const signer = await generateKeyPairSigner();
 const recipient = await generateKeyPairSigner();
-const client = createSolanaUsdt({
+const client = createSolanaPayments({
   rpcUrl,
   signer,
   commitment: "confirmed",

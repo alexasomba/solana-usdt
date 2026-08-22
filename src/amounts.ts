@@ -1,10 +1,10 @@
-import { SolanaUsdtError } from "./errors.js";
+import { SolanaPaymentsError } from "./errors.js";
 
 export type TokenAmountInput = string | number | bigint;
 
 export function parseTokenAmount(amount: TokenAmountInput, decimals: number): bigint {
   if (!Number.isInteger(decimals) || decimals < 0) {
-    throw new SolanaUsdtError({
+    throw new SolanaPaymentsError({
       code: "INVALID_AMOUNT",
       message: "Token decimals must be a non-negative integer.",
     });
@@ -46,6 +46,6 @@ export function formatTokenAmount(amount: bigint | string | number, decimals: nu
   return fractionText === "" ? whole.toString() : `${whole.toString()}.${fractionText}`;
 }
 
-function invalidAmount(message: string): SolanaUsdtError {
-  return new SolanaUsdtError({ code: "INVALID_AMOUNT", message });
+function invalidAmount(message: string): SolanaPaymentsError {
+  return new SolanaPaymentsError({ code: "INVALID_AMOUNT", message });
 }

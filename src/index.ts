@@ -24,13 +24,13 @@ import { createPaymentsModule } from "./payments.js";
 import { createTransactionsModule } from "./transactions.js";
 import { createTransfersModule } from "./transfers.js";
 import type {
-  SolanaUsdtClient,
-  SolanaUsdtClientOptions,
-  SolanaUsdtReadOnlyClient,
-  SolanaUsdtReadOnlyClientOptions,
+  SolanaPaymentsClientOptions,
+  SolanaPaymentsClient,
+  SolanaPaymentsReadOnlyClient,
+  SolanaPaymentsReadOnlyClientOptions,
 } from "./types.js";
 
-export function createSolanaUsdt(options: SolanaUsdtClientOptions): SolanaUsdtClient {
+export function createSolanaPayments(options: SolanaPaymentsClientOptions): SolanaPaymentsClient {
   const ctx = createContext(options);
   return {
     balances: createBalancesModule(ctx),
@@ -40,9 +40,9 @@ export function createSolanaUsdt(options: SolanaUsdtClientOptions): SolanaUsdtCl
   };
 }
 
-export function createReadOnlySolanaUsdt(
-  options: SolanaUsdtReadOnlyClientOptions,
-): SolanaUsdtReadOnlyClient {
+export function createReadOnlySolanaPayments(
+  options: SolanaPaymentsReadOnlyClientOptions,
+): SolanaPaymentsReadOnlyClient {
   const ctx = createContext(options);
   return {
     balances: createBalancesModule(ctx),
@@ -50,3 +50,9 @@ export function createReadOnlySolanaUsdt(
     transactions: createTransactionsModule(ctx),
   };
 }
+
+/** @deprecated Use createSolanaPayments instead. */
+export const createSolanaUsdt: typeof createSolanaPayments = createSolanaPayments;
+/** @deprecated Use createReadOnlySolanaPayments instead. */
+export const createReadOnlySolanaUsdt: typeof createReadOnlySolanaPayments =
+  createReadOnlySolanaPayments;

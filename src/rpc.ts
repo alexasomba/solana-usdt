@@ -1,5 +1,5 @@
 import type { ClientContext } from "./types.js";
-import { normalizeError, SolanaUsdtError } from "./errors.js";
+import { normalizeError, SolanaPaymentsError } from "./errors.js";
 import { withRetry, withTimeout } from "./retry.js";
 
 export async function callRpc<T>(
@@ -25,7 +25,7 @@ export function requireRpcMethod<T extends keyof ClientContext["rpc"]>(
 ): NonNullable<ClientContext["rpc"][T]> {
   const rpcMethod = ctx.rpc[method];
   if (typeof rpcMethod !== "function") {
-    throw new SolanaUsdtError({
+    throw new SolanaPaymentsError({
       code: "RPC_ERROR",
       message: `Configured RPC client does not implement ${String(method)}.`,
       endpoint: String(method),

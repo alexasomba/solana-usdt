@@ -5,7 +5,7 @@ import type {
   TransactionWaitInput,
 } from "./types.js";
 import { callRpc, getPath, requireRpcMethod } from "./rpc.js";
-import { SolanaUsdtError } from "./errors.js";
+import { SolanaPaymentsError } from "./errors.js";
 
 export function createTransactionsModule(ctx: ClientContext) {
   return {
@@ -66,7 +66,7 @@ export async function waitForTransaction(
   while (Date.now() <= deadline) {
     const status = await retrieveTransaction(ctx, input.signature);
     if (status.err) {
-      throw new SolanaUsdtError({
+      throw new SolanaPaymentsError({
         code: "TRANSACTION_FAILED",
         message: "Solana transaction failed.",
         signature: input.signature,
@@ -83,7 +83,7 @@ export async function waitForTransaction(
     await sleep(pollIntervalMs);
   }
 
-  throw new SolanaUsdtError({
+  throw new SolanaPaymentsError({
     code: "TRANSACTION_TIMEOUT",
     message: `Timed out waiting for transaction confirmation after ${timeoutMs}ms.`,
     signature: input.signature,

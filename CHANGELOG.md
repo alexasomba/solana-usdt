@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/alexasomba/solana-payments/releases/tag/v0.4.0) (2026-08-22)
+
+### Features
+
+* rename the SDK to `solana-payments` and add generic Solana payment APIs
+
+### Migration
+
+* Install `solana-payments` instead of `solana-usdt` and use `createSolanaPayments` or `createReadOnlySolanaPayments` for new code.
+* Deprecated `createSolanaUsdt`, `createReadOnlySolanaUsdt`, `SolanaUsdtClient`, and `SolanaUsdtError` aliases remain available until a future major release.
+* `SOLANA_USDT` remains the default preset and preserves the `solana-usdt:` memo prefix, so existing payment references continue to verify.
+
 ## [0.3.4](https://github.com/alexasomba/solana-usdt/compare/v0.3.3...v0.3.4) (2026-08-22)
 
 

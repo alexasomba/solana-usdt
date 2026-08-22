@@ -26,7 +26,7 @@ import {
   type TransactionSigner,
 } from "@solana/kit";
 import { LiteSVM } from "litesvm";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { createSolanaUsdt, MemoryIdempotencyStore } from "../src/index.js";
 import { getAssociatedTokenAddress } from "../src/token.js";
 

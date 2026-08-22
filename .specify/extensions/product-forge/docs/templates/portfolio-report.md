@@ -14,9 +14,9 @@
 
 ## 1. Feature table
 
-| Feature | Mode  | Current phase | Status   | Days in phase | Backfilled | Blocked by  |
+| Feature | Mode | Current phase | Status | Days in phase | Backfilled | Blocked by |
 | ------- | ----- | ------------- | -------- | ------------- | :--------: | ----------- | --------- | -------- | --- | ----- | ----------------- |
-| {slug}  | {lite | standard      | v-model} | {phase}       |  {pending  | in_progress | completed | skipped} | {N} | {✓/✗} | {slug, slug, ...} |
+| {slug} | {lite | standard | v-model} | {phase} | {pending | in_progress | completed | skipped} | {N} | {✓/✗} | {slug, slug, ...} |
 
 ## 2. Conflicts
 

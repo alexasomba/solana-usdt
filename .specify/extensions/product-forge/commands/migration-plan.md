@@ -57,11 +57,11 @@ Extract the before/after schema:
 
 Produce a diff:
 
-| Change | Field / collection                               |  Type   |    Reversible?    |
+| Change | Field / collection | Type | Reversible? |
 | ------ | ------------------------------------------------ | :-----: | :---------------: | --- |
-| ADD    | `User.push_token`                                | `string |       null`       | ✅  |
-| MODIFY | `Subscription.status` (enum `active → trialing`) |  enum   | ⚠️ data-dependent |
-| DROP   | `User.legacy_flag`                               |  bool   |  ❌ destructive   |
+| ADD | `User.push_token` | `string |       null` | ✅ |
+| MODIFY | `Subscription.status` (enum `active → trialing`) | enum | ⚠️ data-dependent |
+| DROP | `User.legacy_flag` | bool | ❌ destructive |
 
 Flag any `❌` as HIGH RISK.
 

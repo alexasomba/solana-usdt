@@ -73,8 +73,8 @@ Key context for implementation agents:
 > _"Product Forge context:
 > — Wireframes and mockups are in `product-spec/mockups/` — use them for UI implementation.
 > — User journeys are in `product-spec/user-journey_.md`— match UX flows exactly.
-— Acceptance criteria are in`spec.md`— each task must satisfy its linked AC.
-— If you need to clarify a product decision, check`product-spec/product-spec.md` first
+> — Acceptance criteria are in`spec.md`— each task must satisfy its linked AC.
+> — If you need to clarify a product decision, check`product-spec/product-spec.md` first
 > before asking the user.
 > After all tasks are completed, do NOT run verification — stop and return control
 > to the Product Forge orchestrator."\*

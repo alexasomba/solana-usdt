@@ -146,17 +146,17 @@ the choice in the experiment plan.
 
 ### Report
 
-| Parameter               | Value                  | Source           |
+| Parameter | Value | Source |
 | ----------------------- | ---------------------- | ---------------- | ---------- |
-| Metric type             | {proportion            | continuous}      | hypothesis |
-| Formula                 | {two-proportion z-test | Welch t-test}    | §3.{a,b}   |
-| Baseline                | 12%                    | analytics 30-day |
-| MDE                     | +3pp (absolute)        | hypothesis       |
-| Power                   | 0.8                    | default          |
-| Alpha                   | 0.05                   | default          |
-| Sample size per variant | ~4,200                 | computed         |
-| Expected daily traffic  | 400                    | analytics 7-day  |
-| Expected runtime        | ~22 days               | sample / traffic |
+| Metric type | {proportion | continuous} | hypothesis |
+| Formula | {two-proportion z-test | Welch t-test} | §3.{a,b} |
+| Baseline | 12% | analytics 30-day |
+| MDE | +3pp (absolute) | hypothesis |
+| Power | 0.8 | default |
+| Alpha | 0.05 | default |
+| Sample size per variant | ~4,200 | computed |
+| Expected daily traffic | 400 | analytics 7-day |
+| Expected runtime | ~22 days | sample / traffic |
 
 If computed runtime exceeds 30 days, flag as _"underpowered at current
 traffic — consider raising MDE or narrowing audience"_. Do not silently

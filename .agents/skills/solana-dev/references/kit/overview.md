@@ -218,11 +218,7 @@ import { myProgram } from "@my-programs/operations";
 
 const client = createClient().use(signer(mySigner)).use(solanaDevnetRpc()).use(myProgram());
 
-await client.myProgram.instructions
-  .handyInstruction({
-    /* args */
-  })
-  .sendTransaction();
+await client.myProgram.instructions.handyInstruction({/* args */}).sendTransaction();
 ```
 
 ### RPC Queries

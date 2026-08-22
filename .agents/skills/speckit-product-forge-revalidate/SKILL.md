@@ -200,8 +200,9 @@ After all changes are applied, append to `{FEATURE_DIR}/review.md`:
 > {user's original feedback verbatim}
 
 **Changes applied:**
-| File | Change Type | Description |
-|------|-------------|-------------|
+
+| File   | Change Type                   | Description   |
+| ------ | ----------------------------- | ------------- |
 | {file} | Modify/Add/Remove/Restructure | {description} |
 
 **Agent notes:**
@@ -269,13 +270,14 @@ Update `{FEATURE_DIR}/review.md` final status:
 **Approved by user after {N} revision(s)**
 
 **Final document inventory:**
-| Document | Lines | Last Modified |
-|----------|-------|---------------|
-| product-spec.md | {N} | {date} |
-| user-journey-_.md | {N} | {date} |
-| wireframes_ | {N} | {date} |
-| metrics.md | {N} | {date} |
-| mockups/ | {N} files | {date} |
+
+| Document          | Lines     | Last Modified |
+| ----------------- | --------- | ------------- |
+| product-spec.md   | {N}       | {date}        |
+| user-journey-_.md | {N}       | {date}        |
+| wireframes_       | {N}       | {date}        |
+| metrics.md        | {N}       | {date}        |
+| mockups/          | {N} files | {date}        |
 
 **Status: LOCKED — Ready for SpecKit Bridge (Phase 4)**
 ```

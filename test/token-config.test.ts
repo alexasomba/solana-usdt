@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vite-plus/test";
-import { createSolanaUsdt, SOLANA_USDT } from "../src/index.js";
+import { createSolanaPayments, SOLANA_USDT } from "../src/index.js";
 
 describe("token configuration", () => {
   it("defaults the generic client to USDT", () => {
-    const client = createSolanaUsdt({
+    const client = createSolanaPayments({
       rpcUrl: "http://localhost:8899",
       rpc: {},
     });
@@ -16,7 +16,7 @@ describe("token configuration", () => {
   });
 
   it("uses a custom token and reference prefix", () => {
-    const client = createSolanaUsdt({
+    const client = createSolanaPayments({
       rpcUrl: "http://localhost:8899",
       rpc: {},
       token: {
@@ -32,5 +32,25 @@ describe("token configuration", () => {
     expect(request.mint).toBe("So11111111111111111111111111111111111111112");
     expect(request.decimals).toBe(9);
     expect(request.memo).toMatch(/^custom-payments:/);
+  });
+
+  it("rejects token decimals outside the supported range", () => {
+    expect(() =>
+      createSolanaPayments({
+        rpcUrl: "http://localhost:8899",
+        rpc: {},
+        token: { mint: SOLANA_USDT.mint, decimals: 19 },
+      }),
+    ).toThrow("Token decimals must be an integer from 0 through 18.");
+  });
+
+  it("rejects an empty token reference prefix", () => {
+    expect(() =>
+      createSolanaPayments({
+        rpcUrl: "http://localhost:8899",
+        rpc: {},
+        token: { mint: SOLANA_USDT.mint, decimals: 6, referencePrefix: "" },
+      }),
+    ).toThrow("Token reference prefix must not be empty.");
   });
 });

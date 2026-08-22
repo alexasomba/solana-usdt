@@ -31,3 +31,17 @@ The focused test was written before production changes. The initial red run fail
 
 - `vp` is available through the project-local toolchain but not directly on PATH; commands were run as `pnpm exec vp ...`.
 - Canonical `createSolanaPayments` factory names and generic error aliases remain scoped to Task 2 of the migration plan.
+
+## Task review fix
+
+The token tests now exercise the canonical `createSolanaPayments` factory. Task 1 adds only the minimal generic factory export; the existing USDT factory delegates to it. Task 2 remains responsible for canonical client/error types, deprecated aliases, and broader reference handling.
+
+Added Vitest coverage for rejecting decimals outside 0 through 18 and rejecting an empty token reference prefix.
+
+Fix verification:
+
+- Corrected focused red run failed with `createSolanaPayments is not a function` before the factory export.
+- Corrected focused green run: 1 file, 4 tests passed.
+- Relevant suite: 3 files, 18 tests passed.
+- `pnpm exec vp check`: passed.
+- `git diff --check`: passed.

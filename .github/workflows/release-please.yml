@@ -106,8 +106,8 @@ jobs:
 
           PACKED_NAME="$(node -e 'const fs = require("node:fs"); const pkg = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); console.log(pkg.name);' "$PACK_DIR/package.json")"
           PACKED_VERSION="$(node -e 'const fs = require("node:fs"); const pkg = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); console.log(pkg.version);' "$PACK_DIR/package.json")"
-          if [[ "$PACKED_NAME" != "solana-usdt" ]]; then
-            echo "::error ::Packed name $PACKED_NAME does not match solana-usdt."
+          if [[ "$PACKED_NAME" != "solana-payments" ]]; then
+            echo "::error ::Packed name $PACKED_NAME does not match solana-payments."
             exit 1
           fi
           if [[ "$PACKED_VERSION" != "$release_version" ]]; then

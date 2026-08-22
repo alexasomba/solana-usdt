@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.4.0](https://github.com/alexasomba/solana-payments/compare/v0.3.4...v0.4.0) (2026-08-22)
+
+
+### Features
+
+* add generic Solana payments API ([5883435](https://github.com/alexasomba/solana-payments/commit/58834357b8e72ba9392d44d3c473de80523856ea))
+* add generic Solana token configuration ([48c8357](https://github.com/alexasomba/solana-payments/commit/48c83570b2c17d3b61415463b761d8ae5e1cad76))
+* rename SDK to solana-payments ([11246ef](https://github.com/alexasomba/solana-payments/commit/11246ef844bd868428b774648e1fb196d96891d0))
+
+
+### Bug Fixes
+
+* cover canonical token configuration ([9285251](https://github.com/alexasomba/solana-payments/commit/92852519214285bce81e76157424bbf9413bc8d5))
+* ignore release-managed changelog formatting ([8468615](https://github.com/alexasomba/solana-payments/commit/84686156445f2575e53f47ea99d5ee07b2da700a))
+* preserve npm trusted publisher workflow ([27336ed](https://github.com/alexasomba/solana-payments/commit/27336ed05b5a3a48ee6c4d5e12b33cc6ed6a48ef))
+* update vite dependency to use catalog and enhance formatting options ([95d4951](https://github.com/alexasomba/solana-payments/commit/95d4951fdf778e42f650299687ec70d324ec193a))
+
+
+### Documentation
+
+* add Solana payments implementation plan ([870a6a3](https://github.com/alexasomba/solana-payments/commit/870a6a3d89fc83d7efae0560d875f3267dacf3ea))
+* design solana payments migration ([1444c3f](https://github.com/alexasomba/solana-payments/commit/1444c3feb72f636286776933de1b598326efd833))
+
 ## [0.4.0](https://github.com/alexasomba/solana-payments/releases/tag/v0.4.0) (2026-08-22)
 
 ### Features

@@ -71,7 +71,7 @@
     "publint": "^0.3.24",
     "skills-npm": "^1.2.0",
     "typescript": "^6.0.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
+    "vite": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {

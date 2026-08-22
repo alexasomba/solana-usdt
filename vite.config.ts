@@ -23,6 +23,48 @@ export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  fmt: { ignorePatterns: ["CHANGELOG.md"] },
-  lint: { options: { typeAware: true, typeCheck: true } },
+  fmt: {
+    ignorePatterns: ["CHANGELOG.md"],
+    endOfLine: "lf",
+    semi: true,
+    singleQuote: false,
+    tabWidth: 2,
+    useTabs: false,
+    trailingComma: "all",
+    printWidth: 100,
+    bracketSpacing: true,
+    arrowParens: "always",
+    insertFinalNewline: true,
+    sortImports: {
+      customGroups: [
+        {
+          elementNamePattern: ["@workspace/**"],
+          groupName: "@workspace",
+        },
+      ],
+      groups: [
+        "builtin",
+        "external",
+        "@workspace",
+        ["internal", "subpath"],
+        ["parent", "sibling", "index"],
+        "style",
+        "unknown",
+      ],
+      internalPattern: ["@/", "#@/", "~/", "~~/", "#"],
+      sortSideEffects: true,
+    },
+    sortTailwindcss: {
+      stylesheet: "./packages/ui/src/styles/globals.css",
+      functions: ["cn", "cva"],
+    },
+    sortPackageJson: true,
+  },
+
+  lint: {
+    options: { typeAware: true, typeCheck: true },
+    categories: {
+      correctness: "error",
+    },
+  },
 });

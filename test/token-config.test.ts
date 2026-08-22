@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vite-plus/test";
+import { generateKeyPairSigner } from "@solana/kit";
 import { createSolanaPayments, SOLANA_USDT } from "../src/index.js";
+import { createContext } from "../src/context.js";
+import { buildTransferInstructions } from "../src/transfers.js";
 
 describe("token configuration", () => {
   it("defaults the generic client to USDT", () => {
@@ -32,6 +35,31 @@ describe("token configuration", () => {
     expect(request.mint).toBe("So11111111111111111111111111111111111111112");
     expect(request.decimals).toBe(9);
     expect(request.memo).toMatch(/^custom-payments:/);
+  });
+
+  it("uses the configured prefix in transfer memo instructions", async () => {
+    const signer = await generateKeyPairSigner();
+    const ctx = createContext({
+      rpcUrl: "http://localhost:8899",
+      signer,
+      rpc: {},
+      token: {
+        mint: "So11111111111111111111111111111111111111112",
+        decimals: 9,
+        referencePrefix: "custom-payments",
+      },
+    });
+
+    const instructions = await buildTransferInstructions(ctx, {
+      amount: 1_000_000_000n,
+      createRecipientAta: false,
+      destinationOwner: "11111111111111111111111111111111",
+      destinationTokenAccount: "11111111111111111111111111111111",
+      reference: "invoice_123",
+      sourceTokenAccount: "11111111111111111111111111111111",
+    });
+
+    expect(new TextDecoder().decode(instructions.at(-1)?.data)).toBe("custom-payments:invoice_123");
   });
 
   it("rejects token decimals outside the supported range", () => {

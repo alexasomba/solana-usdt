@@ -14,8 +14,7 @@ import {
 } from "@solana/kit";
 import { formatTokenAmount, parseTokenAmount } from "./amounts.js";
 import { normalizeAddress, requireSigner } from "./context.js";
-import { DEFAULT_REFERENCE_PREFIX } from "./constants.js";
-import { SolanaUsdtError } from "./errors.js";
+import { SolanaPaymentsError } from "./errors.js";
 import { createMemo, createReference } from "./idempotency.js";
 import { callRpc, getPath, requireRpcMethod } from "./rpc.js";
 import { getAssociatedTokenAddress, getTokenAccountAmount } from "./token.js";
@@ -68,8 +67,7 @@ export async function createTransfer(
   input: TransferCreateInput,
 ): Promise<TransferResult> {
   const signer = requireSigner(ctx, "transfers.create");
-  const reference =
-    input.reference ?? input.idempotencyKey ?? createReference(DEFAULT_REFERENCE_PREFIX);
+  const reference = input.reference ?? input.idempotencyKey ?? createReference(ctx.referencePrefix);
   const destinationOwner = normalizeAddress(input.to, "recipient");
   const amount = parseTokenAmount(input.amount, ctx.decimals);
   const sourceTokenAccount = await getAssociatedTokenAddress(signer.address, ctx.mint);
@@ -171,7 +169,7 @@ function assertIdempotentReplay(
     existing.destinationTokenAccount !== expected.destinationTokenAccount ||
     existing.mint !== expected.mint
   ) {
-    throw new SolanaUsdtError({
+    throw new SolanaPaymentsError({
       code: "IDEMPOTENCY_CONFLICT",
       message: "Idempotency key was already used for a different transfer.",
       signature: existing.signature,
@@ -204,7 +202,7 @@ export async function buildTransferInstructions(
 ): Promise<Instruction[]> {
   const signer = requireSigner(ctx, "transfer instruction building");
   if (input.amount <= 0n) {
-    throw new SolanaUsdtError({
+    throw new SolanaPaymentsError({
       code: "INVALID_AMOUNT",
       message: "Transfer amount must be greater than zero.",
     });
@@ -234,7 +232,7 @@ export async function buildTransferInstructions(
   );
 
   instructions.push(
-    getAddMemoInstruction({ memo: createMemo(input.reference, DEFAULT_REFERENCE_PREFIX) }),
+    getAddMemoInstruction({ memo: createMemo(input.reference, ctx.referencePrefix) }),
   );
   return instructions;
 }
@@ -253,7 +251,7 @@ async function getLatestBlockhash(
     typeof blockhash !== "string" ||
     (typeof lastValidBlockHeight !== "number" && typeof lastValidBlockHeight !== "bigint")
   ) {
-    throw new SolanaUsdtError({
+    throw new SolanaPaymentsError({
       code: "RPC_ERROR",
       message: "RPC getLatestBlockhash response did not include a blockhash lifetime.",
       endpoint: "getLatestBlockhash",

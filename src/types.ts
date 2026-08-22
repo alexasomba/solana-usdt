@@ -211,7 +211,7 @@ export interface TransactionStatus {
   transaction?: unknown;
 }
 
-export interface SolanaUsdtClient {
+export interface SolanaPaymentsClient {
   balances: {
     retrieve(input: BalanceRetrieveInput): Promise<BalanceResult>;
   };
@@ -231,7 +231,12 @@ export interface SolanaUsdtClient {
   };
 }
 
-export type SolanaUsdtReadOnlyClient = Pick<
-  SolanaUsdtClient,
+export type SolanaPaymentsReadOnlyClient = Pick<
+  SolanaPaymentsClient,
   "balances" | "payments" | "transactions"
 >;
+
+/** @deprecated Use SolanaPaymentsClient instead. */
+export type SolanaUsdtClient = SolanaPaymentsClient;
+/** @deprecated Use SolanaPaymentsReadOnlyClient instead. */
+export type SolanaUsdtReadOnlyClient = SolanaPaymentsReadOnlyClient;

@@ -1,6 +1,6 @@
 import { formatTokenAmount, parseTokenAmount } from "./amounts.js";
 import { normalizeAddress } from "./context.js";
-import { SolanaUsdtError } from "./errors.js";
+import { SolanaPaymentsError } from "./errors.js";
 import { createMemo, createReference, parseMemoReference } from "./idempotency.js";
 import { callRpc, getPath, requireRpcMethod } from "./rpc.js";
 import { getAssociatedTokenAddress } from "./token.js";
@@ -46,7 +46,7 @@ export function createPaymentsModule(ctx: ClientContext) {
 
     async verify(input: PaymentVerifyInput): Promise<VerifiedPayment> {
       if (!input.signature && !input.reference) {
-        throw new SolanaUsdtError({
+        throw new SolanaPaymentsError({
           code: "PAYMENT_NOT_FOUND",
           message: "Provide either a transaction signature or memo reference to verify a payment.",
         });
@@ -76,7 +76,7 @@ export function toSolanaPayUrl(request: PaymentRequest, options: SolanaPayUrlOpt
     ? normalizeAddress(options.recipient, "recipient")
     : request.recipient;
   if (!recipient) {
-    throw new SolanaUsdtError({
+    throw new SolanaPaymentsError({
       code: "INVALID_ADDRESS",
       message: "A payment request recipient is required to build a Solana Pay URL.",
     });
@@ -309,8 +309,8 @@ function extractVerifiedPayment(
   };
 }
 
-function mismatch(message: string, payment: VerifiedPayment): SolanaUsdtError {
-  return new SolanaUsdtError({
+function mismatch(message: string, payment: VerifiedPayment): SolanaPaymentsError {
+  return new SolanaPaymentsError({
     code: "PAYMENT_MISMATCH",
     message,
     signature: payment.signature,
@@ -345,7 +345,7 @@ function normalizeBoundedInteger(
 ): number {
   if (value === undefined) return options.defaultValue;
   if (!Number.isInteger(value) || value < 1 || value > options.max) {
-    throw new SolanaUsdtError({
+    throw new SolanaPaymentsError({
       code: "INVALID_INPUT",
       message: `${options.field} must be an integer between 1 and ${options.max}.`,
     });

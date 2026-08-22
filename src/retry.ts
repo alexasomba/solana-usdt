@@ -1,4 +1,4 @@
-import { SolanaUsdtError } from "./errors.js";
+import { SolanaPaymentsError } from "./errors.js";
 
 export interface RetryOptions {
   retries?: number | undefined;
@@ -20,7 +20,7 @@ export function isRetryableRpcError(
   error: unknown,
   retryableCodes: readonly string[] = DEFAULT_RETRYABLE_CODES,
 ): boolean {
-  if (error instanceof SolanaUsdtError) return error.retryable;
+  if (error instanceof SolanaPaymentsError) return error.retryable;
   if (typeof error !== "object" || error === null) return false;
   const code = "code" in error ? String((error as { code?: unknown }).code) : undefined;
   const message = error instanceof Error ? error.message.toLowerCase() : "";
@@ -69,7 +69,7 @@ export function withTimeout<T>(
   const timeout = new Promise<never>((_, reject) => {
     timer = setTimeout(() => {
       reject(
-        new SolanaUsdtError({
+        new SolanaPaymentsError({
           code: "RPC_TIMEOUT",
           message: `RPC request timed out after ${timeoutMs}ms.`,
           endpoint,

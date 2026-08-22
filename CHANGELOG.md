@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.4](https://github.com/alexasomba/solana-usdt/compare/v0.3.3...v0.3.4) (2026-08-22)
+
+
+### Bug Fixes
+
+* automate solana-usdt npm releases ([59290d5](https://github.com/alexasomba/solana-usdt/commit/59290d5d15279f62e78b2d34ef7c5ee749e1e145))
+* keep skill metadata in release updates ([c171e78](https://github.com/alexasomba/solana-usdt/commit/c171e785fff1a5156adffe175f2e6044cba5f1db))
+
+
+### Miscellaneous Chores
+
+* update pnpm workspace dependencies and adjust vitest import ([587df1f](https://github.com/alexasomba/solana-usdt/commit/587df1f22c408b7d330cb44a27c3ab3ae1c584b2))
+
 ## 0.3.3 - 2026-06-01
 
 ### Changed

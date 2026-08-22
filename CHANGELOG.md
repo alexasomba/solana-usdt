@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.5](https://github.com/alexasomba/solana-usdt/compare/v0.3.4...v0.3.5) (2026-08-22)
+
+
+### Bug Fixes
+
+* ignore release-managed changelog formatting ([8468615](https://github.com/alexasomba/solana-usdt/commit/84686156445f2575e53f47ea99d5ee07b2da700a))
+* preserve npm trusted publisher workflow ([27336ed](https://github.com/alexasomba/solana-usdt/commit/27336ed05b5a3a48ee6c4d5e12b33cc6ed6a48ef))
+
 ## [0.3.4](https://github.com/alexasomba/solana-usdt/compare/v0.3.3...v0.3.4) (2026-08-22)
 
 

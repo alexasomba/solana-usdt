@@ -1,6 +1,5 @@
 import { formatTokenAmount, parseTokenAmount } from "./amounts.js";
 import { normalizeAddress } from "./context.js";
-import { DEFAULT_REFERENCE_PREFIX } from "./constants.js";
 import { SolanaUsdtError } from "./errors.js";
 import { createMemo, createReference, parseMemoReference } from "./idempotency.js";
 import { callRpc, getPath, requireRpcMethod } from "./rpc.js";
@@ -27,7 +26,7 @@ export function createPaymentsModule(ctx: ClientContext) {
   return {
     createRequest(input: PaymentCreateRequestInput): PaymentRequest {
       const amount = parseTokenAmount(input.amount, ctx.decimals);
-      const reference = input.reference ?? createReference(DEFAULT_REFERENCE_PREFIX);
+      const reference = input.reference ?? createReference(ctx.referencePrefix);
       return {
         reference,
         recipient: input.recipient ? normalizeAddress(input.recipient, "recipient") : undefined,
@@ -35,7 +34,7 @@ export function createPaymentsModule(ctx: ClientContext) {
         amount,
         displayAmount: formatTokenAmount(amount, ctx.decimals),
         decimals: ctx.decimals,
-        memo: createMemo(reference, DEFAULT_REFERENCE_PREFIX),
+        memo: createMemo(reference, ctx.referencePrefix),
         metadata: input.metadata,
         createdAt: new Date().toISOString(),
       };
@@ -279,7 +278,7 @@ function extractVerifiedPayment(
       const parsed = getPath(instruction, ["parsed"]);
       memo =
         typeof parsed === "string" ? parsed : typeof parsedInfo === "string" ? parsedInfo : memo;
-      if (memo) reference = parseMemoReference(memo, DEFAULT_REFERENCE_PREFIX) ?? reference;
+      if (memo) reference = parseMemoReference(memo, ctx.referencePrefix) ?? reference;
     }
     if (parsedType === "transferChecked" && typeof parsedInfo === "object" && parsedInfo !== null) {
       const info = parsedInfo as Record<string, unknown>;

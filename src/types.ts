@@ -6,6 +6,13 @@ import type { TokenAmountInput } from "./amounts.js";
 export type Commitment = "processed" | "confirmed" | "finalized";
 export type AddressInput = string | Address;
 
+export interface SolanaToken {
+  mint: AddressInput;
+  decimals: number;
+  symbol?: string;
+  referencePrefix?: string;
+}
+
 export interface RpcSendable<T> {
   send(): Promise<T>;
 }
@@ -21,7 +28,7 @@ export interface SolanaRpcLike {
   sendTransaction?(...args: unknown[]): RpcSendable<unknown>;
 }
 
-export interface SolanaUsdtClientOptions {
+export interface SolanaPaymentsClientOptions {
   rpcUrl: string;
   rpcSubscriptionsUrl?: string | undefined;
   signer?: TransactionSigner | undefined;
@@ -31,14 +38,18 @@ export interface SolanaUsdtClientOptions {
   retry?: RetryOptions | undefined;
   mint?: AddressInput | undefined;
   decimals?: number | undefined;
+  token?: SolanaToken | undefined;
   idempotencyStore?: IdempotencyStore<TransferResult> | undefined;
   rpc?: SolanaRpcLike | undefined;
 }
 
-export type SolanaUsdtReadOnlyClientOptions = Omit<
-  SolanaUsdtClientOptions,
+export type SolanaPaymentsReadOnlyClientOptions = Omit<
+  SolanaPaymentsClientOptions,
   "signer" | "idempotencyStore"
 >;
+
+export type SolanaUsdtClientOptions = SolanaPaymentsClientOptions;
+export type SolanaUsdtReadOnlyClientOptions = SolanaPaymentsReadOnlyClientOptions;
 
 export interface ClientContext {
   rpcUrl: string;
@@ -49,6 +60,7 @@ export interface ClientContext {
   retry?: RetryOptions | undefined;
   mint: Address;
   decimals: number;
+  referencePrefix: string;
   idempotencyStore?: IdempotencyStore<TransferResult> | undefined;
 }
 

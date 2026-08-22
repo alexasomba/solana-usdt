@@ -1,11 +1,23 @@
 import { address, createSolanaRpc, type Address, type TransactionSigner } from "@solana/kit";
-import { DEFAULT_COMMITMENT, SOLANA_USDT_DECIMALS, SOLANA_USDT_MINT_ADDRESS } from "./constants.js";
+import { DEFAULT_COMMITMENT, DEFAULT_GENERIC_REFERENCE_PREFIX, SOLANA_USDT } from "./constants.js";
 import { SolanaUsdtError } from "./errors.js";
-import type { AddressInput, ClientContext, SolanaUsdtClientOptions } from "./types.js";
+import type { AddressInput, ClientContext, SolanaPaymentsClientOptions } from "./types.js";
 
-export function createContext(options: SolanaUsdtClientOptions): ClientContext {
-  const mint =
-    options.mint === undefined ? SOLANA_USDT_MINT_ADDRESS : normalizeAddress(options.mint);
+export function createContext(options: SolanaPaymentsClientOptions): ClientContext {
+  const token = options.token;
+  const mintInput = token?.mint ?? options.mint ?? SOLANA_USDT.mint;
+  const decimals = token?.decimals ?? options.decimals ?? SOLANA_USDT.decimals;
+  const referencePrefix = token
+    ? (token.referencePrefix ?? DEFAULT_GENERIC_REFERENCE_PREFIX)
+    : (SOLANA_USDT.referencePrefix ?? DEFAULT_GENERIC_REFERENCE_PREFIX);
+  validateDecimals(decimals);
+  if (referencePrefix.length === 0) {
+    throw new SolanaUsdtError({
+      code: "INVALID_INPUT",
+      message: "Token reference prefix must not be empty.",
+    });
+  }
+  const mint = normalizeAddress(mintInput);
   return {
     rpcUrl: options.rpcUrl,
     rpc:
@@ -19,9 +31,19 @@ export function createContext(options: SolanaUsdtClientOptions): ClientContext {
     timeoutMs: options.timeoutMs,
     retry: options.retry,
     mint,
-    decimals: options.decimals ?? SOLANA_USDT_DECIMALS,
+    decimals,
+    referencePrefix,
     idempotencyStore: options.idempotencyStore,
   };
+}
+
+function validateDecimals(decimals: number): void {
+  if (!Number.isInteger(decimals) || decimals < 0 || decimals > 18) {
+    throw new SolanaUsdtError({
+      code: "INVALID_INPUT",
+      message: "Token decimals must be an integer from 0 through 18.",
+    });
+  }
 }
 
 export function normalizeAddress(value: AddressInput, field = "address"): Address {

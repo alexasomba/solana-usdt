@@ -7,7 +7,7 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "package-name": "solana-usdt",
+      "package-name": "solana-payments",
       "changelog-path": "CHANGELOG.md",
       "include-component-in-tag": false,
       "include-v-in-tag": true,
@@ -15,7 +15,7 @@
       "extra-files": [
         {
           "type": "generic",
-          "path": "skills/solana-usdt/SKILL.md"
+          "path": "skills/solana-payments/SKILL.md"
         }
       ]
     }

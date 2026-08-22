@@ -1,25 +1,26 @@
-# solana-usdt
+# solana-payments
 
-TypeScript SDK for USDT balances, transfers, and payment verification on Solana.
+TypeScript SDK for SPL-token balances, transfers, and payment verification on Solana.
 It wraps Solana Kit, SPL Token, and Memo instructions behind a Paystack-style
 factory API.
 
 ```ts
-import { createSolanaUsdt, createKeyPairSignerFromBytes } from "solana-usdt";
+import { SOLANA_USDT, createKeyPairSignerFromBytes, createSolanaPayments } from "solana-payments";
 
 const signer = await createKeyPairSignerFromBytes(secretKeyBytes);
 
-const solanaUsdt = createSolanaUsdt({
+const solanaPayments = createSolanaPayments({
   rpcUrl: process.env.SOLANA_RPC_URL!,
   signer,
+  token: SOLANA_USDT,
   commitment: "confirmed",
 });
 
-const balance = await solanaUsdt.balances.retrieve({
+const balance = await solanaPayments.balances.retrieve({
   owner: signer.address,
 });
 
-const transfer = await solanaUsdt.transfers.create({
+const transfer = await solanaPayments.transfers.create({
   to: "RecipientWalletAddressHere",
   amount: "10.50",
 });
@@ -30,20 +31,20 @@ client for balances, payment request creation, payment verification, monitoring,
 and transaction lookup:
 
 ```ts
-import { createReadOnlySolanaUsdt } from "solana-usdt";
+import { createReadOnlySolanaPayments } from "solana-payments";
 
-const solanaUsdt = createReadOnlySolanaUsdt({
+const solanaPayments = createReadOnlySolanaPayments({
   rpcUrl: process.env.SOLANA_RPC_URL!,
   commitment: "confirmed",
 });
 
-const request = solanaUsdt.payments.createRequest({
+const request = solanaPayments.payments.createRequest({
   amount: "25.00",
   recipient: "MerchantWalletAddressHere",
   reference: "invoice_123",
 });
 
-const solanaPayUrl = solanaUsdt.payments.toSolanaPayUrl(request, {
+const solanaPayUrl = solanaPayments.payments.toSolanaPayUrl(request, {
   label: "Acme Store",
   message: "Order invoice_123",
 });
@@ -51,26 +52,36 @@ const solanaPayUrl = solanaUsdt.payments.toSolanaPayUrl(request, {
 
 ## Features
 
-- Defaults to Solana USDT mint `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB`
-- Allows mint/decimal override for devnet and local validator tests
-- Retrieves USDT balances via associated token accounts
+- Defaults to the `SOLANA_USDT` preset with mint `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB`
+- Allows custom SPL-token mint, decimals, and reference-prefix configuration
+- Retrieves token balances via associated token accounts
 - Creates idempotent recipient ATAs before transfers
 - Sends `TransferChecked` with Solana Memo references
 - Verifies payments by signature or memo reference
 - Builds Solana Pay URLs from payment requests
 - Provides polling monitor helpers for incoming payments
-- Normalizes RPC and transaction errors into `SolanaUsdtError`
+- Normalizes RPC and transaction errors into `SolanaPaymentsError`
+
+## Migration from `solana-usdt`
+
+`solana-usdt` has been renamed to `solana-payments`. Install the new package and
+use `createSolanaPayments` or `createReadOnlySolanaPayments` for new code.
+`createSolanaUsdt`, `createReadOnlySolanaUsdt`, `SolanaUsdtClient`, and
+`SolanaUsdtError` remain deprecated compatibility aliases and will be removed
+only in a future major release. The default `SOLANA_USDT` preset deliberately
+keeps the `solana-usdt:` memo prefix, so existing payment references continue
+to verify unchanged.
 
 ## Agent Skill
 
-The npm package ships an agent skill at `skills/solana-usdt/SKILL.md`. Use it
+The npm package ships an agent skill at `skills/solana-payments/SKILL.md`. Use it
 when asking an AI coding agent to integrate, configure, troubleshoot, or review
-`solana-usdt` usage.
+`solana-payments` usage.
 
 Install the SDK and symlink bundled npm skills into your agent skill directory:
 
 ```bash
-pnpm add solana-usdt
+pnpm add solana-payments
 pnpm add -D skills-npm
 pnpm exec skills-npm
 ```
@@ -78,22 +89,22 @@ pnpm exec skills-npm
 For npm projects, the equivalent commands are:
 
 ```bash
-npm install solana-usdt
+npm install solana-payments
 npm install --save-dev skills-npm
 npx skills-npm
 ```
 
 `skills-npm` links the bundled skill as
-`skills/npm-solana-usdt-solana-usdt/SKILL.md`. Add `skills/npm-*` to your
+`skills/npm-solana-payments-solana-payments/SKILL.md`. Add `skills/npm-*` to your
 `.gitignore` if you do not want generated skill symlinks committed.
 
 You can also inspect the skill directly with TanStack Intent:
 
 ```bash
-npx @tanstack/intent@latest load solana-usdt#solana-usdt
+npx @tanstack/intent@latest load solana-payments#solana-payments
 ```
 
-Once installed, ask your agent to use the `solana-usdt` skill for tasks such as:
+Once installed, ask your agent to use the `solana-payments` skill for tasks such as:
 
 - setting up a signer-backed transfer client
 - building payment-only checkout flows without keypair generation
@@ -104,7 +115,7 @@ Once installed, ask your agent to use the `solana-usdt` skill for tasks such as:
 ## API
 
 ```ts
-const client = createSolanaUsdt({
+const client = createSolanaPayments({
   rpcUrl: "https://api.mainnet-beta.solana.com",
   signer,
   retry: { retries: 3 },
@@ -125,7 +136,7 @@ await client.transactions.wait({ signature });
 ## Production Notes
 
 - `signer` is optional for read-only modules. Transfers require a real `TransactionSigner`; calling `transfers.quote()` or `transfers.create()` without one throws `SIGNER_REQUIRED`.
-- In Cloudflare Workers and other serverless checkout integrations, avoid `generateKeyPairSigner()` for payment request creation and verification. Use `createReadOnlySolanaUsdt()` or pass no signer to `createSolanaUsdt()` unless you are actually signing transfers.
+- In Cloudflare Workers and other serverless checkout integrations, avoid `generateKeyPairSigner()` for payment request creation and verification. Use `createReadOnlySolanaPayments()` or pass no signer to `createSolanaPayments()` unless you are actually signing transfers.
 - `createNoopSigner()` is re-exported from Solana Kit for advanced compatibility cases where another system will provide signatures, but it must not be used to send SDK-managed transfers.
 - `payments.monitor({ recipient })` scans the recipient wallet's associated token account for the configured mint.
 - `payments.verify({ recipient })` validates against the recipient wallet's associated token account, not the wallet address as a token destination.
